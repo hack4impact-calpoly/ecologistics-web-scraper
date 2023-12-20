@@ -1,4 +1,4 @@
-# name of non-profit
+# Ecologistics Web Scraper
 
 {One sentence description of the project}
 
