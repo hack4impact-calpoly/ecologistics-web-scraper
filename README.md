@@ -13,8 +13,9 @@
 
 ### Purpose
 
-{Short paragraph description of the non-profit mission and the purpose of this project. Who will this project help, why is it necessary. Impact of the project.}
+Ecologistics® creates strategies, tools and templates for organizations that support environmental and economic sustainability, and social justice.
 
+This web scraper will be used to detect recently approved project proposals in the area so that Ecologistics® can challenge projects within the 30-day challenge period.
 ### Team
 
 The {non-profit name} team consists of {#} Cal Poly students. Over the course of about 9 months, we worked as a team to deploy this web application. The team members are listed below:
