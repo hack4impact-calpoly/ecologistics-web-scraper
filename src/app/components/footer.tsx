@@ -1,18 +1,12 @@
 import React from "react";
-import Link from "next/link";
 
-export default function Navbar() {
+export default function Footer() {
   return (
     <div className="bg-secondary p-4">
       <div className="container flex justify-between items-center">
         <div className="font-semibold">
-          <Link href="/">Ecologistics Web Scraper</Link>
+          <h1>Footer</h1>
         </div>
-        <ul>
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-        </ul>
       </div>
     </div>
   );
