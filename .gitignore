@@ -32,7 +32,7 @@
 /backend/env/
 /backend/*.pyc
 /backend/*.pyo
-/backend/dj_api/__pycache__/
 /backend/*.sqlite3
 **/migrations/*.py
 **/migrations/*.pyc
+**/__pycache__/
