@@ -20,6 +20,7 @@
 
 # local env files
 .env*.local
+/backend/env/
 
 # vercel
 .vercel
