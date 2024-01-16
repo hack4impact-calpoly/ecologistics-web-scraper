@@ -20,7 +20,6 @@
 
 # local env files
 .env*.local
-/backend/env/
 
 # vercel
 .vercel
@@ -28,3 +27,12 @@
 # typescript
 /frontend/*.tsbuildinfo
 /frontend/next-env.d.ts
+
+# backend
+/backend/env/
+/backend/*.pyc
+/backend/*.pyo
+/backend/dj_api/__pycache__/
+/backend/*.sqlite3
+**/migrations/*.py
+**/migrations/*.pyc
