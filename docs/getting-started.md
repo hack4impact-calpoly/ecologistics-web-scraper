@@ -5,7 +5,6 @@ Welcome to the getting started page! Here is all you need to know to get this re
 ## Contents
 
 - [Setup for All Developers](#setup-for-all-developers)
-- [Setup for Tech Leads](#setup-for-tech-leads)
 - [Helpful commands](#helpful-commands)
 - [Project Structure](#project-structure)
 
@@ -24,19 +23,6 @@ Welcome to the getting started page! Here is all you need to know to get this re
    3. Search "format on save" and click the checkbox
 6. Familiarize yourself with [Helpful Commands](#helpful-commands), the [Project Structure](#project-structure), and the [steps for contributing](./contributing.md).
 
-## Setup for Tech Leads
-
-1. Set up a MongoDB cluster and create a .env with the URI
-2. Edit the "One time setup" section above as needed, then execute those steps
-3. Turn on branch protections for main and develop branches
-   1. Visit your repo on [github.com](https://github.com)
-   2. Click the Settings button on the top bar
-   3. Click the branches tab on the left sidebar
-   4. Click add rule
-   5. Click "Require a pull request before merging"
-   6. Create  
-      <img src="./images/require-code-review.png" alt="Require Code Review" width="500"/>
-4. See [template-features.md](./template-features.md) for features included in this template repository.
 
 ## Helpful commands
 
