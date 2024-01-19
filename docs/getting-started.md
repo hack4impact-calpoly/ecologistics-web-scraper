@@ -11,8 +11,8 @@ Welcome to the getting started page! Here is all you need to know to get this re
 ## Setup for all Developers
 
 1. Clone this repository `git clone <repo-url>`
-2. Run `npm i` at the root of the repository
-3. Create a .env file and retrieve secrets from your tech lead
+2. Run `npm i` in the `frontend` directory of the repository
+3. Create an `.env.local` file and retrieve secrets from your tech lead
 4. Install IDE Extensions
    - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
    - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
@@ -36,17 +36,20 @@ Welcome to the getting started page! Here is all you need to know to get this re
 ## Project Structure
 
 - [**.github**](/.github) Github Actions CI/CD and Issue/PR templates
-- [**docs**](/docs) Documentation - Documentation that came with the template repository
+- [**docs**](/docs) Documentation - Documentation for getting started and developing
 - [**public**](/public) Assets for frontend [Read More](https://nextjs.org/docs/pages/building-your-application/optimizing/static-assets)
-- [**src**](/src) All application code
-  - [**app**](/src/app/) Frontend and API code
-    - [**api**](/src/app/api) All API routes
-    - [**components**](/src/app/components) All React components
-    - [**/\***](/src/app/) App router routes for pages
-    - [**styles**](/src/app/styles) All CSS files
-  - [**database**](/src/database) MongoDB schemas and related files
+- [**frontend**](/frontend) All frontend code and configuration
+   - [**src**](/src) All application code for frontend
+   - [**app**](/src/app/) Frontend and API code
+      - [**api**](/src/app/api) All API routes (**NOTE**: we won't be using!)
+      - [**components**](/src/app/components) All React components
+      - [**/\***](/src/app/) App router routes for pages
+      - [**styles**](/src/app/styles) All CSS files
+   - [**database**](/src/database) MongoDB schemas and related files (**NOTE**: we won't be using!)
+- [**backend**](/backend) All backend code for Django and configuration
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It's built alongside a Django application that is used to handle backend functionalities.
 
 ## Learn More about Next.js
 
