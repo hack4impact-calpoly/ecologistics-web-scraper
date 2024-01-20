@@ -1,11 +1,13 @@
-import connectDB from "@database/db";
-import { NextResponse } from "next/server";
+import axios from "axios";
 
-/**
- * Example GET API route
- * @returns {message: string}
- */
-export async function GET() {
-  await connectDB();
-  return NextResponse.json({ message: "Hello from the API!" });
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export async function getTest() {
+  try {
+    const response = await axios.get(`${API_URL}/test/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching test:", error);
+    throw error;
+  }
 }
