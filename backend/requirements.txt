@@ -1,6 +1,7 @@
 asgiref==3.7.2
 certifi==2023.11.17
-Django==4.2.9
+Django==4.1.13
+django-cors-headers==4.3.1
 djangorestframework==3.14.0
 dnspython==2.4.2
 pykerberos==1.2.4
@@ -8,5 +9,5 @@ pymongo==4.6.1
 python-dotenv==1.0.0
 python-snappy==0.6.1
 pytz==2023.3.post1
-sqlparse==0.4.4
+sqlparse==0.2.4
 typing_extensions==4.9.0
