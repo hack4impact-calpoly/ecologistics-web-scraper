@@ -7,9 +7,10 @@ Here are all of the steps you should follow whenever contributing to this repo!
 1. Before you start making changes, always make sure you're on the `develop` branch, then `git fetch` to retrieve all new remote branches, and finally `git pull`. If you have local uncommitted changes, `git stash`, then `git pull --rebase` to get latest from origin, then `git stash pop` to apply the stashed changes to new base.
 2. Don't forget to `npm i` in the frontend and `pip3 install -r requirements.txt` in the backend to make sure your dependencies are up to date.
 3. Create a new branch by first checking out develop with `git checkout develop` or `git switch develop`. Then, run `git checkout -b <name-of-branch>`.
-4. Make changes to the code. If it's been a while since you've made changes, repeat Steps 1 and 2. 
-5. Run the project locally to ensure everything is still working properly with `python3 manage.py runserver` in the backend, and `npm run dev` in the frontend.
-6. `npm run lint` to ensure code standards. (running `npm run lint:fix` will fix most of the styling errors!)
+4. Make changes to the code. If it's been a while since you've made changes, repeat Steps 1 and 2.
+5. If you added dependencies in the backend, run `pip3 install -r requirements.txt` to update the requirements.txt.
+6. Run the project locally to ensure everything is still working properly with `python3 manage.py runserver` in the backend, and `npm run dev` in the frontend.
+7. `npm run lint` to ensure code standards. (running `npm run lint:fix` will fix most of the styling errors!)
 
 ## Commiting Changes
 
