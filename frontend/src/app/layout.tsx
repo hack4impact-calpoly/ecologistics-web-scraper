@@ -31,7 +31,7 @@ export default function RootLayout({
         )}
       >
         <Navbar />
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 px-10 py-5">{children}</div>
         <Footer />
       </body>
     </html>
