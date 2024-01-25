@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import Login from "@/components/login";
 import { Inter as FontSans } from "next/font/google";
 import "@/styles/globals.css";
+
 
 import { cn } from "@/lib/utils";
 
@@ -24,7 +26,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
+      <Login />
+      {/* <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased flex flex-col",
           fontSans.variable,
@@ -32,8 +35,9 @@ export default function RootLayout({
       >
         <Navbar />
         <div className="flex-1 px-10 py-5">{children}</div>
+        
         <Footer />
-      </body>
+      </body> */}
     </html>
   );
 }

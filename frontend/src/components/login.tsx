@@ -1,8 +1,16 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import styles from "./login.module.css";
 
 const LogInSection = () => {
+  const [passwordShown, setPasswordShown] = useState(false);
+
+  const togglePasswordShown = () => {
+    console.log(passwordShown);
+    setPasswordShown(!passwordShown);
+  };
+
   return (
     <section className="vh-100" style={{ backgroundColor: "#508bfc" }}>
       <div className="container py-5 h-100">
@@ -29,7 +37,7 @@ const LogInSection = () => {
                 <div className="form-outline mb-4">
                   <div>
                     <input
-                      type="password"
+                      type={passwordShown ? "text" : "password"}
                       id="typePasswordX-2"
                       className="form-control"
                     />
@@ -51,14 +59,15 @@ const LogInSection = () => {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    value=""
+                    checked={passwordShown}
+                    onChange={togglePasswordShown}
                     id="form1Example3"
                   />
                   <label
                     className={`form-check-label ${styles.formCheckLabel}`}
                     htmlFor="form1Example3"
                   >
-                    Remember password
+                    {passwordShown ? "Hide" : "Show"} Password
                   </label>
                 </div>
 
@@ -67,14 +76,14 @@ const LogInSection = () => {
                 </button>
                 {/* <hr className="my-4" /> */}
                 <div>
-                    <a
-                      className={`${styles.newAccount}`}
-                      role="button"
-                      href="/your-destination-page"
-                    >
-                      Create New Account
-                    </a>
-                  </div>
+                  <a
+                    className={`${styles.newAccount}`}
+                    role="button"
+                    href="/your-destination-page"
+                  >
+                    Create New Account
+                  </a>
+                </div>
               </div>
             </div>
           </div>
