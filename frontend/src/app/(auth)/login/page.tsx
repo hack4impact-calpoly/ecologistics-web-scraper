@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import styles from "./login.module.css";
+import styles from "../auth.module.css";
 import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
