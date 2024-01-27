@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
 
   const togglePasswordShown = () => {
@@ -14,6 +16,11 @@ const LoginPage = () => {
   const navigateToSignUp = () => {
     router.push("/signup"); // Replace "/signup" with the actual path of your signup page
   };
+
+  const handleLogin = () => {
+    // CHANGE THIS TO NAVIGATE TO NEW PAGE
+    console.log("Email", email)
+  }
 
   return (
     <section className="vh-100" style={{ backgroundColor: "#508bfc" }}>
@@ -32,6 +39,7 @@ const LoginPage = () => {
                     type="email"
                     id="typeEmailX-2"
                     className="form-control"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                   <label className="form-label" htmlFor="typeEmailX-2">
                     Email
@@ -44,6 +52,7 @@ const LoginPage = () => {
                       type={passwordShown ? "text" : "password"}
                       id="typePasswordX-2"
                       className="form-control"
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <label className="form-label" htmlFor="typePasswordX-2">
                       Password
@@ -75,7 +84,11 @@ const LoginPage = () => {
                   </label>
                 </div>
 
-                <button className={`${styles.signup}`} type="submit">
+                <button
+                  className={`${styles.signup}`}
+                  type="submit"
+                  onClick={handleLogin}
+                >
                   Login
                 </button>
                 <div>
