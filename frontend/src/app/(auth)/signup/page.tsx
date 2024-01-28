@@ -50,7 +50,7 @@ export default function SignUpPage() {
               <Input
                 id="password"
                 // text = show password, password = no show password
-                type={passwordShown ? "text" : "password"} 
+                type={passwordShown ? "text" : "password"}
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
               />
