@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function SignupPage() {
-  return <h3> sign up page</h3>;
+  return <h1>Signup page</h1>;
 }
