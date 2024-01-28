@@ -24,6 +24,7 @@ The Ecologistics Web Scraper team consists of {#} Cal Poly students. Over the co
 - [First Last](https://www.linkedin.com/) - Designer
 - [Ryan Chan](https://www.linkedin.com/in/ryan-chan7/) - Tech Lead
 - [Oliver Lane](https://www.linkedin.com/in/oliver-lane-0919351bb/) - Tech Lead
+- [Hayley Chang](https://www.linkedin.com/in/hayley-chang/) - Software Developer
 - [First Last](https://www.linkedin.com/) - Software Developer
 
 ## Getting Started And Contributing
