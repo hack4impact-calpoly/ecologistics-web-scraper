@@ -9,7 +9,7 @@ Here are all of the steps you should follow whenever contributing to this repo!
 3. Create a new branch by first checking out develop with `git checkout develop` or `git switch develop`. Then, run `git checkout -b <name-of-branch>`.
 4. Make changes to the code. If it's been a while since you've made changes, repeat Steps 1 and 2.
 5. If you need to add dependencies in the backend, run `poetry add package-name`, or `poetry update package-name` to update a dependency.
-6. Run the project locally to ensure everything is still working properly with `python3 manage.py runserver` in the backend, and `npm run dev` in the frontend.
+6. Run the project locally to ensure everything is still working properly with `chalice local` in the backend, and `npm run dev` in the frontend.
 7. `npm run lint` to ensure code standards. (running `npm run lint:fix` will fix most of the styling errors!)
 
 ## Commiting Changes
