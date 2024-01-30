@@ -2,18 +2,18 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, 12-Continuous-Integration]
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, 12-Continuous-Integration]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18.x
       - run: npm ci
       - run: npm run lint
       - run: npm run build
