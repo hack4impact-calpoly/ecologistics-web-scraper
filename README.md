@@ -26,6 +26,7 @@ The Ecologistics Web Scraper team consists of {#} Cal Poly students. Over the co
 - [Oliver Lane](https://www.linkedin.com/in/oliver-lane-0919351bb/) - Tech Lead
 - [Parshana Sekhon](https://www.linkedin.com/in/parshanasekhon/) - Software Developer
 - [Hayley Chang](https://www.linkedin.com/in/hayley-chang/) - Software Developer
+- [Eeshan Walia](https://www.linkedin.com/in/eeshan-walia-ab8a501b6/) - Software Developer
 - [First Last](https://www.linkedin.com/) - Software Developer
 
 ## Getting Started And Contributing
