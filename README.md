@@ -28,6 +28,8 @@ The Ecologistics Web Scraper team consists of {#} Cal Poly students. Over the co
 - [Hayley Chang](https://www.linkedin.com/in/hayley-chang/) - Software Developer
 - [James Torres](www.linkedin.com/in/jameskt) - Software Developer
 - [Isha Varrier](https://www.linkedin.com/in/isha-varrier-19a35a1b5/) - Software Developer
+- [Eeshan Walia](https://www.linkedin.com/in/eeshan-walia-ab8a501b6/) - Software Developer
+- [First Last](https://www.linkedin.com/) - Software Developer
 
 ## Getting Started And Contributing
 
