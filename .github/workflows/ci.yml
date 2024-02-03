@@ -20,3 +20,5 @@ jobs:
         working-directory: ./frontend
       - run: npm run build
         working-directory: ./frontend
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
