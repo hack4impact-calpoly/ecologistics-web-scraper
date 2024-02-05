@@ -16,6 +16,7 @@ Web scraper to detect recently approved project proposals to expedite the proces
 Ecologistics® creates strategies, tools and templates for organizations that support environmental and economic sustainability, and social justice.
 
 This web scraper will be used by Ecologistics® to detect and track approved project proposals so they can challenge projects within the 30-day challenge period.
+
 ### Team
 
 The Ecologistics Web Scraper team consists of {#} Cal Poly students. Over the course of about 9 months, we worked as a team to deploy this web application. The team members are listed below:
@@ -29,6 +30,7 @@ The Ecologistics Web Scraper team consists of {#} Cal Poly students. Over the co
 - [James Torres](www.linkedin.com/in/jameskt) - Software Developer
 - [Isha Varrier](https://www.linkedin.com/in/isha-varrier-19a35a1b5/) - Software Developer
 - [Eeshan Walia](https://www.linkedin.com/in/eeshan-walia-ab8a501b6/) - Software Developer
+- [Wesley Tam](https://www.linkedin.com/in/wesleyltam/) - Software Developer
 - [First Last](https://www.linkedin.com/) - Software Developer
 
 ## Getting Started And Contributing
