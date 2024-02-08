@@ -21,9 +21,20 @@ export default function SignUpPage() {
     setPasswordShown(!passwordShown);
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     // CHANGE THIS TO NAVIGATE TO NEW PAGE
     console.log("Email", email);
+    try {
+      await fetch("api/signUp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+    } catch (error) {
+      console.log("Error during registration");
+    }
   };
 
   return (
