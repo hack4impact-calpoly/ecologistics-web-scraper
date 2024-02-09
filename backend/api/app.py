@@ -1,16 +1,27 @@
 from chalice import Chalice
+import mongodb
+import json
 
 app = Chalice(app_name="api")
+
+client = mongodb.get_mongo_client()
 
 
 @app.route("/")
 def index():
     return {"hello": "world"}
 
-
 # The view function above will return {"hello": "world"}
 # whenever you make an HTTP GET request to '/'.
-#
+
+# dummy endpoint
+@app.route("/test")
+def sample_comment():
+    db = client["test"]
+    collection = db["users"]
+    doc = collection.find_one()
+    return {"hi": "hello"}
+
 # Here are a few more examples:
 #
 # @app.route('/hello/{name}')
