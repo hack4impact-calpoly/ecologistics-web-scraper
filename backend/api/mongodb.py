@@ -8,8 +8,7 @@ def get_mongo_client():
 
     try:
         client = MongoClient(URI)
-        client.admin.command('ping')
-        print("Connected")
+        client.admin.command('ping')                        # confirm connection to db
     except Exception as e:
             print(f"Error connecting to MongoDB: {e}")
             client = None
