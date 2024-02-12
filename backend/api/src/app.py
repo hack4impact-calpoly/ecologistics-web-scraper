@@ -1,10 +1,12 @@
 from chalice import Chalice
 from dotenv import load_dotenv
+from chalicelib.slo_county import slo_county_blueprint
 
 # Load .env file
 load_dotenv()
 
 app = Chalice(app_name="api")
+app.register_blueprint(slo_county_blueprint)
 
 
 @app.route("/")
