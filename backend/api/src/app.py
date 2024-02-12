@@ -1,6 +1,6 @@
 from chalice import Chalice
 from dotenv import load_dotenv
-from chalicelib.slo_county import slo_county_blueprint
+from routes.slo_county import slo_county_blueprint
 
 # Load .env file
 load_dotenv()
