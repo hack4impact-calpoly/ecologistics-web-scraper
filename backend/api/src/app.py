@@ -3,6 +3,7 @@ import mongodb
 from dotenv import load_dotenv
 from routes.slo_county import slo_county_blueprint
 
+
 # Load .env file
 load_dotenv()
 
