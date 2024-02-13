@@ -17,8 +17,10 @@ client = mongodb.get_mongo_client()
 def index():
     return {"hello": "world"}
 
+
 # The view function above will return {"hello": "world"}
 # whenever you make an HTTP GET request to '/'.
+
 
 # dummy endpoint retuns the data of the first user doc in users collection
 @app.route("/test")
@@ -27,15 +29,16 @@ def test_endpoint():
     collection = db["users"]
     doc = collection.find_one()
 
-    if(doc is not None):
+    if doc is not None:
         return {
-            "id":str(doc["_id"]),
-            "email":doc["email"],
-            "password":doc["password"]
+            "id": str(doc["_id"]),
+            "email": doc["email"],
+            "password": doc["password"],
         }
-    
+
+
 # dummy post method
-@app.route('/users', methods=['POST'])
+@app.route("/users", methods=["POST"])
 def create_user():
     try:
         # This is the JSON body the user sent in their POST request.
@@ -46,6 +49,7 @@ def create_user():
 
     except Exception as e:
         print(f"Failed to post: {e}")
+
 
 # Here are a few more examples:
 #
