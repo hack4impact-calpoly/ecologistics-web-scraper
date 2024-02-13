@@ -18,8 +18,9 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
-
   const router = useRouter();
+
+  // const router = useRouter();
 
   const togglePasswordShown = () => {
     setPasswordShown(!passwordShown);
@@ -39,11 +40,12 @@ export default function LoginPage() {
         console.log("Invalid Credentials");
         return;
       }
-      router.replace("/signup");
     } catch (error) {
       console.log(error);
     }
     // CHANGE THIS TO NAVIGATE TO NEW PAGE
+
+    router.push("/");
     console.log("Email", email);
   };
 
