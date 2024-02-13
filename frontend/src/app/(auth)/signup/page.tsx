@@ -21,9 +21,36 @@ export default function SignUpPage() {
     setPasswordShown(!passwordShown);
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     // CHANGE THIS TO NAVIGATE TO NEW PAGE
     console.log("Email", email);
+    try {
+      const resUserExists = await fetch("api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const { user } = await resUserExists.json();
+
+      if (user) {
+        // user exists so return
+        console.log("User already exists");
+        return;
+      }
+      // calling the registration api
+      await fetch("api/signUp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+    } catch (error) {
+      console.log("Error during registration");
+    }
   };
 
   return (
