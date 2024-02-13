@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -48,6 +49,8 @@ export default function SignUpPage() {
         },
         body: JSON.stringify({ email, password }),
       });
+
+      router.push("/login");
     } catch (error) {
       console.log("Error during registration");
     }
