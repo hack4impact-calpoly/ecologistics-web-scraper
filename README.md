@@ -22,7 +22,6 @@ This web scraper will be used by Ecologistics® to detect and track approved pro
 The Ecologistics Web Scraper team consists of {#} Cal Poly students. Over the course of about 9 months, we worked as a team to deploy this web application. The team members are listed below:
 
 - [Sanjana Checker](https://www.linkedin.com/) - Project Manager
-- [First Last](https://www.linkedin.com/) - Designer
 - [Ryan Chan](https://www.linkedin.com/in/ryan-chan7/) - Tech Lead
 - [Oliver Lane](https://www.linkedin.com/in/oliver-lane-0919351bb/) - Tech Lead
 - [Parshana Sekhon](https://www.linkedin.com/in/parshanasekhon/) - Software Developer
