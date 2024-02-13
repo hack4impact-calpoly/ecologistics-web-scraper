@@ -30,7 +30,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const res = await signIn("email", {
+      const res = await signIn("credentials", {
         email,
         password,
         redirect: false,
@@ -40,12 +40,12 @@ export default function LoginPage() {
         console.log("Invalid Credentials");
         return;
       }
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
     // CHANGE THIS TO NAVIGATE TO NEW PAGE
 
-    router.push("/");
     console.log("Email", email);
   };
 
