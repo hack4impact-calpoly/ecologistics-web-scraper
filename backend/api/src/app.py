@@ -1,11 +1,13 @@
 from chalice import Chalice
 import mongodb
 from dotenv import load_dotenv
+from routes.slo_county import slo_county_blueprint
 
 # Load .env file
 load_dotenv()
 
 app = Chalice(app_name="api")
+app.register_blueprint(slo_county_blueprint)
 
 client = mongodb.get_mongo_client()
 
