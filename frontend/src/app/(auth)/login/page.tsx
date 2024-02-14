@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,18 +11,41 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
+  const router = useRouter();
+
+  // const router = useRouter();
 
   const togglePasswordShown = () => {
     setPasswordShown(!passwordShown);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res && res.error) {
+        console.log("Invalid Credentials");
+        return;
+      }
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
     // CHANGE THIS TO NAVIGATE TO NEW PAGE
+
     console.log("Email", email);
   };
 
@@ -35,7 +58,7 @@ export default function LoginPage() {
         {/* <CardDescription>Deploy your new project in one-click.</CardDescription> */}
       </CardHeader>
       <CardContent className="pb-4">
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Email</Label>
@@ -55,23 +78,23 @@ export default function LoginPage() {
               />
             </div>
           </div>
+          <div className="flex items-center space-x-2 py-4">
+            <input
+              type="checkbox"
+              id="hidePassword"
+              onChange={togglePasswordShown}
+              checked={passwordShown}
+              className="form-checkbox h-5 w-5 text-indigo-600"
+            />
+            <Label htmlFor="hidePassword">Show Password</Label>
+          </div>
+          <Button type="submit" className="w-full text-black">
+            Login
+          </Button>
         </form>
-        <div className="flex items-center space-x-2 py-4">
-          <input
-            type="checkbox"
-            id="hidePassword"
-            onChange={togglePasswordShown}
-            checked={passwordShown}
-            className="form-checkbox h-5 w-5 text-indigo-600"
-          />
-          <Label htmlFor="hidePassword">Show Password</Label>
-        </div>
       </CardContent>
       <CardFooter className="flex flex-col items-center space-y-2">
         {/* <Button variant="outline">Cancel</Button> */}
-        <Button onClick={handleLogin} className="w-full">
-          Login
-        </Button>
         <Link href="/signup" className="text-xs hover:text-gray-300">
           Create New Account
         </Link>

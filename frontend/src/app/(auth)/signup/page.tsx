@@ -11,11 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
+
+  const router = useRouter();
 
   const togglePasswordShown = () => {
     setPasswordShown(!passwordShown);
@@ -33,7 +36,8 @@ export default function SignUpPage() {
         body: JSON.stringify({ email }),
       });
 
-      const { user } = await resUserExists.json();
+      const jsonResponse = await resUserExists.json();
+      const user = jsonResponse.user;
 
       if (user) {
         // user exists so return
@@ -48,8 +52,10 @@ export default function SignUpPage() {
         },
         body: JSON.stringify({ email, password }),
       });
+
+      router.push("/login");
     } catch (error) {
-      console.log("Error during registration");
+      console.log("Error during registration:", error);
     }
   };
 
