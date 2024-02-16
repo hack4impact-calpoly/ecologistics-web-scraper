@@ -13,12 +13,15 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
 
   // const router = useRouter();
 
@@ -38,6 +41,7 @@ export default function LoginPage() {
 
       if (res && res.error) {
         console.log("Invalid Credentials");
+        setErrorMessage("Invalid Credentials");
         return;
       }
       router.push("/");
@@ -88,6 +92,13 @@ export default function LoginPage() {
             />
             <Label htmlFor="hidePassword">Show Password</Label>
           </div>
+          {errorMessage && (
+            <Alert variant="destructive">
+              <ExclamationTriangleIcon className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{errorMessage}</AlertDescription>
+            </Alert>
+          )}
           <Button type="submit" className="w-full text-black">
             Login
           </Button>
