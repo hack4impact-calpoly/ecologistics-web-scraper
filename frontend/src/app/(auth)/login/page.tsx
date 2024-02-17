@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useState } from "react";
+import { FormEvent, SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -31,6 +31,29 @@ export default function LoginPage() {
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const resUserExists = await fetch("api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const jsonResponse = await resUserExists.json();
+      const user = jsonResponse.user;
+
+      if (user) {
+        // user exists so return
+        console.log("User already exists");
+        return;
+      } else {
+        setErrorMessage("Account Doesn't Exist");
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
     try {
       const res = await signIn("credentials", {
@@ -48,9 +71,6 @@ export default function LoginPage() {
     } catch (error) {
       console.log(error);
     }
-    // CHANGE THIS TO NAVIGATE TO NEW PAGE
-
-    console.log("Email", email);
   };
 
   return (
