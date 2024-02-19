@@ -88,7 +88,7 @@ export default function LoginPage() {
             />
             <Label htmlFor="hidePassword">Show Password</Label>
           </div>
-          <Button type="submit" className="w-full text-black">
+          <Button type="submit" className="w-full" variant={"secondary"}>
             Login
           </Button>
         </form>
