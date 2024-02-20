@@ -44,30 +44,27 @@ export default function LoginPage() {
       const user = jsonResponse.user;
 
       if (user) {
-        // user exists so return
-        console.log("User already exists");
-        return;
+        // user exists so try to sign in
+        try {
+          const res = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+          });
+
+          if (res && res.error) {
+            console.log("Invalid Credentials");
+            setErrorMessage("Invalid Credentials");
+            return;
+          }
+          router.push("/");
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         setErrorMessage("Account Doesn't Exist");
         return;
       }
-    } catch (error) {
-      console.log(error);
-    }
-
-    try {
-      const res = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (res && res.error) {
-        console.log("Invalid Credentials");
-        setErrorMessage("Invalid Credentials");
-        return;
-      }
-      router.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +86,10 @@ export default function LoginPage() {
               <Input
                 id="name"
                 placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setErrorMessage("");
+                }}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
