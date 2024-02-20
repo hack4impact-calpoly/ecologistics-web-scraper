@@ -48,7 +48,19 @@ function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
+    <div
+      className="flex flex-col items-center justify-center text-center gap-4 mx-auto py-10"
+      style={{ maxWidth: "450px" }}
+    >
+      <div className="bg-gray-200 mx-auto py-10">
+        <div className="font-bold">
+          <h1>Ecologistics Proposal Table</h1>
+        </div>
+        <p>
+          Development Project Approval Milestones that Trigger Document
+          Publication in Local/State Systems
+        </p>
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
