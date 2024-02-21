@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -47,6 +47,16 @@ function DataTable<TData, TValue>({
     },
   });
 
+  const tableRef = useRef(null);
+  const [tableWidth, setTableWidth] = useState(null);
+
+  useEffect(() => {
+    if (tableRef.current) {
+      const width = tableRef.current.offsetWidth;
+      setTableWidth(width);
+    }
+  }, []);
+
   return (
     <div
       className="flex flex-col items-center justify-center text-center gap-4 mx-auto py-10"
@@ -61,7 +71,7 @@ function DataTable<TData, TValue>({
           Publication in Local/State Systems
         </p>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border" ref={tableRef}>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
