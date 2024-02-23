@@ -119,7 +119,7 @@ export default function LoginPage() {
               <AlertDescription>{errorMessage}</AlertDescription>
             </Alert>
           )}
-          <Button type="submit" className="w-full text-black">
+          <Button type="submit" className="w-full" variant={"secondary"}>
             Login
           </Button>
         </form>

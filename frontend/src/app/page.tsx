@@ -4,8 +4,18 @@ import { useSession } from "next-auth/react";
 export default async function Home() {
   return (
     <main>
-      <h1>Home</h1>
-      <ProposalTable />
+      <div className="w-full">
+        <div className="flex flex-col items-center justify-center bg-gray-200 mx-20 py-3 px-3">
+          <div className="font-bold">
+            <h1>Ecologistics Proposal Table</h1>
+          </div>
+          <p>
+            Development Project Approval Milestones that Trigger Document
+            Publication in Local/State Systems
+          </p>
+        </div>
+        <ProposalTable />
+      </div>
     </main>
   );
 }

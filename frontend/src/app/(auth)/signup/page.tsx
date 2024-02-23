@@ -116,7 +116,7 @@ export default function SignUpPage() {
       </CardContent>
       <CardFooter className="flex flex-col items-center space-y-2">
         {/* <Button variant="outline">Cancel</Button> */}
-        <Button onClick={handleSignUp} className="w-full">
+        <Button onClick={handleSignUp} className="w-full" variant={"secondary"}>
           Sign Up
         </Button>
         <Link href="/login" className="text-xs hover:text-gray-300">
