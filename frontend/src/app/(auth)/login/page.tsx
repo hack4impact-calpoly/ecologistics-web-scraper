@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useState } from "react";
+import { FormEvent, SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,12 +13,15 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
 
   // const router = useRouter();
 
@@ -28,25 +31,43 @@ export default function LoginPage() {
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
-      const res = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      const resUserExists = await fetch("api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
       });
 
-      if (res && res.error) {
-        console.log("Invalid Credentials");
+      const jsonResponse = await resUserExists.json();
+      const user = jsonResponse.user;
+
+      if (user) {
+        // user exists so try to sign in
+        try {
+          const res = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+          });
+
+          if (res && res.error) {
+            console.log("Invalid Credentials");
+            setErrorMessage("Invalid Credentials");
+            return;
+          }
+          router.push("/");
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        setErrorMessage("Account Doesn't Exist");
         return;
       }
-      router.push("/");
     } catch (error) {
       console.log(error);
     }
-    // CHANGE THIS TO NAVIGATE TO NEW PAGE
-
-    console.log("Email", email);
   };
 
   return (
@@ -65,7 +86,10 @@ export default function LoginPage() {
               <Input
                 id="name"
                 placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setErrorMessage("");
+                }}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -88,6 +112,13 @@ export default function LoginPage() {
             />
             <Label htmlFor="hidePassword">Show Password</Label>
           </div>
+          {errorMessage && (
+            <Alert variant="destructive">
+              <ExclamationTriangleIcon className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{errorMessage}</AlertDescription>
+            </Alert>
+          )}
           <Button type="submit" className="w-full" variant={"secondary"}>
             Login
           </Button>
