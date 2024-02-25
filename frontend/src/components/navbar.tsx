@@ -29,7 +29,6 @@ export default function Navbar() {
         </div>
         <ul>
           <li className="flex space-x-4">
-            <Link href="/">Home</Link>
             {/* <button onClick={handleSignOut}>Logout</button> */}
             {session ? (
               <button onClick={handleSignOut}>Logout</button>
