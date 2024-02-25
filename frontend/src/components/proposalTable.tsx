@@ -81,80 +81,31 @@ function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <React.Fragment key={row.id}>
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {cell.column.id === "status" && (
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <div>
-                                {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext(),
-                                )}
-                              </div>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                              <DialogHeader>
-                                <DialogTitle>Enter Content Here</DialogTitle>
-                                <DialogDescription>
-                                  Row{" "}
-                                  {table.getRowModel().rows.indexOf(row) + 1}
-                                </DialogDescription>
-                              </DialogHeader>
-                            </DialogContent>
-                          </Dialog>
-                        )}
-                        {cell.column.id === "email" && (
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <div>
-                                {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext(),
-                                )}
-                              </div>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                              <DialogHeader>
-                                <DialogTitle>Enter Content Here</DialogTitle>
-                                <DialogDescription>
-                                  Row{" "}
-                                  {table.getRowModel().rows.indexOf(row) + 1}
-                                </DialogDescription>
-                              </DialogHeader>
-                            </DialogContent>
-                          </Dialog>
-                        )}
-                        {cell.column.id === "amount" && (
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <div>
-                                {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext(),
-                                )}
-                              </div>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                              <DialogHeader>
-                                <DialogTitle>Enter Content Here</DialogTitle>
-                                <DialogDescription>
-                                  Row{" "}
-                                  {table.getRowModel().rows.indexOf(row) + 1}
-                                </DialogDescription>
-                              </DialogHeader>
-                            </DialogContent>
-                          </Dialog>
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </React.Fragment>
+                <Dialog key={row.id}>
+                  <DialogTrigger asChild>
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[800px] sm:min-h-[400px] sm:max-h-[700px]">
+                    <DialogHeader>
+                      <DialogTitle>Enter Content Here</DialogTitle>
+                      <DialogDescription>
+                        Row {table.getRowModel().rows.indexOf(row) + 1}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
               ))
             ) : (
               <TableRow>
