@@ -1,9 +1,19 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IProposal } from "@/database/proposalSchema";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export const columns: ColumnDef<IProposal>[] = [
   {
@@ -122,4 +132,25 @@ export const columns: ColumnDef<IProposal>[] = [
     },
   },
   */
+  {
+    accessorKey: "moreInfo",
+    header: () => "More Info",
+    cell: ({ row, table }) => (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="ghost">
+            <MoreHorizontal className="h-5 w-5" />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[800px] sm:min-h-[400px] sm:max-h-[700px]">
+          <DialogHeader>
+            <DialogTitle>Enter Content Here</DialogTitle>
+            <DialogDescription>
+              Row {table.getRowModel().rows.indexOf(row) + 1}
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    ),
+  },
 ];
