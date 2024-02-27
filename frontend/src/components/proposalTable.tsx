@@ -22,7 +22,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Payment, columns } from "../lib/tableColumns";
+import { columns } from "../lib/tableColumns";
+import { IProposal } from "@/database/proposalSchema";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -121,143 +122,77 @@ function DataTable<TData, TValue>({
   );
 }
 
-async function getData(): Promise<Payment[]> {
+async function getData(): Promise<IProposal[]> {
   // Fetch data from your API here.
   return [
     {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
+      name: "Cayucos Sanitary District",
+      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
+      date_approved: new Date("2024-01-16"),
+      date_closed: new Date("2024-02-04"),
+      review_status: "not yet under review",
+      flag_status: "no",
+      location: "City of Morro Bay",
+      meeting_date: new Date("2024-02-08"),
+      public_comment_end_date: new Date("2024-02-24"),
     },
     {
-      id: "728ed52g",
-      amount: 110,
-      status: "success",
-      email: "doug@example.com",
+      name: "Buffalo Management Group",
+      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
+      date_approved: new Date("2021-04-14"),
+      date_closed: new Date("2024-01-07"),
+      review_status: "under review",
+      flag_status: "yes",
+      location: "County of San Luis Obispo",
+      meeting_date: new Date("2024-02-07"),
+      public_comment_end_date: new Date("2024-03-27"),
     },
     {
-      id: "728ed52h",
-      amount: 120,
-      status: "failed",
-      email: "pug@example.com",
+      name: "Chimney Rock Road",
+      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1753",
+      date_approved: new Date("2022-07-18"),
+      date_closed: new Date("2023-12-26"),
+      review_status: "reviewed",
+      flag_status: "no",
+      location: "City of Paso Robles",
+      meeting_date: new Date("2024-02-06"),
+      public_comment_end_date: new Date("2024-04-21"),
     },
     {
-      id: "728ed52i",
-      amount: 1275470,
-      status: "failed",
-      email: "rug@example.com",
+      name: "Christie and Cliff Cate",
+      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1717",
+      date_approved: new Date("2023-08-25"),
+      date_closed: new Date("2024-01-01"),
+      review_status: "under review",
+      flag_status: "yes",
+      location: "City of Paso Robles",
+      meeting_date: new Date("2024-02-05"),
+      public_comment_end_date: new Date("2024-04-05"),
     },
     {
-      id: "728ed52j",
-      amount: 1754385,
-      status: "success",
-      email: "jeff@example.com",
+      name: "Green Gate Farms",
+      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1739",
+      date_approved: new Date("2018-09-15"),
+      date_closed: new Date("2024-02-20"),
+      review_status: "reviewed",
+      flag_status: "yes",
+      location: "City of San Luis Obispo",
+      meeting_date: new Date("2024-02-23"),
+      public_comment_end_date: new Date("2024-07-21"),
     },
+    /*
     {
-      id: "728ed52k",
-      amount: 2345,
-      status: "pending",
-      email: "bill@example.com",
+      name: "Green Gate Farms",
+      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1739",
+      date_approved: new Date("2018-09-15").toDateString(),
+      date_closed: new Date("2024-02-20").toDateString(),
+      review_status: "reviewed",
+      flag_status: "yes",
+      location: "City of San Luis Obispo",
+      meeting_date: new Date("2024-02-23").toDateString(),
+      public_comment_end_date: new Date("2024-07-21").toDateString(),
     },
-    {
-      id: "728ed52l",
-      amount: 2385763,
-      status: "failed",
-      email: "mike@example.com",
-    },
-    {
-      id: "728ed52m",
-      amount: 0.00000000012,
-      status: "success",
-      email: "ted@example.com",
-    },
-    {
-      id: "728ed52n",
-      amount: 748383.58,
-      status: "failed",
-      email: "washington@example.com",
-    },
-    {
-      id: "728ed52o",
-      amount: 887,
-      status: "pending",
-      email: "adams@example.com",
-    },
-    {
-      id: "728ed52p",
-      amount: 1234,
-      status: "success",
-      email: "jefferson@example.com",
-    },
-    {
-      id: "728ed52q",
-      amount: 0.0098,
-      status: "failed",
-      email: "maddison@example.com",
-    },
-    {
-      id: "728ed52r",
-      amount: 101,
-      status: "pending",
-      email: "monroe@example.com",
-    },
-    {
-      id: "728ed52s",
-      amount: 1200000000000,
-      status: "failed",
-      email: "adams@example.com",
-    },
-    {
-      id: "728ed52t",
-      amount: 150,
-      status: "success",
-      email: "jacksong@example.com",
-    },
-    {
-      id: "728ed52u",
-      amount: 180,
-      status: "failed",
-      email: "van-buron@example.com",
-    },
-    {
-      id: "728ed52v",
-      amount: 122345,
-      status: "failed",
-      email: "ngl-idk-the-rest@example.com",
-    },
-    {
-      id: "728ed52w",
-      amount: 85432782345,
-      status: "failed",
-      email: "bill-clinton@example.com",
-    },
-    {
-      id: "728ed52x",
-      amount: 2092345,
-      status: "failed",
-      email: "bush@example.com",
-    },
-    {
-      id: "728ed52y",
-      amount: 12023452,
-      status: "success",
-      email: "obunga@example.com",
-    },
-    {
-      id: "728ed52z",
-      amount: 1202345,
-      status: "pending",
-      email: "donnyT@example.com",
-    },
-    {
-      id: "728ed53a",
-      amount: 1235420,
-      status: "success",
-      email: "joeyB@example.com",
-    },
-
-    // ...
+    */
   ];
 }
 

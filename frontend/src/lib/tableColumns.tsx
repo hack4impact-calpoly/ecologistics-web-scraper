@@ -1,17 +1,10 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { IProposal } from "@/database/proposalSchema";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
 import {
   Dialog,
   DialogContent,
@@ -22,11 +15,94 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<IProposal>[] = [
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
+  {
+    accessorKey: "link",
+    header: "Link",
+  },
+  {
+    accessorKey: "date_approved",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date Approved
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "date_closed",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date Closed
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "review_status",
+    header: "Review Status",
+  },
+  {
+    accessorKey: "flag_status",
+    header: "Flag Status",
+  },
+  {
+    accessorKey: "location",
+    header: "Location",
+  },
+  {
+    accessorKey: "meeting_date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date Public Meeting Held
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "public_comment_end_date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date Public Comment Ends
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  /*
   {
     accessorKey: "email",
     header: ({ column }) => {
@@ -55,6 +131,7 @@ export const columns: ColumnDef<Payment>[] = [
       );
     },
   },
+  */
   {
     accessorKey: "moreInfo",
     header: () => "More Info",
