@@ -8,6 +8,8 @@ def scrape_hearings():
 
     soup = BeautifulSoup(response.content, "html.parser")
     table = soup.find("table", class_="listingTable")
+    
+    detail_links = []
 
     # Check if the table is found
     if table:
@@ -16,7 +18,6 @@ def scrape_hearings():
             'td', class_='listItem', headers='ItemDocumentsUpcoming')
 
         # Extract the href attribute from each <a> tag
-        detail_links = []
         for link in item_detail_links:
             a_tag = link.find('a')
             if a_tag:
@@ -28,7 +29,7 @@ def scrape_hearings():
     else:
         print("Table not found or empty.")
 
-    return
+    return detail_links
 
 
 scrape_hearings()
