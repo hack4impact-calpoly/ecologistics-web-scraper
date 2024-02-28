@@ -1,19 +1,31 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { ProposalTable } from "../components/proposalTable";
+import { useSession } from "next-auth/react";
 
-export default function Home() {
+export default async function Home() {
   const handleScrape = () => {
     // CHANGE THIS TO NAVIGATE TO NEW PAGE
     console.log("change to scrape");
   };
   return (
     <main>
-      <h1>Home</h1>
-      <div>The button below will being scraping information from the site.</div>
-      <div className="flex justify-center h-screen">
-        <Button variant="outline" onClick={handleScrape}>
-          Begin Webscraping
-        </Button>
+      <div className="w-full">
+        <div className="flex flex-col items-center justify-center bg-gray-200 mx-20 py-3 px-3">
+          <div className="font-bold">
+            <h1>Ecologistics Proposal Table</h1>
+          </div>
+          <div className="flex justify-center h-screen">
+            <Button variant="outline" onClick={handleScrape}>
+              Begin Webscraping
+            </Button>
+          </div>
+          <p>
+            Development Project Approval Milestones that Trigger Document
+            Publication in Local/State Systems
+          </p>
+        </div>
+        <ProposalTable />
       </div>
     </main>
   );
