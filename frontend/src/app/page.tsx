@@ -15,7 +15,7 @@ export default async function Home() {
           <div className="font-bold">
             <h1>Ecologistics Proposal Table</h1>
           </div>
-          <div className="flex justify-center h-screen">
+          <div className="flex justify-center py-5">
             <Button variant="outline" onClick={handleScrape}>
               Begin Webscraping
             </Button>
