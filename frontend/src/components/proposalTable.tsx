@@ -1,7 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination";
 
 import {
   ColumnDef,
@@ -34,7 +49,13 @@ function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+
+  useEffect(() => {
+    console.log(pageSize);
+  }, [pageSize]);
 
   const table = useReactTable({
     data,
@@ -43,10 +64,19 @@ function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    manualPagination: true, // Enable manual pagination
     state: {
       sorting,
+      pagination: { pageIndex, pageSize },
     },
   });
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    console.log("New page size:", newPageSize);
+    setPageSize(newPageSize);
+  };
+
+  const rowsPerPageOptions = [1, 5, 10, 20, 50, 100];
 
   return (
     <div>
@@ -101,22 +131,78 @@ function DataTable<TData, TValue>({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+        <Pagination>
+          <PaginationContent>
+            Rows Per Page {"\t"}
+            <PaginationItem>
+              <Select>
+                <SelectTrigger>{pageSize}</SelectTrigger>
+                <SelectContent>
+                  {rowsPerPageOptions.map((rowNumber) => (
+                    <SelectItem
+                      value={rowNumber.toString()}
+                      key={rowNumber.toString()}
+                      onClick={() => {
+                        table.setPageSize(rowNumber);
+                        setPageSize(rowNumber);
+                      }}
+                    >
+                      <PaginationLink
+                        onClick={() => {
+                          table.setPageSize(rowNumber);
+                          setPageSize(rowNumber);
+                        }}
+                      >
+                        {rowNumber}
+                      </PaginationLink>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                onClick={
+                  table.getCanNextPage() ? () => table.firstPage() : undefined
+                }
+              >
+                &lt;&lt;
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                onClick={
+                  table.getCanNextPage()
+                    ? () => table.previousPage()
+                    : undefined
+                }
+              >
+                &lt;
+              </PaginationLink>
+            </PaginationItem>
+            <div>
+              Page {pageIndex} of {table.getPageCount()}
+            </div>
+            <PaginationItem>
+              <PaginationLink
+                onClick={
+                  table.getCanNextPage() ? () => table.nextPage() : undefined
+                }
+              >
+                &gt;
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                onClick={
+                  table.getCanNextPage() ? () => table.lastPage() : undefined
+                }
+              >
+                &gt;&gt;
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
