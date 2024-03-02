@@ -12,11 +12,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
 
@@ -24,9 +27,28 @@ export default function SignUpPage() {
     setPasswordShown(!passwordShown);
   };
 
+  const handlePasswordChange = () => {
+    // Clear the error message when the user starts typing their password again
+    if (errorMessage) {
+      setErrorMessage("");
+    }
+  };
+
   const handleSignUp = async () => {
     // CHANGE THIS TO NAVIGATE TO NEW PAGE
     console.log("Email", email);
+
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      console.log(
+        "Password must be at least 8 characters long and contain a number",
+      );
+      setErrorMessage(
+        "Password must be at least 8 characters long and contain a number",
+      );
+      return;
+    }
     try {
       const resUserExists = await fetch("api/userExists", {
         method: "POST",
@@ -85,7 +107,10 @@ export default function SignUpPage() {
                 // text = show password, password = no show password
                 type={passwordShown ? "text" : "password"}
                 placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  handlePasswordChange();
+                }}
               />
               <span className="text-xs text-gray-500">
                 Password must be at least 8 characters long and contain a
@@ -114,6 +139,13 @@ export default function SignUpPage() {
           <Label htmlFor="hidePassword">Show Password</Label>
         </div>
       </CardContent>
+      {errorMessage && (
+        <Alert variant="destructive">
+          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{errorMessage}</AlertDescription>
+        </Alert>
+      )}
       <CardFooter className="flex flex-col items-center space-y-2">
         {/* <Button variant="outline">Cancel</Button> */}
         <Button onClick={handleSignUp} className="w-full" variant={"secondary"}>
