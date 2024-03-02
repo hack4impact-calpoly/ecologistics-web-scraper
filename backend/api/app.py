@@ -2,6 +2,7 @@ from chalice import Chalice
 import mongodb
 from dotenv import load_dotenv
 from routes.slo_county import slo_county_blueprint
+from routes.example import example_blueprint
 
 
 # Load .env file
@@ -9,6 +10,7 @@ load_dotenv()
 
 app = Chalice(app_name="api")
 app.register_blueprint(slo_county_blueprint)
+app.register_blueprint(example_blueprint)
 
 client = mongodb.get_mongo_client()
 
@@ -49,12 +51,3 @@ def create_user():
 
     except Exception as e:
         print(f"Failed to post: {e}")
-
-
-# Here are a few more examples:
-#
-# @app.route('/hello/{name}')
-# def hello_name(name):
-#    # '/hello/james' -> {"hello": "james"}
-#    return {'hello': name}
-#

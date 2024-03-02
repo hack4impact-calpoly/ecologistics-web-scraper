@@ -29,6 +29,9 @@ deploy-to-aws:
 undeploy-from-aws:
 	cd api && poetry run chalice delete
 
+test-all:
+	python -m unittest discover -s api/tests/example
+
 # Display help with a list of available targets and their descriptions
 help:
 	@echo "Available targets:"
