@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -67,13 +66,17 @@ function DataTable<TData, TValue>({
     manualPagination: true, // Enable manual pagination
     state: {
       sorting,
-      pagination: { pageIndex, pageSize },
+      pagination: {
+        pageIndex,
+        pageSize, // Pass the current page size to the pagination state
+      },
     },
   });
 
   const handlePageSizeChange = (newPageSize: number) => {
     console.log("New page size:", newPageSize);
     setPageSize(newPageSize);
+    setPageIndex(0); // Reset page index when page size changes
   };
 
   const rowsPerPageOptions = [1, 5, 10, 20, 50, 100];
@@ -145,16 +148,10 @@ function DataTable<TData, TValue>({
                       onClick={() => {
                         table.setPageSize(rowNumber);
                         setPageSize(rowNumber);
+                        setPageIndex(0); // Reset page index when page size changes
                       }}
                     >
-                      <PaginationLink
-                        onClick={() => {
-                          table.setPageSize(rowNumber);
-                          setPageSize(rowNumber);
-                        }}
-                      >
-                        {rowNumber}
-                      </PaginationLink>
+                      <PaginationLink>{rowNumber}</PaginationLink>
                     </SelectItem>
                   ))}
                 </SelectContent>
