@@ -1,13 +1,9 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { ProposalTable } from "../components/proposalTable";
+import ScrapeButton from "../components/scrapeButton";
 import { useSession } from "next-auth/react";
 
-export default async function Home() {
-  const handleScrape = () => {
-    // CHANGE THIS TO NAVIGATE TO NEW PAGE
-    console.log("change to scrape");
-  };
+export default function Home() {
   return (
     <main>
       <div className="w-full">
@@ -16,9 +12,7 @@ export default async function Home() {
             <h1>Ecologistics Proposal Table</h1>
           </div>
           <div className="flex justify-center py-5">
-            <Button variant="outline" onClick={handleScrape}>
-              Begin Webscraping
-            </Button>
+            <ScrapeButton />
           </div>
           <p>
             Development Project Approval Milestones that Trigger Document
