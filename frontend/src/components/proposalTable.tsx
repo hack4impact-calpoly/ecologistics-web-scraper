@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 import {
   Select,
@@ -136,7 +137,7 @@ function DataTable<TData, TValue>({
       <div className="flex items-center justify-end space-x-2 py-4">
         <Pagination>
           <PaginationContent>
-            Rows Per Page {"\t"}
+            Rows Per Page &nbsp;
             <PaginationItem>
               <Select
                 value={`${table.getState().pagination.pageSize}`}
@@ -164,42 +165,68 @@ function DataTable<TData, TValue>({
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                onClick={
-                  table.getCanNextPage() ? () => table.firstPage() : undefined
-                }
+                onClick={() => {
+                  if (table.getCanPreviousPage()) {
+                    table.firstPage();
+                    setPageIndex(0);
+                  }
+                }}
               >
                 &lt;&lt;
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                onClick={
-                  table.getCanNextPage()
-                    ? () => table.previousPage()
-                    : undefined
-                }
+                onClick={() => {
+                  if (table.getCanPreviousPage()) {
+                    table.previousPage();
+                    setPageIndex(pageIndex - 1);
+                  }
+                }}
               >
                 &lt;
               </PaginationLink>
             </PaginationItem>
-            <div>
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
-            </div>
+            <PaginationItem style={{ display: "flex", alignItems: "center" }}>
+              Page &nbsp;
+              <Input
+                type="number"
+                value={table.getState().pagination.pageIndex + 1} // Adding 1 because page index is 0-based
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  const pageNumber = parseInt(event.target.value, 10);
+                  if (
+                    !isNaN(pageNumber) &&
+                    pageNumber >= 1 &&
+                    pageNumber <= table.getPageCount()
+                  ) {
+                    setPageIndex(pageNumber - 1); // Subtracting 1 to get the 0-based index
+                  }
+                }}
+                inputMode="numeric"
+                className="h-8 w-[50px] [&::-webkit-inner-spin-button]:appearance-none"
+              />
+              &nbsp; of {table.getPageCount()}
+            </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                onClick={
-                  table.getCanNextPage() ? () => table.nextPage() : undefined
-                }
+                onClick={() => {
+                  if (table.getCanNextPage()) {
+                    table.nextPage();
+                    setPageIndex(pageIndex + 1);
+                  }
+                }}
               >
                 &gt;
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                onClick={
-                  table.getCanNextPage() ? () => table.lastPage() : undefined
-                }
+                onClick={() => {
+                  if (table.getCanNextPage()) {
+                    table.lastPage();
+                    setPageIndex(table.getPageCount() - 1);
+                  }
+                }}
               >
                 &gt;&gt;
               </PaginationLink>
