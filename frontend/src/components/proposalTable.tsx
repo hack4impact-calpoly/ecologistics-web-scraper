@@ -63,7 +63,7 @@ function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    manualPagination: true, // Enable manual pagination
+    manualPagination: false, // Enable manual pagination
     state: {
       sorting,
       pagination: {
@@ -73,7 +73,7 @@ function DataTable<TData, TValue>({
     },
   });
 
-  const handlePageSizeChange = (newPageSize: number) => {
+  const handleRowChange = (newPageSize: number) => {
     console.log("New page size:", newPageSize);
     setPageSize(newPageSize);
     setPageIndex(0); // Reset page index when page size changes
@@ -138,20 +138,25 @@ function DataTable<TData, TValue>({
           <PaginationContent>
             Rows Per Page {"\t"}
             <PaginationItem>
-              <Select>
-                <SelectTrigger>{pageSize}</SelectTrigger>
-                <SelectContent>
-                  {rowsPerPageOptions.map((rowNumber) => (
+              <Select
+                value={`${table.getState().pagination.pageSize}`}
+                onValueChange={(value) => {
+                  setPageSize(Number(value));
+                }}
+              >
+                <SelectTrigger className="h-8 w-[70px]">
+                  <SelectValue
+                    placeholder={table.getState().pagination.pageSize}
+                  />
+                </SelectTrigger>
+                <SelectContent side="top">
+                  {[1, 5, 10, 20, 50, 100].map((pageSize) => (
                     <SelectItem
-                      value={rowNumber.toString()}
-                      key={rowNumber.toString()}
-                      onClick={() => {
-                        table.setPageSize(rowNumber);
-                        setPageSize(rowNumber);
-                        setPageIndex(0); // Reset page index when page size changes
-                      }}
+                      key={pageSize}
+                      value={`${pageSize}`}
+                      onClick={() => handleRowChange(pageSize)}
                     >
-                      <PaginationLink>{rowNumber}</PaginationLink>
+                      {pageSize}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -178,7 +183,8 @@ function DataTable<TData, TValue>({
               </PaginationLink>
             </PaginationItem>
             <div>
-              Page {pageIndex} of {table.getPageCount()}
+              Page {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount()}
             </div>
             <PaginationItem>
               <PaginationLink
