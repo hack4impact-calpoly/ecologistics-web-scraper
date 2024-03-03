@@ -79,8 +79,6 @@ function DataTable<TData, TValue>({
     setPageIndex(0); // Reset page index when page size changes
   };
 
-  const rowsPerPageOptions = [1, 5, 10, 20, 50, 100];
-
   return (
     <div>
       <div className="rounded-md border">
@@ -150,7 +148,7 @@ function DataTable<TData, TValue>({
                   />
                 </SelectTrigger>
                 <SelectContent side="top">
-                  {[1, 5, 10, 20, 50, 100].map((pageSize) => (
+                  {[5, 10, 20, 50, 100].map((pageSize) => (
                     <SelectItem
                       key={pageSize}
                       value={`${pageSize}`}
