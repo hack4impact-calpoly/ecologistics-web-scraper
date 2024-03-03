@@ -2,6 +2,8 @@ from chalice import Chalice
 import mongodb
 from dotenv import load_dotenv
 from routes.slo_county import slo_county_blueprint
+from routes.sb_county import sb_county_blueprint
+from routes.monterey_county import monterey_county_blueprint
 from routes.example import example_blueprint
 
 
@@ -10,6 +12,8 @@ load_dotenv()
 
 app = Chalice(app_name="api")
 app.register_blueprint(slo_county_blueprint)
+app.register_blueprint(sb_county_blueprint)
+app.register_blueprint(monterey_county_blueprint)
 app.register_blueprint(example_blueprint)
 
 client = mongodb.get_mongo_client()
