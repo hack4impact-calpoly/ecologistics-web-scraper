@@ -24,7 +24,7 @@ export default function ScrapeButton() {
       variant="outline"
       onClick={handleScrape}
       disabled={loading}
-      style={{ backgroundColor: buttonColor }}
+      style={{ backgroundColor: buttonColor, width: "200px" }}
     >
       {loading ? <FiCommand className="loading-icon" /> : "Begin Webscraping"}
     </Button>
