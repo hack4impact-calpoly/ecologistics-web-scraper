@@ -158,7 +158,7 @@ export default function SignUpPage() {
           <AlertDescription>{errorMessage}</AlertDescription>
         </Alert>
       )}
-      <CardFooter className="flex flex-col items-center space-y-2">
+      <CardFooter className="flex flex-col items-center space-y-2 mt-4">
         {/* <Button variant="outline">Cancel</Button> */}
         <Button onClick={handleSignUp} className="w-full" variant={"secondary"}>
           Sign Up
