@@ -35,10 +35,9 @@ def scrape_hearings():
                     id = date_to_unix(date_string)
                     detail_ids.append(id)
 
-        # Print the extracted links
+        # Print the extracted links and associated meeting ids
         for i, link in enumerate(detail_links):
-            print(link)
-            print(detail_ids[i])
+            print(link, detail_ids[i])
 
     else:
         print("Table not found or empty.")
@@ -54,6 +53,24 @@ def date_to_unix(date: str) -> int:
     date_object = datetime.strptime(date, "%B %d, %Y - %I:%M %p")
     unix_time = time.mktime(date_object.timetuple())
     return int(unix_time)
+
+
+def in_db(id: int) -> bool:
+    '''
+    Given a meeting id, return if the meeting is in the database
+    '''
+    # connect to mongoDB database
+    # loop through all meetings in the mongoDB database
+    #   if the meeting id is stored
+    #       check for equality
+    #   if the date is stored but not the id
+    #       convert date to unixtime/id
+    #       check for equality
+    #   if the link is stored but neither the date nor id are
+    #       scrape the link and grab the date of the meeting
+    #       convert date to unixtime/id
+    #       check for equality
+    pass
 
 
 scrape_hearings()
