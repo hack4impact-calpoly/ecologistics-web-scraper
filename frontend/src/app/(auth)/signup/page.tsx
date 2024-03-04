@@ -27,8 +27,8 @@ export default function SignUpPage() {
     setPasswordShown(!passwordShown);
   };
 
-  const handlePasswordChange = () => {
-    // Clear the error message when the user starts typing their password again
+  const handleInputChange = () => {
+    // Clear error message when user starts typing email or password again
     if (errorMessage) {
       setErrorMessage("");
     }
@@ -38,7 +38,15 @@ export default function SignUpPage() {
     // CHANGE THIS TO NAVIGATE TO NEW PAGE
     console.log("Email", email);
 
+    const emailRegex =
+      /^([\wÀ-︰\/\+!#$%&'*±=?^_`{|}~-]+(\.[\wÀ-︰\/\+!#$%&'*±=?^_`{|}~-]+)*)@([A-Za-z-]+)\.([a-z]+)([\.a-z]+)?$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!emailRegex.test(email)) {
+      console.log("Enter a valid email address");
+      setErrorMessage("Enter a valid email address");
+      return;
+    }
 
     if (!passwordRegex.test(password)) {
       console.log(
@@ -49,6 +57,7 @@ export default function SignUpPage() {
       );
       return;
     }
+
     try {
       const resUserExists = await fetch("api/userExists", {
         method: "POST",
@@ -97,7 +106,10 @@ export default function SignUpPage() {
               <Input
                 id="name"
                 placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  handleInputChange();
+                }}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -109,7 +121,7 @@ export default function SignUpPage() {
                 placeholder="Password"
                 onChange={(e) => {
                   setPassword(e.target.value);
-                  handlePasswordChange();
+                  handleInputChange();
                 }}
               />
               <span className="text-xs text-gray-500">
@@ -146,7 +158,7 @@ export default function SignUpPage() {
           <AlertDescription>{errorMessage}</AlertDescription>
         </Alert>
       )}
-      <CardFooter className="flex flex-col items-center space-y-2">
+      <CardFooter className="flex flex-col items-center space-y-2 mt-4">
         {/* <Button variant="outline">Cancel</Button> */}
         <Button onClick={handleSignUp} className="w-full" variant={"secondary"}>
           Sign Up
