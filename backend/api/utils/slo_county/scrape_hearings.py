@@ -30,6 +30,7 @@ def scrape_hearings():
                     detail_links.append(a_tag['href'])
 
                     # Generate unique ID based on time of event
+                    # Assumes 2 meetings cannot have the same date and time
                     date = event.find('td', class_='listItem', headers='Date')
                     date_string = date.get_text(strip=True)
                     id = date_to_unix(date_string)
