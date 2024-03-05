@@ -31,5 +31,6 @@ def scrape_hearings():
 
     return detail_links
 
-
-scrape_hearings()
+# commented out below line to prevent test_scrape_hearings() from calling
+# scrape_hearings()'s requests.get(url) function which hits the actual website
+#scrape_hearings()
