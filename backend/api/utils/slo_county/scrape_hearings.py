@@ -73,5 +73,6 @@ def in_db(id: int) -> bool:
     #       check for equality
     pass
 
-
-scrape_hearings()
+# commented out below line to prevent test_scrape_hearings() from calling
+# scrape_hearings()'s requests.get(url) function which hits the actual website
+#scrape_hearings()
