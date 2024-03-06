@@ -23,18 +23,21 @@ export default function Navbar() {
           <div className="text-primary text-3xl">GISTICS Web Scraper</div>
         </Link>
       </div>
-      <div className="text-center  text-primary">
-        <h3>Welcome {user}</h3>
-      </div>
-      <ul>
-        <li className="flex space-x-4">
+      <div className="flex flex-row gap-10">
+        {/* <div className="text-center  text-primary">
+          <h3>Signed in as {user}</h3>
+        </div> */}
+        <div>
+          <Link href="/about">About</Link>
+        </div>
+        <div>
           {session ? (
             <button onClick={handleSignOut}>Logout</button>
           ) : (
             <Link href="/login">Login</Link>
           )}
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   );
 }
