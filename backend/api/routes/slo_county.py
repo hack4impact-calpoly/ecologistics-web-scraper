@@ -12,7 +12,7 @@ def hello_world():
     return {"message": "Hello World!"}
 
 
-@slo_county_blueprint.route("/slo_county/hearings")
+@slo_county_blueprint.route("/slo_county/hearings", cors=True)
 def get_hearings():
     hearings = scrape_hearings()
     return {"current hearings": hearings}  # returns list of URLS, remove later
