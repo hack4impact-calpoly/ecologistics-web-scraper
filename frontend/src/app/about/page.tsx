@@ -4,8 +4,12 @@ export default function About() {
       <div className="w-full">
         <div className="flex flex-col items-center justify-center py-3 py-3">
           <div
-            className="bg-gray-200 mb-3"
-            style={{ fontSize: "250%", fontWeight: "bold" }}
+            className="mb-3 w-full text-center p-4 "
+            style={{
+              backgroundColor: "#dfece5",
+              fontSize: "250%",
+              fontWeight: "bold",
+            }}
           >
             <h1>About Ecologistics</h1>
           </div>
