@@ -1,26 +1,26 @@
-"use client";
 import { ProposalTable } from "../components/proposalTable";
 import ScrapeButton from "../components/scrapeButton";
 import { useSession } from "next-auth/react";
 
 export default function Home() {
   return (
-    <main>
-      <div className="w-full">
-        <div className="flex flex-col items-center justify-center bg-gray-200 mx-20 py-3 px-3">
-          <div className="font-bold">
-            <h1>Ecologistics Proposal Table</h1>
-          </div>
-          <div className="flex justify-center py-5">
-            <ScrapeButton />
-          </div>
-          <p>
-            Development Project Approval Milestones that Trigger Document
-            Publication in Local/State Systems
-          </p>
+    <div className="flex flex-col w-ful gap-5">
+      <div className="flex flex-col items-center justify-center bg-primary-foreground py-3 px-40 rounded-lg gap-3">
+        <h1 className="text-3xl font-bold">Public Hearings Table</h1>
+        <p className="text-center">
+          This table compiles projects extracted via web scraping from a
+          county-wide scheduling website, specifically tracking the date a given
+          project will be discussed in an upcoming public hearing. It includes
+          fields for the project name, county file number, location, hearing
+          date, and State Clearing House Number (if applicable).
+        </p>
+      </div>
+      <div>
+        <div className="flex justify-center">
+          <ScrapeButton />
         </div>
         <ProposalTable />
       </div>
-    </main>
+    </div>
   );
 }
