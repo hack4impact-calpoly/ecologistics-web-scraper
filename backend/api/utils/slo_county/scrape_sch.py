@@ -1,10 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
+from chalice import Chalice
 
 def scrape_sch():
+    app = Chalice(app_name="ecologistics-web-scraper")
+
     url = "https://ceqanet.opr.ca.gov/Search?LeadAgency=San+Luis+Obispo+County&County=San+Luis+Obispo"
     response = requests.get(url)
-
+    
     soup = BeautifulSoup(response.content, "html.parser")
     projects_table = soup.find("table", class_="table table-striped")
     
@@ -21,29 +24,26 @@ def scrape_sch():
 
             # Get the title 
             title = project.find("td", itemprop="name")
-
             # Extract the title itself from title element
             # assume each project has an associated title
             if title: title_text = title.text.strip()
-            else: 
-                title_text = None
-                print("Project has no title \n", project)
             
             # Get the SCH link (which is in the first data cell)
             a_tag = td_tags[0].find("a", class_="btn btn-info")
-
             # Extract the href attribute from link element (<a>)
-            if a_tag: link = a_tag.get('href')
-            else: 
-                link = None
-                print("Project has no SCH link \n", project)
+            # Return the absolute link
+            if a_tag: link = "https://ceqanet.opr.ca.gov" + a_tag.get('href')
             
-            if a_tag and title:
-                project_data[title_text] = link
+            try: 
+              # If title and/or a_tag don't exist, then raise an error
+              # Else add the title and corresponding SCH link to project_data dictionary
+              project_data[title_text] = link
+            except Exception as e:
+                app.log.error(f"The title and/or SCH number don't exist {e}")
+                return {"error": "The title and/or SCH number don't exist"}, 404
     else:
         print("Table not found or empty.")
 
     return project_data
 
 data = scrape_sch()
-print(data)
