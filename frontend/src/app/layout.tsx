@@ -5,6 +5,7 @@ import { Inter as FontSans } from "next/font/google";
 import "@/styles/globals.css";
 
 import { cn } from "@/lib/utils";
+import AuthProvider from "@/Providers";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,9 +31,11 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Navbar />
-        <div className="flex-1 px-10 py-5">{children}</div>
-        <Footer />
+        <AuthProvider>
+          <Navbar />
+          <div className="flex-1 px-20 py-5">{children}</div>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer base {
   :root {
@@ -13,10 +13,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 25.1 86.6 56.1%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 25.1 86.6% 56.1%;
+    --primary-foreground: 7 0% 93%;
 
-    --secondary: 147.3 24.1 49.9%;
+    --secondary: 147.3 24.1% 49.9%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
@@ -72,5 +72,20 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.loading-icon {
+  color: green;
+  font-size: 1.5rem;
+  animation: animate 2s infinite;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(720deg);
   }
 }

@@ -11,19 +11,83 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const router = useRouter();
 
   const togglePasswordShown = () => {
     setPasswordShown(!passwordShown);
   };
 
-  const handleSignUp = () => {
+  const handleInputChange = () => {
+    // Clear error message when user starts typing email or password again
+    if (errorMessage) {
+      setErrorMessage("");
+    }
+  };
+
+  const handleSignUp = async () => {
     // CHANGE THIS TO NAVIGATE TO NEW PAGE
     console.log("Email", email);
+
+    const emailRegex =
+      /^([\wÀ-︰\/\+!#$%&'*±=?^_`{|}~-]+(\.[\wÀ-︰\/\+!#$%&'*±=?^_`{|}~-]+)*)@([A-Za-z-]+)\.([a-z]+)([\.a-z]+)?$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!emailRegex.test(email)) {
+      console.log("Enter a valid email address");
+      setErrorMessage("Enter a valid email address");
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      console.log(
+        "Password must be at least 8 characters long and contain a number",
+      );
+      setErrorMessage(
+        "Password must be at least 8 characters long and contain a number",
+      );
+      return;
+    }
+
+    try {
+      const resUserExists = await fetch("api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const jsonResponse = await resUserExists.json();
+      const user = jsonResponse.user;
+
+      if (user) {
+        // user exists so return
+        console.log("User already exists");
+        return;
+      }
+      // calling the registration api
+      await fetch("api/signUp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      router.push("/login");
+    } catch (error) {
+      console.log("Error during registration:", error);
+    }
   };
 
   return (
@@ -42,7 +106,10 @@ export default function SignUpPage() {
               <Input
                 id="name"
                 placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  handleInputChange();
+                }}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -52,7 +119,10 @@ export default function SignUpPage() {
                 // text = show password, password = no show password
                 type={passwordShown ? "text" : "password"}
                 placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  handleInputChange();
+                }}
               />
               <span className="text-xs text-gray-500">
                 Password must be at least 8 characters long and contain a
@@ -81,9 +151,16 @@ export default function SignUpPage() {
           <Label htmlFor="hidePassword">Show Password</Label>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col items-center space-y-2">
+      {errorMessage && (
+        <Alert variant="destructive">
+          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{errorMessage}</AlertDescription>
+        </Alert>
+      )}
+      <CardFooter className="flex flex-col items-center space-y-2 mt-4">
         {/* <Button variant="outline">Cancel</Button> */}
-        <Button onClick={handleSignUp} className="w-full">
+        <Button onClick={handleSignUp} className="w-full" variant={"secondary"}>
           Sign Up
         </Button>
         <Link href="/login" className="text-xs hover:text-gray-300">
