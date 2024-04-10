@@ -12,7 +12,7 @@ export default function Home() {
           county-wide scheduling website, specifically tracking the date a given
           project will be discussed in an upcoming public hearing. It includes
           fields for the project name, county file number, location, hearing
-          date, and State Clearing House Number (if applicable).
+          date, and State Clearing House Number (if exists).
         </p>
       </div>
       <div>
