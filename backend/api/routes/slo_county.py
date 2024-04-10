@@ -1,3 +1,4 @@
+from utils.slo_county.scrape_sch import scrape_sch
 from chalice import Blueprint
 from utils.slo_county.scrape_hearings import scrape_hearings
 
@@ -15,6 +16,7 @@ def hello_world():
 @slo_county_blueprint.route("/slo_county/hearings", cors=True)
 def get_hearings():
     hearings = scrape_hearings()
+    data = scrape_sch()
     return {"current hearings": hearings}  # returns list of URLS, remove later
 
     # Code for adding the returned URLS to our database
