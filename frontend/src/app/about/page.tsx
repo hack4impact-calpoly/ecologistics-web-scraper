@@ -83,7 +83,7 @@ export default function About() {
               display in table.
             </p>
             <p>
-              <span className="font-bold">Details:</span> Scrape SLO County
+              <span className="font-bold">Details:</span>Scrape SLO County
               meetings calender once a week. For each meeting, scrape the agenda
               and identify agenda items resembling a project hearing. For each
               project, identify the County File Number and cross-reference it in
