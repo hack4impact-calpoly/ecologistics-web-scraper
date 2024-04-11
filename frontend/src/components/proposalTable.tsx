@@ -25,6 +25,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  getFilteredRowModel,
+  ColumnFiltersState,
 } from "@tanstack/react-table";
 
 import {
@@ -51,10 +53,10 @@ function DataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-
-  useEffect(() => {
-    console.log(pageSize);
-  }, [pageSize]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
+  const [columnToFilter, setColumnToFilter] = useState("Link");
 
   const table = useReactTable({
     data,
@@ -63,6 +65,8 @@ function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     manualPagination: false, // Enable manual pagination
     state: {
       sorting,
@@ -70,17 +74,85 @@ function DataTable<TData, TValue>({
         pageIndex,
         pageSize, // Pass the current page size to the pagination state
       },
+      columnFilters,
     },
   });
 
   const handleRowChange = (newPageSize: number) => {
-    console.log("New page size:", newPageSize);
     setPageSize(newPageSize);
     setPageIndex(0); // Reset page index when page size changes
   };
 
   return (
     <div>
+      <div className="flex items-center py-4">
+        <Select
+          value={columnToFilter}
+          onValueChange={(value) => {
+            setColumnToFilter(value);
+          }}
+        >
+          <SelectTrigger className="h-10 w-32 flex justify-start items-center">
+            <SelectValue placeholder={columnToFilter} />
+          </SelectTrigger>
+          <SelectContent side="top">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <React.Fragment key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  const content = header.isPlaceholder
+                    ? null
+                    : typeof header.column.columnDef.header === "function"
+                      ? (() => {
+                          const headerResult = header.column.columnDef.header(
+                            header.getContext(),
+                          );
+                          if (headerResult) {
+                            const props = headerResult.props;
+                            if (
+                              props &&
+                              Array.isArray(props.children) &&
+                              props.children.length > 0 &&
+                              !props.children[0].includes("Date")
+                            ) {
+                              return props.children[0]; // Return the value to make it a valid ReactNode
+                            }
+                          }
+                          return null; // Return null if the condition is not met
+                        })()
+                      : (() => {
+                          const props = header.column.columnDef.header;
+                          if (props && !props.includes("Date")) {
+                            return props; // Return the value to make it a valid ReactNode
+                          }
+                          return null; // Return null if the condition is not met
+                        })();
+
+                  // Filter out null content
+                  return content ? (
+                    <SelectItem
+                      key={header.id}
+                      value={header.column.id}
+                      onClick={() => setColumnToFilter(header.column.id)}
+                    >
+                      {content}
+                    </SelectItem>
+                  ) : null;
+                })}
+              </React.Fragment>
+            ))}
+          </SelectContent>
+        </Select>
+        <Input
+          placeholder={`Filter ${columnToFilter}...`}
+          value={
+            (table.getColumn(columnToFilter)?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn(columnToFilter)?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
