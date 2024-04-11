@@ -10,56 +10,61 @@ def scrape_hearings():
 
     soup = BeautifulSoup(response.content, "html.parser")
     upcoming_events_table = soup.find("table", class_="listingTable")
-    
-    detail_links = []
-    detail_ids = []
+
+    upcoming_hearings = []
 
     # Check if the table is found
     if upcoming_events_table:
         # Find all <tr> tags within the upcoming events table
-        events = upcoming_events_table.find_all('tr', class_='listingRow')
+        events = upcoming_events_table.find_all("tr", class_="listingRow")
 
         for event in events:
-            link = event.find(
-                'td', class_='listItem', headers='ItemDocumentsUpcoming')
+            link = event.find("td", class_="listItem",
+                              headers="ItemDocumentsUpcoming")
 
             if link:
                 # Extract the href attribute from each <a> tag
-                a_tag = link.find('a')
+                a_tag = link.find("a")
                 if a_tag:
-                    detail_links.append(a_tag['href'])
+                    meeting_link = a_tag["href"]
+                    date = event.find("td",
+                                      class_="listItem",
+                                      headers="Date")
+                    date_string = (
+                                    date.get_text(strip=True)
+                                    .replace("\xa0", " ")
+                                    )
 
                     # Generate unique ID based on time of event
-                    # Assumes 2 meetings cannot have the same date and time
-                    date = event.find('td', class_='listItem', headers='Date')
-                    date_string = date.get_text(strip=True)
                     id = date_to_unix(date_string)
-                    detail_ids.append(id)
+                    print(id)
+                    # To do: check if meeting is already in database
+                    # if not, add to database an append to list
+                    # if already in database, continue to next event
 
-        # Print the extracted links and associated meeting ids
-        for i, link in enumerate(detail_links):
-            print(link, detail_ids[i])
-
+                    upcoming_hearings.append(
+                        {"link": meeting_link, "date": date_string}
+                    )
     else:
         print("Table not found or empty.")
 
-    return detail_links
+    return upcoming_hearings
 
 
 def date_to_unix(date: str) -> int:
-    '''
+    """
     Given a date string of format "January 1, 2024 - 9:00 AM",
     return its unix timestamp
-    '''
+    """
     date_object = datetime.strptime(date, "%B %d, %Y - %I:%M %p")
     unix_time = time.mktime(date_object.timetuple())
     return int(unix_time)
 
 
 def in_db(id: int) -> bool:
-    '''
+    """
     Given a meeting id, return if the meeting is in the database
-    '''
+    """
     # connect to mongoDB database
     # loop through all meetings in the mongoDB database
     #   if the meeting id is stored
@@ -72,7 +77,3 @@ def in_db(id: int) -> bool:
     #       convert date to unixtime/id
     #       check for equality
     pass
-
-# commented out below line to prevent test_scrape_hearings() from calling
-# scrape_hearings()'s requests.get(url) function which hits the actual website
-#scrape_hearings()

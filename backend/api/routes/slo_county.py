@@ -2,9 +2,10 @@ from utils.slo_county.scrape_sch import scrape_sch
 from chalice import Blueprint
 from utils.slo_county.scrape_hearings import scrape_hearings
 from utils.slo_county.scrape_agenda import scrape_agenda
+from models.project import Project
+import json
 
 # from mongodb import get_mongo_client
-# import json
 
 slo_county_blueprint = Blueprint(__name__)
 
@@ -17,17 +18,46 @@ def hello_world():
 @slo_county_blueprint.route("/slo_county/hearings", cors=True)
 def get_hearings():
     hearings = scrape_hearings()
-    hearing_agendas = []
-    for hearing_url in hearings:
-        agenda = scrape_agenda(hearing_url)
-        hearing_agendas.append(agenda)      
-        # could switch this to "extend" if we want one list of all agendas.
-        # Currently with "append" we get a list of lists, with 
-        # each list corresponding to the agendas for one hearing
-    
-    data = scrape_sch()
+    projects = []
+    for hearing in hearings:
+        # scrape projects from each hearing
+        hearing_projects = scrape_agenda(hearing["link"])
+        for project in hearing_projects:
+            # create a Project object for each project
+            projects.append(
+                Project(
+                    county_file_number=project["county_file_number"],
+                    hearing_date=hearing["date"],
+                    review_status=None,
+                    location="San Luis Obispo",
+                    apn=project["assessor_parcel_number"],
+                    date_accepted=project["date_accepted"],
+                    requesting_party=project["requesting_party"],
+                    sch_number=None,
+                    title=None,
+                    public_hearing_agenda_link=hearing["link"],
+                    sch_page_link=None,
+                    additional_notes=None,
+                )
+            )
 
-    return {"current hearing agendas": hearing_agendas}  
+    # sch_projects = scrape_sch()
+    # To do: cross-reference projects in sch and fill in missing data
+
+    # TEMPORARY: print out projects for debugging purposes
+    for project in projects:
+        print(project.county_file_number)
+        print(project.apn)
+        print(project.date_accepted)
+        print(project.requesting_party)
+        print(project.public_hearing_agenda_link)
+        print(project.hearing_date)
+
+    # serialize projects to json
+    projects_dict = [project.to_dict() for project in projects]
+    projects_json = json.dumps(projects_dict)
+
+    return {"scraped_projects": projects_json}
 
     # Code for adding the returned URLS to our database
     # Will need to import json, and get_mongo_client
@@ -44,10 +74,3 @@ def get_hearings():
 
     #     except Exception as e:
     #         print(f"Failed to add hearings to DB: {e}")
-
-@slo_county_blueprint.route("/slo_county/atest")
-# this is just to test functionality, can & should be removed
-def test_scrape_agenda():
-    agenda = scrape_agenda("http://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/details/1697")
-    
-    return {"agenda": agenda}

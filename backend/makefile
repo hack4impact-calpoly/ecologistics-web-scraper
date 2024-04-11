@@ -30,7 +30,7 @@ undeploy-from-aws:
 	cd api && poetry run chalice delete
 
 test-all:
-	python -m unittest discover -s api/tests/example
+	python3 -m unittest discover -s api/tests/example api/tests/slo_county
 
 # Display help with a list of available targets and their descriptions
 help:
