@@ -1,3 +1,4 @@
+from utils.slo_county.scrape_sch import scrape_sch
 from chalice import Blueprint
 from utils.slo_county.scrape_hearings import scrape_hearings
 from utils.slo_county.scrape_agenda import scrape_agenda
@@ -13,7 +14,7 @@ def hello_world():
     return {"message": "Hello World!"}
 
 
-@slo_county_blueprint.route("/slo_county/hearings")
+@slo_county_blueprint.route("/slo_county/hearings", cors=True)
 def get_hearings():
     hearings = scrape_hearings()
     hearing_agendas = []
@@ -23,6 +24,8 @@ def get_hearings():
         # could switch this to "extend" if we want one list of all agendas.
         # Currently with "append" we get a list of lists, with 
         # each list corresponding to the agendas for one hearing
+    
+    data = scrape_sch()
 
     return {"current hearing agendas": hearing_agendas}  
 

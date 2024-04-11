@@ -32,6 +32,7 @@ The Ecologistics Web Scraper team consists of {#} Cal Poly students. Over the co
 - [Sharan Krishna](https://www.linkedin.com/in/sharankrishna14/) - Software Developer
 - [Wesley Tam](https://www.linkedin.com/in/wesleyltam/) - Software Developer
 - [Sophia Peckner](https://www.linkedin.com/in/sophia-peckner-2a613a1b0/) - Software Developer
+- [Rob Vermeulen](https://www.linkedin.com/in/robert303v/) - Software Developer
 
 ## Getting Started And Contributing
 
