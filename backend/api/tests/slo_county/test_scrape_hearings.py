@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from api.utils.slo_county.scrape_hearings import scrape_hearings
 
+
 class TestScrapeHearings(unittest.TestCase):
     @patch("requests.get")
     def test_scrape_hearings(self, mock_get):
@@ -16,7 +17,11 @@ class TestScrapeHearings(unittest.TestCase):
         expected_links = scrape_hearings()
 
         # ensure scrape_hearings() returns the correct links
-        self.assertEqual(expected_links, ["https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/details/1698"])
+        self.assertEqual(
+            expected_links,
+            ["https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/details/1698"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

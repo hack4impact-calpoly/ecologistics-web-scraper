@@ -8,7 +8,7 @@ def scrape_hearings():
 
     # soup = BeautifulSoup(response.content, "html.parser")
     # table = soup.find("table", class_="listingTable")
-    
+
     # detail_links = []
 
     # Check if the table is found
