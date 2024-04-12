@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
-. "$(dirname "$0")/_/husky.sh"
-
+cd frontend
 
 # Run lint-staged with the configuration file .lintstagedrc
-npx lint-staged --config ./frontend/.lintstagedrc
+npx lint-staged --config .lintstagedrc
