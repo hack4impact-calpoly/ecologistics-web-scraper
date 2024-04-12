@@ -84,12 +84,11 @@ export default function About() {
             </p>
             <p>
               <span className="font-bold">Details:</span>Scrape SLO County
-              meetings calender once a week. For each meeting, scrape the agenda
-              and identify agenda items resembling a project hearing. For each
-              project, identify the County File Number and cross-reference it in
-              the State Clearing House. If a match is found, identify the
-              project&apos;s unique SCH# and scrape additional information from
-              the projects page.
+              meetings calender once a week. For each hearing, identify each
+              project up for review. For each project, identify the County File
+              Number and cross-reference it in the State Clearing House. If a
+              match is found, identify the project&apos;s unique SCH# and scrape
+              additional information from the projects page.
             </p>
           </CardContent>
         </Card>
