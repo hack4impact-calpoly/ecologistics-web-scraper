@@ -87,7 +87,7 @@ export default function About() {
               meetings calender once a week. For each hearing, identify each
               project up for review. For each project, identify the County File
               Number and other relevant information and cross-reference it in
-              the State Clearing House. If a match is found, identify the
+              the State Clearing House. If a match is found, scrape the
               project&apos;s unique SCH# and scrape additional information from
               the projects page.
             </p>
