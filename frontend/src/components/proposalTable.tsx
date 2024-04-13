@@ -150,7 +150,7 @@ function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn(columnToFilter)?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm ml-2"
         />
       </div>
       <div className="rounded-md border">
