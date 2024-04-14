@@ -6,9 +6,11 @@ from chalice import Chalice
 def scrape_sch():
     app = Chalice(app_name="ecologistics-web-scraper")
 
-    url = ("https://ceqanet.opr.ca.gov/Search?"
-           "LeadAgency=San+Luis+Obispo+County&"
-           "County=San+Luis+Obispo")
+    url = (
+        "https://ceqanet.opr.ca.gov/Search?"
+        "LeadAgency=San+Luis+Obispo+County&"
+        "County=San+Luis+Obispo"
+    )
 
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")

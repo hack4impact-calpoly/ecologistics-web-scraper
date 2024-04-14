@@ -19,21 +19,15 @@ def scrape_hearings():
         events = upcoming_events_table.find_all("tr", class_="listingRow")
 
         for event in events:
-            link = event.find("td", class_="listItem",
-                              headers="ItemDocumentsUpcoming")
+            link = event.find("td", class_="listItem", headers="ItemDocumentsUpcoming")
 
             if link:
                 # Extract the href attribute from each <a> tag
                 a_tag = link.find("a")
                 if a_tag:
                     meeting_link = a_tag["href"]
-                    date = event.find("td",
-                                      class_="listItem",
-                                      headers="Date")
-                    date_string = (
-                                    date.get_text(strip=True)
-                                    .replace("\xa0", " ")
-                                    )
+                    date = event.find("td", class_="listItem", headers="Date")
+                    date_string = date.get_text(strip=True).replace("\xa0", " ")
 
                     # Generate unique ID based on time of event
                     id = date_to_unix(date_string)
