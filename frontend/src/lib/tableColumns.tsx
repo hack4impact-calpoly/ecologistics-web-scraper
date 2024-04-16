@@ -17,46 +17,28 @@ import {
 
 export const columns: ColumnDef<IProposal>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "county_file_number",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          County File Number
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "link",
-    header: "Link",
-  },
-  {
-    accessorKey: "date_approved",
+    accessorKey: "hearing_date",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Approved
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "date_closed",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Date Closed
+          Hearing Date
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -67,40 +49,34 @@ export const columns: ColumnDef<IProposal>[] = [
     header: "Review Status",
   },
   {
-    accessorKey: "flag_status",
-    header: "Flag Status",
-  },
-  {
     accessorKey: "location",
     header: "Location",
   },
   {
-    accessorKey: "meeting_date",
+    accessorKey: "apn",
+    header: "APN",
+  },
+  {
+    accessorKey: "date_accepted",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Public Meeting Held
+          Date Accepted
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "public_comment_end_date",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Date Public Comment Ends
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    accessorKey: "requesting_party",
+    header: "Requesting Party",
+  },
+  {
+    accessorKey: "sch_number",
+    header: "SCH Number",
   },
   /*
   {
