@@ -54,7 +54,7 @@ function DataTable<TData, TValue>({
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [columnToFilter, setColumnToFilter] = useState("Link");
 
@@ -104,7 +104,7 @@ function DataTable<TData, TValue>({
                     : typeof header.column.columnDef.header === "function"
                       ? (() => {
                           const headerResult = header.column.columnDef.header(
-                            header.getContext()
+                            header.getContext(),
                           );
                           if (headerResult) {
                             const props = headerResult.props;
@@ -165,7 +165,7 @@ function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -184,7 +184,7 @@ function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
