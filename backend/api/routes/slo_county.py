@@ -1,11 +1,21 @@
-from utils.slo_county.scrape_sch import scrape_sch
-from chalice import Blueprint
-from utils.slo_county.scrape_hearings import scrape_hearings
-from utils.slo_county.scrape_agenda import scrape_agenda
-from models.project import Project
 import json
+from chalice import Blueprint
 
-# from mongodb import get_mongo_client
+import sys
+from pathlib import Path
+
+# in the api directory run
+# >> python3 routes/slo_county.py
+# this is so that we can import local modules by adding
+# "direct/path/to/ecologistics-web-scraper/backend" to sys.path
+path_root = Path(__file__).parents[2]
+sys.path.append(str(path_root))
+
+from api.utils.slo_county.scrape_hearings import scrape_hearings
+from api.utils.slo_county.scrape_agenda import scrape_agenda
+from api.utils.slo_county.scrape_sch import scrape_sch
+from api.models.project import Project
+from api.mongodb import get_mongo_client
 
 slo_county_blueprint = Blueprint(__name__)
 
@@ -56,21 +66,24 @@ def get_hearings():
     # serialize projects to json
     projects_dict = [project.to_dict() for project in projects]
     projects_json = json.dumps(projects_dict)
+    
+    #add_projects_to_mongo(projects_json)
 
     return {"scraped_projects": projects_json}
 
-    # Code for adding the returned URLS to our database
-    # Will need to import json, and get_mongo_client
+def add_projects_to_mongo(projects):
+    client = get_mongo_client()
 
-    # client = get_mongo_client()
+    if client:
+        try:
+            collection = client["test"]["project"]
+            
+            for project in projects:
+                # URL_as_json = json.dumps({"URL": URL})
+                collection.insert_one(project)
 
-    # if client:
-    #     try:
-    #         collection = client["nameOfDB"]["nameOfCollection"]
+        except Exception as e:
+            print(f"Failed to add hearings to DB: {e}")
 
-    #         for URL in hearings:
-    #             URL_as_json = json.dumps({"URL": URL})
-    #             collection.insert_one(URL_as_json)
-
-    #     except Exception as e:
-    #         print(f"Failed to add hearings to DB: {e}")
+if __name__ == '__main__':
+    get_hearings()
