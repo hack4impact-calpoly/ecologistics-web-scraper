@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -22,8 +22,12 @@ export default function LoginPage() {
   const [passwordShown, setPasswordShown] = useState(false);
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
+  const { data: session } = useSession();
 
-  // const router = useRouter();
+  // If signed in, reroute to home page
+  if (session?.user?.email) {
+    router.push("/");
+  }
 
   const togglePasswordShown = () => {
     setPasswordShown(!passwordShown);
