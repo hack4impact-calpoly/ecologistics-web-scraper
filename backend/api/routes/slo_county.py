@@ -51,6 +51,8 @@ def get_hearings():
                 )
             )
 
+    add_projects_to_mongo(projects)
+
     # sch_projects = scrape_sch()
     # To do: cross-reference projects in sch and fill in missing data
 
@@ -66,8 +68,6 @@ def get_hearings():
     # serialize projects to json
     projects_dict = [project.to_dict() for project in projects]
     projects_json = json.dumps(projects_dict)
-    
-    #add_projects_to_mongo(projects_json)
 
     return {"scraped_projects": projects_json}
 
@@ -76,12 +76,13 @@ def add_projects_to_mongo(projects):
 
     if client:
         try:
-            collection = client["test"]["project"]
+            collection = client["test"]["projects"]
+            #collection.drop()
             
             for project in projects:
-                # URL_as_json = json.dumps({"URL": URL})
-                collection.insert_one(project)
-
+                collection.insert_one(project.to_dict())
+                
+            print("Inserted projects into database")
         except Exception as e:
             print(f"Failed to add hearings to DB: {e}")
 
