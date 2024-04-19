@@ -18,26 +18,26 @@ export default function ScrapeButton() {
       const data = await response.json();
       console.log("Current hearings:", data["current hearings"]);
 
-      // scraping endpoint
-      const scrapingResponse = await fetch("http://localhost:8000/scraping");
-      if (!scrapingResponse.ok) {
-        throw new Error("Failed to scrape data");
-      } else {
-        // status code 200
-
-        // re-render
-        window.location.reload();
-      }
-      const scrapingData = await scrapingResponse.json();
-      console.log("Scraping status:", scrapingData.status);
+      // // scraping endpoint
+      //   const scrapingResponse = await fetch("http://localhost:8000/scraping");
+      //   if (!scrapingResponse.ok) {
+      //     throw new Error("Failed to scrape data");
+      //   } else {
+      //     // status code 200
+      //     console.log("/scraping working");
+      //     // re-render
+      //     window.location.reload();
+      //   }
+      //   const scrapingData = await scrapingResponse.json();
+      //   console.log("Scraping status:", scrapingData.status);
     } catch (error) {
       console.error("Error:", error);
     }
 
-    setLoading(false);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+    // setLoading(false);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 3000);
     console.log("change to scrape");
   };
   return (
