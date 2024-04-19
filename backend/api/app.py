@@ -44,16 +44,20 @@ def test_endpoint():
 
 @app.route("/scraping")
 def test_endpoint():
-    db = client["test"]
-    collection = db["users"]
-    doc = collection.find_one()
+    try:
+        db = client["test"]
+        collection = db["users"]
+        doc = collection.find_one()
 
-    if doc is not None:
-        return {
-            "id": str(doc["_id"]),
-            "email": doc["email"],
-            "password": doc["password"],
-        }
+        if doc is not None:
+            return {
+                "id": str(doc["_id"]),
+                "email": doc["email"],
+                "password": doc["password"],
+            }
+        return {"status": "success", "message": "Data scraped successfully"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 # dummy post method
 @app.route("/users", methods=["POST"])
