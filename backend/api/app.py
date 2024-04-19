@@ -42,6 +42,18 @@ def test_endpoint():
             "password": doc["password"],
         }
 
+@app.route("/scraping")
+def test_endpoint():
+    db = client["test"]
+    collection = db["users"]
+    doc = collection.find_one()
+
+    if doc is not None:
+        return {
+            "id": str(doc["_id"]),
+            "email": doc["email"],
+            "password": doc["password"],
+        }
 
 # dummy post method
 @app.route("/users", methods=["POST"])

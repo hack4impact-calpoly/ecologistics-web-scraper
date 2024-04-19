@@ -1,7 +1,6 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { FiCommand } from "react-icons/fi";
 import "@/styles/globals.css";
 
@@ -16,14 +15,26 @@ export default function ScrapeButton() {
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
-
-      // data["current hearings"] stores an array of the links from the hearings route
       const data = await response.json();
       console.log("Current hearings:", data["current hearings"]);
+
+      // scraping endpoint
+      const scrapingResponse = await fetch("http://localhost:8000/scraping");
+      if (!scrapingResponse.ok) {
+        throw new Error("Failed to scrape data");
+      } else {
+        // status code 200
+
+        // re-render
+        window.location.reload();
+      }
+      const scrapingData = await scrapingResponse.json();
+      console.log("Scraping status:", scrapingData.status);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error:", error);
     }
 
+    setLoading(false);
     setTimeout(() => {
       setLoading(false);
     }, 3000);
