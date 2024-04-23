@@ -6,6 +6,7 @@ from api.models.project import Project
 from api.mongodb import get_mongo_client
 import sys
 from pathlib import Path
+
 # from api.utils.slo_county.scrape_sch import scrape_sch
 
 # in the api directory run

@@ -19,8 +19,7 @@ def scrape_hearings():
         events = upcoming_events_table.find_all("tr", class_="listingRow")
 
         for event in events:
-            link = event.find("td", class_="listItem",
-                              headers="ItemDocumentsUpcoming")
+            link = event.find("td", class_="listItem", headers="ItemDocumentsUpcoming")
 
             if link:
                 # Extract the href attribute from each <a> tag

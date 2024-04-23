@@ -20,7 +20,9 @@ class TestScrapeHearings(unittest.TestCase):
         # ensure scrape_hearings() returns the correct links
         self.assertEqual(
             expected_links,
-            ["https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/details/1698"],  # noqa: E501
+            [
+                "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/details/1698"
+            ],  # noqa: E501
         )
 
 
