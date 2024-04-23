@@ -9,9 +9,10 @@ class TestScrapeHearings(unittest.TestCase):
         # mock requests.get() to replace requests.get(url)
         # now the test won't hit the actual website
         mock_response = MagicMock()
-        mock_response.content = b'<html><body><table class="listingTable"><tr><td class="listItem" headers="ItemDocumentsUpcoming"><a href="https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/details/1698">Item Documents</a></td></tr></table></body></html>'
+        mock_response.content = b'<html><body><table class="listingTable"><tr><td class="listItem" headers="ItemDocumentsUpcoming"><a href="https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/details/1698">Item Documents</a></td></tr></table></body></html>'  # noqa: E501
 
-        # setting the return value of requests.get(url) to the predefined value above
+        # setting the return value of requests.get(url) to the
+        # predefined value above
         mock_get.return_value = mock_response
 
         expected_links = scrape_hearings()
@@ -19,7 +20,7 @@ class TestScrapeHearings(unittest.TestCase):
         # ensure scrape_hearings() returns the correct links
         self.assertEqual(
             expected_links,
-            ["https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/details/1698"],
+            ["https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/details/1698"],  # noqa: E501
         )
 
 

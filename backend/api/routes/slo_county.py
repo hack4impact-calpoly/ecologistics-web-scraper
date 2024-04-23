@@ -1,8 +1,12 @@
 import json
 from chalice import Blueprint
-
+from api.utils.slo_county.scrape_hearings import scrape_hearings
+from api.utils.slo_county.scrape_agenda import scrape_agenda
+from api.models.project import Project
+from api.mongodb import get_mongo_client
 import sys
 from pathlib import Path
+# from api.utils.slo_county.scrape_sch import scrape_sch
 
 # in the api directory run
 # >> python3 routes/slo_county.py
@@ -10,12 +14,6 @@ from pathlib import Path
 # "direct/path/to/ecologistics-web-scraper/backend" to sys.path
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
-
-from api.utils.slo_county.scrape_hearings import scrape_hearings
-from api.utils.slo_county.scrape_agenda import scrape_agenda
-from api.utils.slo_county.scrape_sch import scrape_sch
-from api.models.project import Project
-from api.mongodb import get_mongo_client
 
 slo_county_blueprint = Blueprint(__name__)
 
@@ -71,20 +69,22 @@ def get_hearings():
 
     return {"scraped_projects": projects_json}
 
+
 def add_projects_to_mongo(projects):
     client = get_mongo_client()
 
     if client:
         try:
             collection = client["test"]["projects"]
-            #collection.drop()
-            
+            # collection.drop()
+
             for project in projects:
                 collection.insert_one(project.to_dict())
-                
+
             print("Inserted projects into database")
         except Exception as e:
             print(f"Failed to add hearings to DB: {e}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     get_hearings()

@@ -22,18 +22,22 @@ def scrape_agenda(url):
         item_text = content_div.get_text(strip=True)
         if validate_project(item_text):
             # match patterns to extract project data
-            requesting_party_match = re.search(requesting_party_pattern, item_text)
-            county_file_number_match = re.search(county_file_number_pattern, item_text)
+            requesting_party_match = re.search
+            (requesting_party_pattern, item_text)
+            county_file_number_match = re.search
+            (county_file_number_pattern, item_text)
             assessor_parcel_number_match = re.search(
                 assessor_parcel_number_pattern, item_text
             )
             date_accepted_match = re.search(date_accepted_pattern, item_text)
             # extract data if match is found
             requesting_party = (
-                requesting_party_match.group(1) if requesting_party_match else None
+                requesting_party_match.group(1) if
+                requesting_party_match else None
             )
             county_file_number = (
-                county_file_number_match.group(1) if county_file_number_match else None
+                county_file_number_match.group(1) if
+                county_file_number_match else None
             )
             assessor_parcel_number = (
                 assessor_parcel_number_match.group(1)

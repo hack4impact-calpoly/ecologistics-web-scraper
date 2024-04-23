@@ -1,5 +1,5 @@
-import requests
-from bs4 import BeautifulSoup
+# import requests
+# from bs4 import BeautifulSoup
 
 
 def scrape_hearings():
@@ -13,7 +13,8 @@ def scrape_hearings():
 
     # Check if the table is found
     # if table:
-    #     # Find all <a> tags within <td> tags with class "listItem" and headers "ItemDocumentsUpcoming"
+    #     # Find all <a> tags within <td> tags with class "listItem"
+    #       and headers "ItemDocumentsUpcoming"
     #     item_detail_links = table.find_all(
     #         'td', class_='listItem', headers='ItemDocumentsUpcoming')
 
