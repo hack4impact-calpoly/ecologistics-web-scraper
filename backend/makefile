@@ -22,8 +22,11 @@ run-dev:
 	cd api && poetry run chalice local
 
 # Deploy the backend to AWS using chalice
+# Export poetry dependencies to requirements.txt
 deploy-to-aws:
-	cd api && poetry run chalice deploy
+	cd api
+	&& poetry export -f requirements.txt --output requirements.txt --without-hashes
+	&& poetry run chalice deploy
 
 # Undeploy the backend from AWS using chalice
 undeploy-from-aws:
