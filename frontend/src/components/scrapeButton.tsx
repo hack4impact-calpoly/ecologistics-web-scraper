@@ -1,45 +1,36 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { FiCommand } from "react-icons/fi";
 import "@/styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function ScrapeButton() {
   const [loading, setLoading] = useState(false);
 
   const handleScrape = async () => {
     setLoading(true);
-
     try {
       const response = await fetch("http://localhost:8000/slo_county/hearings");
+
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
       const data = await response.json();
       console.log("Current hearings:", data["current hearings"]);
 
-      // // scraping endpoint
-      //   const scrapingResponse = await fetch("http://localhost:8000/scraping");
-      //   if (!scrapingResponse.ok) {
-      //     throw new Error("Failed to scrape data");
-      //   } else {
-      //     // status code 200
-      //     console.log("/scraping working");
-      //     // re-render
-      //     window.location.reload();
-      //   }
-      //   const scrapingData = await scrapingResponse.json();
-      //   console.log("Scraping status:", scrapingData.status);
+      toast.success(data.message);
+      // refresh on success
+      window.location.reload();
     } catch (error) {
-      console.error("Error:", error);
+      toast.error("Error: " + (error as Error).message);
+    } finally {
+      setLoading(false);
     }
-
-    // setLoading(false);
-    // setTimeout(() => {
-    //   setLoading(false);
-    // }, 3000);
-    console.log("change to scrape");
   };
+
   return (
     <Button
       onClick={handleScrape}
