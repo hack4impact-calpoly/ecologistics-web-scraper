@@ -11,11 +11,11 @@ from pathlib import Path
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
 
-from api.utils.slo_county.scrape_hearings import scrape_hearings
-from api.utils.slo_county.scrape_agenda import scrape_agenda
-from api.utils.slo_county.scrape_sch import scrape_sch
-from api.models.project import Project
-from api.mongodb import get_mongo_client
+from chalicelib.utils.slo_county.scrape_hearings import scrape_hearings
+from chalicelib.utils.slo_county.scrape_agenda import scrape_agenda
+from chalicelib.utils.slo_county.scrape_sch import scrape_sch
+from chalicelib.models.project import Project
+from chalicelib.mongodb import get_mongo_client
 
 slo_county_blueprint = Blueprint(__name__)
 
