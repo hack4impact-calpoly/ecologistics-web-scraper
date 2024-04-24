@@ -53,7 +53,7 @@ def get_hearings():
                 )
 
         add_projects_to_mongo(projects)
-        return {"status": "success", "message": "Data scraped + stored!"} 
+        return {"status": "success", "message": "OK"}, 200
     except Exception as e:
         return {"status": "error", "message": f"Failed to process data: {str(e)}"}, 500
 
