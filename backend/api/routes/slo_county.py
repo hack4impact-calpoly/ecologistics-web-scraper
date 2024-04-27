@@ -2,6 +2,7 @@ from utils.slo_county.scrape_sch import scrape_sch
 from chalice import Blueprint
 from utils.slo_county.scrape_hearings import scrape_hearings
 from utils.slo_county.scrape_agenda import scrape_agenda
+from utils.slo_county.update_metadata import update_metadata
 from models.project import Project
 import json
 
@@ -40,6 +41,9 @@ def get_hearings():
                     additional_notes=None,
                 )
             )
+
+    # Update metadata using num of hearings scraped and projects list
+    update_metadata(len(hearings), projects)
 
     # sch_projects = scrape_sch()
     # To do: cross-reference projects in sch and fill in missing data
