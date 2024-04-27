@@ -47,6 +47,11 @@ export default function About() {
     }
   }
 
+  const SCHPercentage =
+    (scraperMetadata.totalSCHProjectsScraped /
+      scraperMetadata.totalProjectsScraped) *
+    100;
+
   return (
     <div className="flex flex-col w-full gap-10">
       <div className="flex flex-col bg-primary-foreground rounded-lg w-full items-center justify-center py-5 px-20 gap-5">
@@ -138,13 +143,10 @@ export default function About() {
           </Card>
           <Card className="flex flex-col justify-between w-[350px] h-[300px]">
             <CardHeader>
-              <CardTitle className="text-center">% Connected to SCH</CardTitle>
+              <CardTitle className="text-center">Connected to SCH</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">
-                {scraperMetadata.totalSCHProjectsScraped /
-                  scraperMetadata.totalProjectsScraped}
-              </h1>
+              <h1 className="text-7xl">{SCHPercentage.toFixed(1)}%</h1>
             </CardContent>
           </Card>
           <Card className="flex flex-col w-[350px] h-[300px]">

@@ -16,7 +16,9 @@ export default function ScrapeButton() {
 
   const fetchMetadata = async () => {
     try {
-      const res = await fetch("api/metadata", { method: "GET" });
+      const res = await fetch("http://localhost:3000/api/metadata", {
+        method: "GET",
+      });
       if (res.ok) {
         const metadata = await res.json();
         setDateRun(metadata.lastRan);

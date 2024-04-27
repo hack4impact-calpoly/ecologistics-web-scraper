@@ -23,9 +23,7 @@ def update_metadata(hearingsScraped: int, scrapedProjects: List[Project]) -> Non
             return
 
         # find new projects by county file num and date
-        print("debug", scrapedProjects)
         for project in scrapedProjects:
-            print("oogabooga", project)
             fileNum = project.county_file_number
             hearingDate = project.hearing_date
             projectMatch = projectsCollection.find_one({'$and': [
