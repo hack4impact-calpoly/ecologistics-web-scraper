@@ -1,5 +1,7 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -13,10 +15,37 @@ const slo_hearings_url =
   "https://www.slocounty.ca.gov/Home/Meetings-Calendar.aspx";
 const ceqa_url = "https://ceqanet.opr.ca.gov/";
 
+const defaultData = {
+  lastRan: "N/A",
+  totalHearingsScraped: 0,
+  totalProjectsScraped: 0,
+  totalSCHProjectsScraped: 0,
+};
+
 export default function About() {
   const handleVisitSite = (url: string) => {
     window.open(url, "_blank");
   };
+
+  const [scraperMetadata, setScraperMetadata] = useState(defaultData); // some default metadata object
+
+  useEffect(() => {
+    fetchMetadata();
+  });
+
+  async function fetchMetadata() {
+    try {
+      const res = await fetch("api/metadata");
+      if (res.ok) {
+        const resAsJSON = await res.json();
+        setScraperMetadata(resAsJSON);
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="flex flex-col w-full gap-10">
@@ -102,7 +131,9 @@ export default function About() {
               <CardTitle className="text-center">Total Projects</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">--</h1>
+              <h1 className="text-7xl">
+                {scraperMetadata.totalProjectsScraped}
+              </h1>
             </CardContent>
           </Card>
           <Card className="flex flex-col justify-between w-[350px] h-[300px]">
@@ -110,7 +141,10 @@ export default function About() {
               <CardTitle className="text-center">% Connected to SCH</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">--</h1>
+              <h1 className="text-7xl">
+                {scraperMetadata.totalSCHProjectsScraped /
+                  scraperMetadata.totalProjectsScraped}
+              </h1>
             </CardContent>
           </Card>
           <Card className="flex flex-col w-[350px] h-[300px]">
@@ -118,7 +152,9 @@ export default function About() {
               <CardTitle className="text-center">Total Hearings</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">--</h1>
+              <h1 className="text-7xl">
+                {scraperMetadata.totalHearingsScraped}
+              </h1>
             </CardContent>
           </Card>
         </div>
