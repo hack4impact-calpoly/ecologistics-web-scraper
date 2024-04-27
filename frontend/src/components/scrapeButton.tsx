@@ -19,7 +19,7 @@ export default function ScrapeButton() {
       const res = await fetch("api/metadata", { method: "GET" });
       if (res.ok) {
         const metadata = await res.json();
-        setDateRun(metadata.date_run);
+        setDateRun(metadata.lastRan);
       } else {
         throw new Error("GET");
       }
@@ -28,28 +28,13 @@ export default function ScrapeButton() {
     }
   };
 
-  const setMetadata = async () => {
-    try {
-      const res = await fetch("api/metadata", { method: "POST" });
-      if (!res.ok) {
-        throw new Error("POST");
-      }
-    } catch (error) {
-      console.error("Failed to update run date", error);
-    }
-  };
-
   const handleScrape = async () => {
     setLoading(true);
-    await setMetadata();
     try {
       const response = await fetch("http://localhost:8000/slo_county/hearings");
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
-
-      // update button's last run time
-      await setMetadata();
 
       // data["current hearings"] stores an array of the links from the hearings route
       const data = await response.json();
