@@ -30,22 +30,10 @@ export default function About() {
   const [scraperMetadata, setScraperMetadata] = useState(defaultData); // some default metadata object
 
   useEffect(() => {
-    fetchMetadata();
-  });
-
-  async function fetchMetadata() {
-    try {
-      const res = await fetch("api/metadata");
-      if (res.ok) {
-        const resAsJSON = await res.json();
-        setScraperMetadata(resAsJSON);
-      } else {
-        throw new Error();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    fetch("api/metadata")
+      .then((res) => res.json())
+      .then((resAsJson) => setScraperMetadata(resAsJson));
+  }, []);
 
   const SCHPercentage =
     (scraperMetadata.totalSCHProjectsScraped /

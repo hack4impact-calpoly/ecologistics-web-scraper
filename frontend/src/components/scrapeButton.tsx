@@ -14,20 +14,10 @@ export default function ScrapeButton() {
     fetchMetadata();
   }, []);
 
-  const fetchMetadata = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/api/metadata", {
-        method: "GET",
-      });
-      if (res.ok) {
-        const metadata = await res.json();
-        setDateRun(metadata.lastRan);
-      } else {
-        throw new Error("GET");
-      }
-    } catch (error) {
-      console.error("Failed to fetch run date", error);
-    }
+  const fetchMetadata = () => {
+    fetch("api/metadata")
+      .then((res) => res.json())
+      .then((resAsJson) => setDateRun(resAsJson.lastRan));
   };
 
   const handleScrape = async () => {
