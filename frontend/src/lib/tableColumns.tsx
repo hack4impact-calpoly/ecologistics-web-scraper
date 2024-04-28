@@ -79,7 +79,7 @@ export const columns: ColumnDef<IProject>[] = [
     header: "SCH Number",
   },
   {
-    accessorKey: "moreInfo",
+    accessorKey: "more_info",
     header: () => "More Info",
     cell: ({ row, table }) => (
       <Dialog>
