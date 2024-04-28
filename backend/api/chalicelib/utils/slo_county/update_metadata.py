@@ -45,12 +45,7 @@ def update_metadata(hearingsScraped: int, scrapedProjects: List[Project]):
                 'totalHearingsScraped': hearingsScraped,
                 'totalProjectsScraped': newProjects,
                 'totalSCHProjectsScraped': newSCHProjects
-<<<<<<< HEAD:backend/api/chalicelib/utils/slo_county/update_metadata.py
-            }
-        },
-=======
                 }
             },
->>>>>>> 954736c (chore: formatting):backend/api/utils/slo_county/update_metadata.py
             upsert=True
         )
