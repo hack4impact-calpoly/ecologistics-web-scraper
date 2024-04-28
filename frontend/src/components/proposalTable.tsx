@@ -56,7 +56,7 @@ function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
-  const [columnToFilter, setColumnToFilter] = useState("Link");
+  const [columnToFilter, setColumnToFilter] = useState("link");
 
   const table = useReactTable({
     data,
@@ -111,8 +111,7 @@ function DataTable<TData, TValue>({
                             if (
                               props &&
                               Array.isArray(props.children) &&
-                              props.children.length > 0 &&
-                              !props.children[0].includes("Date")
+                              props.children.length > 0
                             ) {
                               return props.children[0]; // Return the value to make it a valid ReactNode
                             }
@@ -121,7 +120,7 @@ function DataTable<TData, TValue>({
                         })()
                       : (() => {
                           const props = header.column.columnDef.header;
-                          if (props && !props.includes("Date")) {
+                          if (props) {
                             return props; // Return the value to make it a valid ReactNode
                           }
                           return null; // Return null if the condition is not met
@@ -143,7 +142,7 @@ function DataTable<TData, TValue>({
           </SelectContent>
         </Select>
         <Input
-          placeholder={`Filter ${columnToFilter}...`}
+          placeholder={`Filter ${columnToFilter.split("_").join(" ")}...`}
           value={
             (table.getColumn(columnToFilter)?.getFilterValue() as string) ?? ""
           }
