@@ -4,6 +4,8 @@ from chalice import Blueprint
 import sys
 from pathlib import Path
 
+from chalicelib.utils.slo_county.update_metadata import update_metadata
+
 # in the api directory run
 # >> python3 routes/slo_county.py
 # this is so that we can import local modules by adding
@@ -52,6 +54,7 @@ def get_hearings():
             )
 
     add_projects_to_mongo(projects)
+    update_metadata(len(hearings), projects)
 
     # sch_projects = scrape_sch()
     # To do: cross-reference projects in sch and fill in missing data
