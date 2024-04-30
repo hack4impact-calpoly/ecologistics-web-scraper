@@ -3,8 +3,27 @@ import time
 from bs4 import BeautifulSoup
 from datetime import datetime
 
+# in the utils directory run
+# >> python slo_county/scrape_hearings.py
+# this is so that we can import local modules by adding
+# "direct/path/to/ecologistics-web-scraper/backend/api/chalicelib" to sys.path
+import sys
+from pathlib import Path
+
+path_root = Path(__file__).parents[2]
+sys.path.append(str(path_root))
+
+from mongodb import get_mongo_client
 
 def scrape_hearings():
+    # Set up MongoDB Connection
+    client = get_mongo_client()
+    if client:
+        try:
+            collection = client["test"]["hearings"]
+        except Exception as e:
+            print(f"Failed to connect to hearings collection: {e}")
+    
     url = "https://slocounty.granicus.com/ViewPublisher.php?view_id=48"
     response = requests.get(url)
 
@@ -35,10 +54,15 @@ def scrape_hearings():
                     # To do: check if meeting is already in database
                     # if not, add to database an append to list
                     # if already in database, continue to next event
-
-                    upcoming_hearings.append(
-                        {"link": meeting_link, "date": date_string}
-                    )
+                    print("processing document...")
+                    if not in_db(id, collection):
+                        print(f"adding project with id {id} to [test][hearing] collection")
+                        upcoming_hearings.append(
+                            {"link": meeting_link, "date": date_string}
+                        )
+                        collection.insert_one(
+                            {"id": id, "link": meeting_link, "date": date_string}
+                        )
     else:
         print("Table not found or empty.")
 
@@ -55,7 +79,7 @@ def date_to_unix(date: str) -> int:
     return int(unix_time)
 
 
-def in_db(id: int) -> bool:
+def in_db(id: int, collection) -> bool:
     """
     Given a meeting id, return if the meeting is in the database
     """
@@ -70,4 +94,5 @@ def in_db(id: int) -> bool:
     #       scrape the link and grab the date of the meeting
     #       convert date to unixtime/id
     #       check for equality
-    pass
+    result = collection.find_one({"id": id})
+    return True if result is not None else False
