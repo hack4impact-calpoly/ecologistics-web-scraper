@@ -5,10 +5,11 @@ import { useState } from "react";
 import { FiCommand } from "react-icons/fi";
 import "@/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function ScrapeButton() {
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleScrape = async () => {
     setLoading(true);
@@ -21,11 +22,19 @@ export default function ScrapeButton() {
       const data = await response.json();
       console.log("Current hearings:", data["current hearings"]);
 
-      toast.success(data.message);
+      toast({
+        title: "Success!",
+        variant: "default",
+        duration: 3000,
+      });
       // refresh on success
       window.location.reload();
     } catch (error) {
-      toast.error("Error: " + (error as Error).message);
+      toast({
+        title: "Error: " + (error as Error).message,
+        variant: "destructive",
+        duration: 3000,
+      });
     } finally {
       setLoading(false);
     }
