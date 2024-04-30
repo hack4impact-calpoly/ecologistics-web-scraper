@@ -29,50 +29,40 @@ def hello_world():
 
 @slo_county_blueprint.route("/slo_county/hearings", cors=True)
 def get_hearings():
-    hearings = scrape_hearings()
-    projects = []
-    for hearing in hearings:
-        # scrape projects from each hearing
-        hearing_projects = scrape_agenda(hearing["link"])
-        for project in hearing_projects:
-            # create a Project object for each project
-            projects.append(
-                Project(
-                    county_file_number=project["county_file_number"],
-                    hearing_date=hearing["date"],
-                    review_status=None,
-                    location="San Luis Obispo",
-                    apn=project["assessor_parcel_number"],
-                    date_accepted=project["date_accepted"],
-                    requesting_party=project["requesting_party"],
-                    sch_number=None,
-                    title=None,
-                    public_hearing_agenda_link=hearing["link"],
-                    sch_page_link=None,
-                    additional_notes=None,
+    try:
+        hearings = scrape_hearings()
+        projects = []
+        for hearing in hearings:
+            # scrape projects from each hearing
+            hearing_projects = scrape_agenda(hearing["link"])
+            for project in hearing_projects:
+                # create a Project object for each project
+                projects.append(
+                    Project(
+                        county_file_number=project["county_file_number"],
+                        hearing_date=hearing["date"],
+                        review_status=None,
+                        location="San Luis Obispo",
+                        apn=project["assessor_parcel_number"],
+                        date_accepted=project["date_accepted"],
+                        requesting_party=project["requesting_party"],
+                        sch_number=None,
+                        title=None,
+                        public_hearing_agenda_link=hearing["link"],
+                        sch_page_link=None,
+                        additional_notes=None,
+                    )
                 )
-            )
 
-    add_projects_to_mongo(projects)
-    update_metadata(len(hearings), projects)
-
-    # sch_projects = scrape_sch()
-    # To do: cross-reference projects in sch and fill in missing data
-
-    # TEMPORARY: print out projects for debugging purposes
-    for project in projects:
-        print(project.county_file_number)
-        print(project.apn)
-        print(project.date_accepted)
-        print(project.requesting_party)
-        print(project.public_hearing_agenda_link)
-        print(project.hearing_date)
-
-    # serialize projects to json
-    projects_dict = [project.to_dict() for project in projects]
-    projects_json = json.dumps(projects_dict)
-
-    return {"scraped_projects": projects_json}
+        # sch_projects = scrape_sch()
+        # To do: cross-reference projects in sch and fill in missing data        
+                
+        add_projects_to_mongo(projects)
+        update_metadata(len(hearings), projects)
+        
+        return {"status": "success", "message": "OK"}, 200
+    except Exception as e:
+        return {"status": "error", "message": f"Failed to process data: {str(e)}"}, 500
 
 def add_projects_to_mongo(projects):
     client = get_mongo_client()
