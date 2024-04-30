@@ -8,6 +8,6 @@ export async function GET() {
     const metadata = await ScraperMetadata.findOne().orFail();
     return NextResponse.json(metadata);
   } catch (error) {
-    return NextResponse.json("Failed to fetch metadata");
+    return NextResponse.json("Failed to fetch metadata", { status: 404 });
   }
 }
