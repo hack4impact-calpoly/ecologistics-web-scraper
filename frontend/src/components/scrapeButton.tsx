@@ -47,7 +47,9 @@ export default function ScrapeButton() {
         variant: "destructive",
         duration: 3000,
       });
-    } finally {
+    }
+
+    setTimeout(() => {
       setLoading(false);
 
       // get latest button run time
