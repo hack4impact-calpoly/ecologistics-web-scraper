@@ -39,7 +39,7 @@ import {
 } from "@/components/ui/table";
 
 import { columns } from "../lib/tableColumns";
-import { IProposal } from "@/database/proposalSchema";
+import { IProject } from "@/database/projectSchema";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -307,7 +307,7 @@ function DataTable<TData, TValue>({
   );
 }
 
-async function getData(): Promise<IProposal[]> {
+async function getData(): Promise<IProject[]> {
   // Fetch data from your API here.
   return [
     {

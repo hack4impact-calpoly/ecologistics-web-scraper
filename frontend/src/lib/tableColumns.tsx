@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { IProposal } from "@/database/proposalSchema";
+import { IProject } from "@/database/projectSchema";
 
 import {
   Dialog,
@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export const columns: ColumnDef<IProposal>[] = [
+export const columns: ColumnDef<IProject>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
