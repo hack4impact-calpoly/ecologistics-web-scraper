@@ -17,7 +17,7 @@ import {
 
 export const columns: ColumnDef<IProject>[] = [
   {
-    accessorKey: "county_file_number",
+    accessorKey: "countyFileNumber",
     header: ({ column }) => {
       return (
         <Button
@@ -31,7 +31,7 @@ export const columns: ColumnDef<IProject>[] = [
     },
   },
   {
-    accessorKey: "hearing_date",
+    accessorKey: "hearingDate",
     header: ({ column }) => {
       return (
         <Button
@@ -45,7 +45,7 @@ export const columns: ColumnDef<IProject>[] = [
     },
   },
   {
-    accessorKey: "review_status",
+    accessorKey: "reviewStatus",
     header: "Review Status",
   },
   {
@@ -57,7 +57,7 @@ export const columns: ColumnDef<IProject>[] = [
     header: "APN",
   },
   {
-    accessorKey: "date_accepted",
+    accessorKey: "dateAccepted",
     header: ({ column }) => {
       return (
         <Button
@@ -71,43 +71,13 @@ export const columns: ColumnDef<IProject>[] = [
     },
   },
   {
-    accessorKey: "requesting_party",
+    accessorKey: "requestingParty",
     header: "Requesting Party",
   },
   {
-    accessorKey: "sch_number",
+    accessorKey: "schNumber",
     header: "SCH Number",
   },
-  /*
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "amount",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Amount
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  */
   {
     accessorKey: "moreInfo",
     header: () => "More Info",
