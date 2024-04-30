@@ -1,13 +1,13 @@
 import connectDB from "@/database/db";
-import scraperMetadata from "@/database/metadataSchema";
+import ScraperMetadata from "@/database/metadataSchema";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET() {
   await connectDB();
   try {
-    const metadata = await scraperMetadata.findOne().orFail();
+    const metadata = await ScraperMetadata.findOne().orFail();
     return NextResponse.json(metadata);
   } catch (error) {
-    return NextResponse.json("Failed to fetch metadata");
+    return NextResponse.json("Failed to fetch metadata", { status: 404 });
   }
 }
