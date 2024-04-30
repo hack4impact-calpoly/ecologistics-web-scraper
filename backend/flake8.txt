@@ -1,0 +1,19 @@
+F821: Error ignored - relates to the import of SysIO, not sure how to fix this (tried changing the import to from io, did not work)
+E266: Error ignored - 'too many # in front of comments', this is done for emphasis, so I'm leaving these there (since they're also just comments)
+E262: Error ignored - 'inline comment should start with #' - the comments do start with this, so this error seems a bit pointless
+E231: Error ignored (temporarily) - missing whitespaces after commas, theres just a lot of them
+E131: Error ignored - continuation line unaligned: all the cases for this error is in the ./env/lib/python3.10/site-packages/pip/_vendor/chardet/mbcssm.py file, and theyre all just referring to some of the lines not being indented
+E241: Error ignored - multiple spaces after commas, like E231, in same file as E131 (too many to fix, all in the list of numbers)
+W504: Error ignored - line break after binary operator - this was done so the comments could be placed in a legible place, so choosing to ignore this one 
+W503: Error ignored - line break before binary operator - for the same reason as W504, this was done so the code would be legible and not contain super long chains of binary operators
+E203: Error ignored - whitespace before ':' - ignored because all errors are in ./env/lib/python3.10/site-packages/pip/_vendor/pygments/filters/__init__.py and it spans 800 lines of code that doesn't need to be fixed (I hope)
+F405: Error ignored - Import may be undefined - the imports are not undefined, and there are a few hundred of them that would manually require changing
+F403: Error ignored - same error as F405, same reasoning
+E302: Error ignored - expected blank lines - this clashed with E303, which said too many blank lines - fixing one made the other appear and vice versa, so I'm choosing to ignore this one
+F401: Error ignored (for now): it says some imports are unused, but I want to double check this one to make sure they aren't needed for sure before deleting them
+E261: Error ignored: refers to the big list of numbers in the previously mentioned file, similar error with inline comments agian
+F841: Error ignored (for now) refers to unused variables, don't want to delete them without being checked since they can matter for something
+E741: Error ignored: refers to ambiguous variable names - I woudl fix this, but every iteration referred to a variables named 'l' and they all refered to lengths, so I don' think this is ambiguous
+F811: Error ignored redefinition of unused variables, ignoring for same reason as F841
+E122: Error ignored, continuation line missing indentation, all errors are in helper files for random long strings of code
+E501: Error ignored (remaining ones): all remaining lines that are too long are multiblock comments in helper files
