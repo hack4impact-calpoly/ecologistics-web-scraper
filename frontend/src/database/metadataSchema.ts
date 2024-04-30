@@ -1,11 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 
-const metadataSchema = new Schema({
+const MetadataSchema = new Schema({
   lastRan: Date,
   totalHearingsScraped: Number,
   totalProjectsScraped: Number,
   totalSCHProjectsScraped: Number,
 });
 
-export default mongoose.models.scraperMetadata ||
-  mongoose.model("scraperMetadata", metadataSchema);
+export default mongoose.models.ScraperMetadata ||
+  mongoose.model("ScraperMetadata", MetadataSchema);
