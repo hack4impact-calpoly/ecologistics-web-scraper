@@ -316,14 +316,18 @@ async function getData(): Promise<IProject[]> {
     }
     const data = await response.json();
     const reformattedProjects = data.projects.map((project: any) => ({
-      name: project.requesting_party,
-      link: project.public_hearing_agenda_link,
-      date_approved: project.date_accepted,
-      review_status: project.review_status,
-      flag_status: null,
+      countyFileNumber: project.county_file_number,
+      hearingDate: project.hearing_date,
+      reviewStatus: project.review_status,
       location: project.location,
-      meeting_date: project.hearing_date,
-      public_comment_end_date: project.hearing_date,
+      apn: project.apn,
+      dateAccepted: project.date_accepted,
+      requestingParty: project.requesting_party,
+      schNumber: project.sch_number,
+      title: project.title,
+      publicHearingAgenda: project.public_hearing_agenda_link,
+      schLink: project.sch_page_link,
+      additionalNotes: project.additonal_notes,
     }));
     // console.log(data.projects);
     return reformattedProjects;
@@ -436,7 +440,7 @@ async function getData(): Promise<IProject[]> {
 
 export function ProposalTable() {
   // const tableData = await getData();
-  const [tableData, setTableData] = useState<IProposal[]>([]);
+  const [tableData, setTableData] = useState<IProject[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
