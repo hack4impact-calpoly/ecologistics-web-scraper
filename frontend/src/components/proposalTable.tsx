@@ -309,111 +309,146 @@ function DataTable<TData, TValue>({
 
 async function getData(): Promise<IProposal[]> {
   // Fetch data from your API here.
-  return [
-    {
-      name: "Cayucos Sanitary District",
-      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      date_approved: new Date("2024-01-16"),
-      date_closed: new Date("2024-02-04"),
-      review_status: "not yet under review",
-      flag_status: "no",
-      location: "City of Morro Bay",
-      meeting_date: new Date("2024-02-08"),
-      public_comment_end_date: new Date("2024-02-24"),
-    },
-    {
-      name: "Buffalo Management Group",
-      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      date_approved: new Date("2021-04-14"),
-      date_closed: new Date("2024-01-07"),
-      review_status: "under review",
-      flag_status: "yes",
-      location: "County of San Luis Obispo",
-      meeting_date: new Date("2024-02-07"),
-      public_comment_end_date: new Date("2024-03-27"),
-    },
-    {
-      name: "Chimney Rock Road",
-      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1753",
-      date_approved: new Date("2022-07-18"),
-      date_closed: new Date("2023-12-26"),
-      review_status: "reviewed",
-      flag_status: "no",
-      location: "City of Paso Robles",
-      meeting_date: new Date("2024-02-06"),
-      public_comment_end_date: new Date("2024-04-21"),
-    },
-    {
-      name: "Christie and Cliff Cate",
-      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1717",
-      date_approved: new Date("2023-08-25"),
-      date_closed: new Date("2024-01-01"),
-      review_status: "under review",
-      flag_status: "yes",
-      location: "City of Paso Robles",
-      meeting_date: new Date("2024-02-05"),
-      public_comment_end_date: new Date("2024-04-05"),
-    },
-    {
-      name: "Green Gate Farms",
-      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1739",
-      date_approved: new Date("2018-09-15"),
-      date_closed: new Date("2024-02-20"),
-      review_status: "reviewed",
-      flag_status: "yes",
-      location: "City of San Luis Obispo",
-      meeting_date: new Date("2024-02-23"),
-      public_comment_end_date: new Date("2024-07-21"),
-    },
-    {
-      name: "Buffalo Management Group",
-      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      date_approved: new Date("2021-04-14"),
-      date_closed: new Date("2024-01-07"),
-      review_status: "under review",
-      flag_status: "yes",
-      location: "County of San Luis Obispo",
-      meeting_date: new Date("2024-02-07"),
-      public_comment_end_date: new Date("2024-03-27"),
-    },
-    {
-      name: "Chimney Rock Road",
-      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1753",
-      date_approved: new Date("2022-07-18"),
-      date_closed: new Date("2023-12-26"),
-      review_status: "reviewed",
-      flag_status: "no",
-      location: "City of Paso Robles",
-      meeting_date: new Date("2024-02-06"),
-      public_comment_end_date: new Date("2024-04-21"),
-    },
-    {
-      name: "Christie and Cliff Cate",
-      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1717",
-      date_approved: new Date("2023-08-25"),
-      date_closed: new Date("2024-01-01"),
-      review_status: "under review",
-      flag_status: "yes",
-      location: "City of Paso Robles",
-      meeting_date: new Date("2024-02-05"),
-      public_comment_end_date: new Date("2024-04-05"),
-    },
-    {
-      name: "Green Gate Farms",
-      link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1739",
-      date_approved: new Date("2018-09-15"),
-      date_closed: new Date("2024-02-20"),
-      review_status: "reviewed",
-      flag_status: "yes",
-      location: "City of San Luis Obispo",
-      meeting_date: new Date("2024-02-23"),
-      public_comment_end_date: new Date("2024-07-21"),
-    },
-  ];
+  try {
+    const response = await fetch("http://localhost:8000/slo_county/projects");
+    if (!response.ok) {
+      throw new Error("Failed to fetch projects");
+    }
+    const data = await response.json();
+    const reformattedProjects = data.projects.map((project: any) => ({
+      name: project.requesting_party,
+      link: project.public_hearing_agenda_link,
+      date_approved: project.date_accepted,
+      review_status: project.review_status,
+      flag_status: null,
+      location: project.location,
+      meeting_date: project.hearing_date,
+      public_comment_end_date: project.hearing_date,
+    }));
+    // console.log(data.projects);
+    return reformattedProjects;
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    return [];
+  }
+  // return [
+  //   {
+  //     name: "Cayucos Sanitary District",
+  //     link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
+  //     date_approved: new Date("2024-01-16"),
+  //     date_closed: new Date("2024-02-04"),
+  //     review_status: "not yet under review",
+  //     flag_status: "no",
+  //     location: "City of Morro Bay",
+  //     meeting_date: new Date("2024-02-08"),
+  //     public_comment_end_date: new Date("2024-02-24"),
+  //   },
+  //   {
+  //     name: "Buffalo Management Group",
+  //     link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
+  //     date_approved: new Date("2021-04-14"),
+  //     date_closed: new Date("2024-01-07"),
+  //     review_status: "under review",
+  //     flag_status: "yes",
+  //     location: "County of San Luis Obispo",
+  //     meeting_date: new Date("2024-02-07"),
+  //     public_comment_end_date: new Date("2024-03-27"),
+  //   },
+  //   {
+  //     name: "Chimney Rock Road",
+  //     link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1753",
+  //     date_approved: new Date("2022-07-18"),
+  //     date_closed: new Date("2023-12-26"),
+  //     review_status: "reviewed",
+  //     flag_status: "no",
+  //     location: "City of Paso Robles",
+  //     meeting_date: new Date("2024-02-06"),
+  //     public_comment_end_date: new Date("2024-04-21"),
+  //   },
+  //   {
+  //     name: "Christie and Cliff Cate",
+  //     link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1717",
+  //     date_approved: new Date("2023-08-25"),
+  //     date_closed: new Date("2024-01-01"),
+  //     review_status: "under review",
+  //     flag_status: "yes",
+  //     location: "City of Paso Robles",
+  //     meeting_date: new Date("2024-02-05"),
+  //     public_comment_end_date: new Date("2024-04-05"),
+  //   },
+  //   {
+  //     name: "Green Gate Farms",
+  //     link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1739",
+  //     date_approved: new Date("2018-09-15"),
+  //     date_closed: new Date("2024-02-20"),
+  //     review_status: "reviewed",
+  //     flag_status: "yes",
+  //     location: "City of San Luis Obispo",
+  //     meeting_date: new Date("2024-02-23"),
+  //     public_comment_end_date: new Date("2024-07-21"),
+  //   },
+  //   {
+  //     name: "Buffalo Management Group",
+  //     link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
+  //     date_approved: new Date("2021-04-14"),
+  //     date_closed: new Date("2024-01-07"),
+  //     review_status: "under review",
+  //     flag_status: "yes",
+  //     location: "County of San Luis Obispo",
+  //     meeting_date: new Date("2024-02-07"),
+  //     public_comment_end_date: new Date("2024-03-27"),
+  //   },
+  //   {
+  //     name: "Chimney Rock Road",
+  //     link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1753",
+  //     date_approved: new Date("2022-07-18"),
+  //     date_closed: new Date("2023-12-26"),
+  //     review_status: "reviewed",
+  //     flag_status: "no",
+  //     location: "City of Paso Robles",
+  //     meeting_date: new Date("2024-02-06"),
+  //     public_comment_end_date: new Date("2024-04-21"),
+  //   },
+  //   {
+  //     name: "Christie and Cliff Cate",
+  //     link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1717",
+  //     date_approved: new Date("2023-08-25"),
+  //     date_closed: new Date("2024-01-01"),
+  //     review_status: "under review",
+  //     flag_status: "yes",
+  //     location: "City of Paso Robles",
+  //     meeting_date: new Date("2024-02-05"),
+  //     public_comment_end_date: new Date("2024-04-05"),
+  //   },
+  //   {
+  //     name: "Green Gate Farms",
+  //     link: "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1739",
+  //     date_approved: new Date("2018-09-15"),
+  //     date_closed: new Date("2024-02-20"),
+  //     review_status: "reviewed",
+  //     flag_status: "yes",
+  //     location: "City of San Luis Obispo",
+  //     meeting_date: new Date("2024-02-23"),
+  //     public_comment_end_date: new Date("2024-07-21"),
+  //   },
+  // ];
 }
 
-export async function ProposalTable() {
-  const tableData = await getData();
+export function ProposalTable() {
+  // const tableData = await getData();
+  const [tableData, setTableData] = useState<IProposal[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const proposals = await getData();
+        setTableData(proposals);
+      } catch (error) {
+        console.error("Error fetching proposals", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="container mx-auto py-10">
