@@ -27,7 +27,7 @@ def scrape_sch():
 
         for project in projects:
             td_tags = project.find_all("td")
-
+            
             # Get the title
             title = project.find("td", itemprop="name")
             # Extract the title itself from title element
@@ -37,15 +37,23 @@ def scrape_sch():
 
             # Get the SCH link (which is in the first data cell)
             a_tag = td_tags[0].find("a", class_="btn btn-info")
+            
             # Extract the href attribute from link element (<a>)
             # Return the absolute link
             if a_tag:
                 link = "https://ceqanet.opr.ca.gov" + a_tag.get("href")
 
+
+            sch_number = td_tags[0].find(itemprop="reportNumber")
+            if sch_number:
+                sch = sch_number.text.strip()
+               
+
             try:
                 # If title and/or a_tag don't exist, then raise an error
                 # Else add the title and corresponding SCH link to project_data
-                project_data[title_text] = link
+                project_data[title_text] = [link, sch ]
+
             except Exception as e:
                 app.log.error(f"The title and/or SCH number don't exist {e}")
                 return {"error": "Title and/or SCH number don't exist"}, 404
@@ -53,3 +61,5 @@ def scrape_sch():
         print("Table not found or empty.")
 
     return project_data
+
+scrape_sch()

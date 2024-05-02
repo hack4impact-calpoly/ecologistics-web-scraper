@@ -55,38 +55,23 @@ def get_hearings():
 
     add_projects_to_mongo(projects)
 
-    sch_projects = scrape_sch()
     
-    #extract number from sch projects : make dictionary as {county file number: sch page link, title, sch number}
-    extracted_data = {}
-    #regex to extract the county file number -- do this part better
-    file_number_pattern = r';\s*(N-(?:DRC|SUB)\d{4}-\d{5})\b'
-    for title, link in sch_projects.items():
-        #looking for matches in that specific title
-        match = re.search(file_number_pattern, title)
-        if match:
-            county_file_number = match.group(0)
-            #striping original project title 
-
-            #include shortened title??
-            # project_title = title.replace(county_file_number, '').strip()
-            extracted_data[county_file_number] = {'title': title, 'link': sch_projects[title]}
-        else:
-            #taking care of others
-            extracted_data['No County File Number'] = {'title': title, 'link': sch_projects[title]}
-
-    #iterate through projects, and check if county file number is in dictionary. -- if it is, insert necessary data. 
+    sch_projects = scrape_sch()
+    #iterate through projects, and check if county file number is in sch_projects title. -- if it is, insert necessary data. 
     for project in projects: 
-        if project.county_file_number in extracted_data:
-            #updating title
-            title = extracted_data[project.county_file_number]['title']
-            project.title = title
+        for title in sch_projects.items():
+            if project.county_file_number in title:
+                #updating title
+                project.title = title
 
-            #updating sch_link
-            link = extracted_data[project.county_file_number]['link']
-            project.sch_page_link = link
+                #updating sch_link
+                link = sch_projects[title][0]
+                project.sch_page_link = link
 
-        
+                sch_num = sch_projects[title][1]
+                project.sch_page_link = sch_num
+
+
     # To do: cross-reference projects in sch and fill in missing data
 
     # TEMPORARY: print out projects for debugging purposes
