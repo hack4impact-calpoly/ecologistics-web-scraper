@@ -1,2 +1,0 @@
-chalice=={{chalice_version}}
-pytest
