@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import useSWR from "swr";
 
 import {
   Card,
@@ -22,23 +23,19 @@ const defaultData = {
   totalSCHProjectsScraped: 0,
 };
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 export default function About() {
+  const { data, error, isLoading } = useSWR("api/metadata", fetcher);
   const handleVisitSite = (url: string) => {
     window.open(url, "_blank");
   };
 
-  const [scraperMetadata, setScraperMetadata] = useState(defaultData); // some default metadata object
-
-  useEffect(() => {
-    fetch("api/metadata")
-      .then((res) => res.json())
-      .then((resAsJson) => setScraperMetadata(resAsJson));
-  }, []);
+  if (error) return <div>error loading</div>;
+  if (isLoading) return <div>loading...</div>;
 
   const SCHPercentage =
-    (scraperMetadata.totalSCHProjectsScraped /
-      scraperMetadata.totalProjectsScraped) *
-    100;
+    (data.totalSCHProjectsScraped / data.totalProjectsScraped) * 100;
 
   return (
     <div className="flex flex-col w-full gap-10">
@@ -124,9 +121,7 @@ export default function About() {
               <CardTitle className="text-center">Total Projects</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">
-                {scraperMetadata.totalProjectsScraped}
-              </h1>
+              <h1 className="text-7xl">{data.totalProjectsScraped}</h1>
             </CardContent>
           </Card>
           <Card className="flex flex-col justify-between w-[350px] h-[300px]">
@@ -142,9 +137,7 @@ export default function About() {
               <CardTitle className="text-center">Total Hearings</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">
-                {scraperMetadata.totalHearingsScraped}
-              </h1>
+              <h1 className="text-7xl">{data.totalHearingsScraped}</h1>
             </CardContent>
           </Card>
         </div>
