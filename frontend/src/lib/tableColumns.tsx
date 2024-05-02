@@ -1,5 +1,4 @@
 "use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -79,9 +78,9 @@ export const columns: ColumnDef<IProject>[] = [
     header: "SCH Number",
   },
   {
-    accessorKey: "moreInfo",
+    accessorKey: "more_info",
     header: () => "More Info",
-    cell: ({ row, table }) => (
+    cell: ({ row, column }) => (
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="ghost">
@@ -90,9 +89,19 @@ export const columns: ColumnDef<IProject>[] = [
         </DialogTrigger>
         <DialogContent className="sm:max-w-[800px] sm:min-h-[400px] sm:max-h-[700px]">
           <DialogHeader>
-            <DialogTitle>Enter Content Here</DialogTitle>
+            <DialogTitle>More Info About {row.original.title}</DialogTitle>
+            {row.original.schLink && (
+              <DialogDescription>
+                Schedule Page Link: {row.original.schLink}
+              </DialogDescription>
+            )}
+            {row.original.additionalNotes && (
+              <DialogDescription>
+                Additional Notes: {row.original.additionalNotes}
+              </DialogDescription>
+            )}
             <DialogDescription>
-              Row {table.getRowModel().rows.indexOf(row) + 1}
+              Public Hearing Agenda Link: {row.original.publicHearingAgenda}
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
