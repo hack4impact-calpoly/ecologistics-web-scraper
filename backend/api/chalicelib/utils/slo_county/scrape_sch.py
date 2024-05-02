@@ -61,5 +61,3 @@ def scrape_sch():
         print("Table not found or empty.")
 
     return project_data
-
-scrape_sch()

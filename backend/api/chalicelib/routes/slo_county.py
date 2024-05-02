@@ -65,11 +65,10 @@ def get_hearings():
                 project.title = title
 
                 #updating sch_link
-                link = sch_projects[title][0]
-                project.sch_page_link = link
+                project.sch_page_link = sch_projects[title][0]
 
-                sch_num = sch_projects[title][1]
-                project.sch_page_link = sch_num
+                #updating link
+                project.sch_page_link = sch_projects[title][1]
 
 
     # To do: cross-reference projects in sch and fill in missing data
