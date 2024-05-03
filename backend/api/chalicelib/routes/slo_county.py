@@ -1,4 +1,5 @@
 import json
+import re
 from chalice import Blueprint
 
 import sys
@@ -57,17 +58,21 @@ def get_hearings():
     except Exception as e:
         return {"status": "error", "message": f"Failed to process data: {str(e)}"}, 500
 
-    # sch_projects = scrape_sch()
-    # To do: cross-reference projects in sch and fill in missing data
+    
+    sch_projects = scrape_sch()
+    #iterate through projects, and check if county file number is in sch_projects title. -- if it is, insert necessary data. 
+    for project in projects: 
+        for title in sch_projects.items():
+            if project.county_file_number in title:
+                #updating title
+                project.title = title
 
-    # TEMPORARY: print out projects for debugging purposes
-    for project in projects:
-        print(project.county_file_number)
-        print(project.apn)
-        print(project.date_accepted)
-        print(project.requesting_party)
-        print(project.public_hearing_agenda_link)
-        print(project.hearing_date)
+                #updating sch_link
+                project.sch_page_link = sch_projects[title][0]
+
+                #updating link
+                project.sch_page_link = sch_projects[title][1]
+
 
     # serialize projects to json
     projects_dict = [project.to_dict() for project in projects]
