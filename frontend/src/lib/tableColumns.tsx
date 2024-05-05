@@ -16,6 +16,20 @@ import {
 
 export const columns: ColumnDef<IProject>[] = [
   {
+    accessorKey: "reviewStatus",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Review Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
     accessorKey: "countyFileNumber",
     header: ({ column }) => {
       return (
@@ -42,10 +56,6 @@ export const columns: ColumnDef<IProject>[] = [
         </Button>
       );
     },
-  },
-  {
-    accessorKey: "reviewStatus",
-    header: "Review Status",
   },
   {
     accessorKey: "location",

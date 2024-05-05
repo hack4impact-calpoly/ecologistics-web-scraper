@@ -38,6 +38,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
+
 import { columns } from "../lib/tableColumns";
 import { IProject } from "@/database/projectSchema";
 
@@ -56,9 +58,9 @@ function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
-  const [columnToFilter, setColumnToFilter] = useState("Link");
+  const [columnToFilter, setColumnToFilter] = useState("link");
 
-  const table = useReactTable({
+  let table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -81,6 +83,18 @@ function DataTable<TData, TValue>({
   const handleRowChange = (newPageSize: number) => {
     setPageSize(newPageSize);
     setPageIndex(0); // Reset page index when page size changes
+  };
+
+  const handleReviewClick = (reviewType: string, cell: any) => {
+    // Update the reviewStatus in the data
+    // Update the reviewStatus in the data
+    const updatedData = data.map((item) =>
+      item.id === cell.row.original.id
+        ? { ...item, reviewStatus: reviewType }
+        : item,
+    );
+    // Update the table data
+    table.setData(updatedData);
   };
 
   return (
@@ -111,8 +125,7 @@ function DataTable<TData, TValue>({
                             if (
                               props &&
                               Array.isArray(props.children) &&
-                              props.children.length > 0 &&
-                              !props.children[0].includes("Date")
+                              props.children.length > 0
                             ) {
                               return props.children[0]; // Return the value to make it a valid ReactNode
                             }
@@ -121,7 +134,7 @@ function DataTable<TData, TValue>({
                         })()
                       : (() => {
                           const props = header.column.columnDef.header;
-                          if (props && !props.includes("Date")) {
+                          if (props) {
                             return props; // Return the value to make it a valid ReactNode
                           }
                           return null; // Return null if the condition is not met
@@ -176,15 +189,43 @@ function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected()}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
+                      {cell.id.includes("review") ? (
+                        <Select value={cell.getValue() || " "}>
+                          <SelectTrigger>
+                            {cell.getValue().toString() || ""}
+                          </SelectTrigger>{" "}
+                          <SelectContent>
+                            <SelectItem
+                              value="Need Review"
+                              onSelect={() => handleReviewClick("Need Review")}
+                              checked={cell.getValue() === "Need Review"}
+                            >
+                              Need Review
+                            </SelectItem>
+                            <SelectItem
+                              value="In Review"
+                              onSelect={() => handleReviewClick("In Review")}
+                              checked={cell.getValue() === "In Review"}
+                            >
+                              In Review
+                            </SelectItem>
+                            <SelectItem
+                              value="Reviewed"
+                              checked={cell.getValue() === "Reviewed"}
+                              onSelect={() => handleReviewClick("Reviewed")}
+                            >
+                              Reviewed
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )
                       )}
                     </TableCell>
                   ))}
@@ -313,7 +354,7 @@ async function getData(): Promise<IProject[]> {
     {
       countyFileNumber: "DRC2016-00070",
       hearingDate: new Date("2024-02-08"),
-      reviewStatus: "Unreviewed",
+      reviewStatus: "Reviewed",
       location: "City of Morro Bay",
       apn: "123-456-789",
       dateAccepted: new Date("2024-01-16"),
@@ -328,7 +369,7 @@ async function getData(): Promise<IProject[]> {
     {
       countyFileNumber: "654321",
       hearingDate: new Date("2024-02-10"),
-      reviewStatus: "Unreviewed",
+      reviewStatus: "Need Review",
       location: "City of San Luis Obispo",
       apn: "987-654-321",
       dateAccepted: new Date("2024-01-18"),
@@ -343,7 +384,7 @@ async function getData(): Promise<IProject[]> {
     {
       countyFileNumber: "789012",
       hearingDate: new Date("2024-02-15"),
-      reviewStatus: "Unreviewed",
+      reviewStatus: "Need Review",
       location: "City of Paso Robles",
       apn: "012-345-678",
       dateAccepted: new Date("2024-01-22"),
@@ -358,7 +399,7 @@ async function getData(): Promise<IProject[]> {
     {
       countyFileNumber: "345678",
       hearingDate: new Date("2024-02-20"),
-      reviewStatus: "Unreviewed",
+      reviewStatus: "Need Review",
       location: "City of Morro Bay",
       apn: "456-789-012",
       dateAccepted: new Date("2024-01-26"),
@@ -373,7 +414,7 @@ async function getData(): Promise<IProject[]> {
     {
       countyFileNumber: "901234",
       hearingDate: new Date("2024-02-25"),
-      reviewStatus: "Unreviewed",
+      reviewStatus: "Need Review",
       location: "County of San Luis Obispo",
       apn: "789-012-345",
       dateAccepted: new Date("2024-01-30"),
@@ -388,7 +429,7 @@ async function getData(): Promise<IProject[]> {
     {
       countyFileNumber: "567890",
       hearingDate: new Date("2024-03-02"),
-      reviewStatus: "Unreviewed",
+      reviewStatus: "Need Review",
       location: "City of San Luis Obispo",
       apn: "234-567-890",
       dateAccepted: new Date("2024-02-03"),
@@ -403,7 +444,7 @@ async function getData(): Promise<IProject[]> {
     {
       countyFileNumber: "123456",
       hearingDate: new Date("2024-03-08"),
-      reviewStatus: "Unreviewed",
+      reviewStatus: "In Review",
       location: "County of San Luis Obispo",
       apn: "678-901-234",
       dateAccepted: new Date("2024-02-08"),
