@@ -329,7 +329,6 @@ async function getData(): Promise<IProject[]> {
       schLink: project.sch_page_link ?? "N/A",
       additionalNotes: project.additonal_notes ?? "N/A",
     }));
-    console.log(reformattedProjects);
     return reformattedProjects;
   } catch (error) {
     console.error("Error fetching projects:", error);
