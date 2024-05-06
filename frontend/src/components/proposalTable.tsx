@@ -56,7 +56,7 @@ function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
-  const [columnToFilter, setColumnToFilter] = useState("link");
+  const [columnToFilter, setColumnToFilter] = useState("countyFileNumber");
 
   const table = useReactTable({
     data,
