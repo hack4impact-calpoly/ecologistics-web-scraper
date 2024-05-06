@@ -95,5 +95,23 @@ def add_projects_to_mongo(projects):
         except Exception as e:
             print(f"Failed to add hearings to DB: {e}")
 
+
+@slo_county_blueprint.route("/slo_county/projects", cors=True)
+def get_projects():
+    client = get_mongo_client()
+
+    if client:
+        try:
+            collection = client["test"]["projects"]
+            projects = list(collection.find({}))
+            for project in projects:
+                project['_id'] = str(project['_id'])
+            return {"projects": projects}
+        except Exception as e:
+            return {"error": f"Failed to retrieve projects: {e}"}
+    else:
+        return {"error": "Failed to connect to MongoDB"}
+
+
 if __name__ == '__main__':
     get_hearings()
