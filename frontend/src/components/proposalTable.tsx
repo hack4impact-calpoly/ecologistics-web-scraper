@@ -56,7 +56,7 @@ function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
-  const [columnToFilter, setColumnToFilter] = useState("Link");
+  const [columnToFilter, setColumnToFilter] = useState("countyFileNumber");
 
   const table = useReactTable({
     data,
@@ -111,8 +111,7 @@ function DataTable<TData, TValue>({
                             if (
                               props &&
                               Array.isArray(props.children) &&
-                              props.children.length > 0 &&
-                              !props.children[0].includes("Date")
+                              props.children.length > 0
                             ) {
                               return props.children[0]; // Return the value to make it a valid ReactNode
                             }
@@ -121,7 +120,7 @@ function DataTable<TData, TValue>({
                         })()
                       : (() => {
                           const props = header.column.columnDef.header;
-                          if (props && !props.includes("Date")) {
+                          if (props) {
                             return props; // Return the value to make it a valid ReactNode
                           }
                           return null; // Return null if the condition is not met
@@ -143,7 +142,7 @@ function DataTable<TData, TValue>({
           </SelectContent>
         </Select>
         <Input
-          placeholder={`Filter ${columnToFilter}...`}
+          placeholder={`Filter ${columnToFilter.split("_").join(" ")}...`}
           value={
             (table.getColumn(columnToFilter)?.getFilterValue() as string) ?? ""
           }
@@ -309,117 +308,47 @@ function DataTable<TData, TValue>({
 
 async function getData(): Promise<IProject[]> {
   // Fetch data from your API here.
-  return [
-    {
-      countyFileNumber: "DRC2016-00070",
-      hearingDate: new Date("2024-02-08"),
-      reviewStatus: "Unreviewed",
-      location: "City of Morro Bay",
-      apn: "123-456-789",
-      dateAccepted: new Date("2024-01-16"),
-      requestingParty: "Bob",
-      schNumber: 123456,
-      title: "Cayucos Sanitary District",
-      publicHearingAgenda:
-        "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      schLink: "N/A",
-      additionalNotes: "N/A",
-    },
-    {
-      countyFileNumber: "654321",
-      hearingDate: new Date("2024-02-10"),
-      reviewStatus: "Unreviewed",
-      location: "City of San Luis Obispo",
-      apn: "987-654-321",
-      dateAccepted: new Date("2024-01-18"),
-      requestingParty: "Alice",
-      schNumber: 654321,
-      title: "Green Gate Farms",
-      publicHearingAgenda:
-        "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      schLink: "N/A",
-      additionalNotes: "N/A",
-    },
-    {
-      countyFileNumber: "789012",
-      hearingDate: new Date("2024-02-15"),
-      reviewStatus: "Unreviewed",
-      location: "City of Paso Robles",
-      apn: "012-345-678",
-      dateAccepted: new Date("2024-01-22"),
-      requestingParty: "John",
-      schNumber: 789012,
-      title: "Chimney Rock Road",
-      publicHearingAgenda:
-        "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      schLink: "N/A",
-      additionalNotes: "N/A",
-    },
-    {
-      countyFileNumber: "345678",
-      hearingDate: new Date("2024-02-20"),
-      reviewStatus: "Unreviewed",
-      location: "City of Morro Bay",
-      apn: "456-789-012",
-      dateAccepted: new Date("2024-01-26"),
-      requestingParty: "Sarah",
-      schNumber: 345678,
-      title: "Christie and Cliff Cate",
-      publicHearingAgenda:
-        "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      schLink: "N/A",
-      additionalNotes: "N/A",
-    },
-    {
-      countyFileNumber: "901234",
-      hearingDate: new Date("2024-02-25"),
-      reviewStatus: "Unreviewed",
-      location: "County of San Luis Obispo",
-      apn: "789-012-345",
-      dateAccepted: new Date("2024-01-30"),
-      requestingParty: "Mike",
-      schNumber: 901234,
-      title: "Buffalo Management Group",
-      publicHearingAgenda:
-        "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      schLink: "N/A",
-      additionalNotes: "N/A",
-    },
-    {
-      countyFileNumber: "567890",
-      hearingDate: new Date("2024-03-02"),
-      reviewStatus: "Unreviewed",
-      location: "City of San Luis Obispo",
-      apn: "234-567-890",
-      dateAccepted: new Date("2024-02-03"),
-      requestingParty: "Emily",
-      schNumber: 567890,
-      title: "Cayucos Sanitary District",
-      publicHearingAgenda:
-        "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      schLink: "N/A",
-      additionalNotes: "N/A",
-    },
-    {
-      countyFileNumber: "123456",
-      hearingDate: new Date("2024-03-08"),
-      reviewStatus: "Unreviewed",
-      location: "County of San Luis Obispo",
-      apn: "678-901-234",
-      dateAccepted: new Date("2024-02-08"),
-      requestingParty: "David",
-      schNumber: 123456,
-      title: "Morro Bay Development",
-      publicHearingAgenda:
-        "https://agenda.slocounty.ca.gov/iip/sanluisobispo/meeting/Details/1696",
-      schLink: "N/A",
-      additionalNotes: "N/A",
-    },
-  ];
+  try {
+    const response = await fetch("/api/projects");
+    if (!response.ok) {
+      throw new Error("Failed to fetch projects");
+    }
+    const data = await response.json();
+    const reformattedProjects = data.map((project: any) => ({
+      countyFileNumber: project.county_file_number,
+      hearingDate: project.hearing_date,
+      reviewStatus: project.review_status ?? "Unreviewed",
+      location: project.location,
+      apn: project.apn,
+      dateAccepted: project.date_accepted,
+      requestingParty: project.requesting_party ?? "N/A",
+      schNumber: project.sch_number ?? "N/A",
+      title: project.title ?? "N/A",
+      publicHearingAgenda: project.public_hearing_agenda_link,
+      schLink: project.sch_page_link ?? "N/A",
+      additionalNotes: project.additonal_notes ?? "N/A",
+    }));
+    return reformattedProjects;
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    return [];
+  }
 }
 
-export async function ProposalTable() {
-  const tableData = await getData();
+export function ProposalTable() {
+  const [tableData, setTableData] = useState<IProject[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const proposals = await getData();
+        setTableData(proposals);
+      } catch (error) {
+        console.error("Error fetching proposals", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="container mx-auto py-10">

@@ -55,6 +55,7 @@ def scrape_agenda(url):
         else:
             continue
 
+    print (scraped_projects)
     return scraped_projects
 
 
