@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { FiCommand } from "react-icons/fi";
@@ -9,7 +9,19 @@ import { useToast } from "@/components/ui/use-toast";
 
 export default function ScrapeButton() {
   const [loading, setLoading] = useState(false);
+  const [dateRun, setDateRun] = useState("Never");
   const { toast } = useToast();
+
+  // fetches metadata once, at the beginning
+  useEffect(() => {
+    fetchMetadata();
+  }, []);
+
+  const fetchMetadata = () => {
+    fetch("api/metadata")
+      .then((res) => res.json())
+      .then((resAsJson) => setDateRun(resAsJson.lastRan));
+  };
 
   const handleScrape = async () => {
     setLoading(true);
@@ -35,23 +47,42 @@ export default function ScrapeButton() {
         variant: "destructive",
         duration: 3000,
       });
-    } finally {
-      setLoading(false);
     }
+
+    setTimeout(() => {
+      setLoading(false);
+
+      // get latest button run time
+      fetchMetadata();
+    }, 3000);
   };
 
   return (
-    <Button
-      onClick={handleScrape}
-      disabled={loading}
-      className="bg-secondary"
-      style={{ width: "200px" }}
-    >
-      {loading ? (
-        <FiCommand color="white" className="loading-icon" />
-      ) : (
-        "Update table"
+    <div>
+      <Button
+        onClick={handleScrape}
+        disabled={loading}
+        className="bg-secondary"
+        style={{ width: "200px" }}
+      >
+        {loading ? (
+          <FiCommand color="white" className="loading-icon" />
+        ) : (
+          "Update table"
+        )}
+      </Button>
+      {dateRun && (
+        <p style={{ color: "grey", marginTop: "10px" }}>
+          Last run:{" "}
+          {new Date(dateRun).toLocaleString("en-US", {
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          })}
+        </p>
       )}
-    </Button>
+    </div>
   );
 }
