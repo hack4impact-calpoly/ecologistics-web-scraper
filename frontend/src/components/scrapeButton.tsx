@@ -42,10 +42,18 @@ export default function ScrapeButton() {
       // refresh on success
       window.location.reload();
     } catch (error) {
+      const county = "San Luis Obispo";
       toast({
-        title: "Error: " + (error as Error).message,
+        title:
+          "Error: " +
+          (error as Error).message +
+          " hearings data from " +
+          county +
+          " county.",
+        description:
+          "If the issue persists, please reach out to Hack4Impact at Cal Poly.",
         variant: "destructive",
-        duration: 3000,
+        duration: 5000,
       });
     }
 
