@@ -47,6 +47,8 @@ export const columns: ColumnDef<IProject>[] = [
       const datestr1 = row1.getValue(columnId);
       const datestr2 = row2.getValue(columnId);
 
+      // dates are in "Month Day, Year - Time AM/PM" format
+      // remove '-' so string can be properly converted into date object
       const date1 = new Date(String(datestr1).replace("-", ""));
       const date2 = new Date(String(datestr2).replace("-", ""));
 
@@ -82,6 +84,8 @@ export const columns: ColumnDef<IProject>[] = [
       const datestr1 = row1.getValue(columnId);
       const datestr2 = row2.getValue(columnId);
 
+      // dates are in "Month Day, Year - Time AM/PM" format
+      // remove '-' so string can be properly converted into date object
       const date1 = new Date(String(datestr1).replace("-", ""));
       const date2 = new Date(String(datestr2).replace("-", ""));
 
