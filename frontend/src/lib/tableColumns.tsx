@@ -43,6 +43,17 @@ export const columns: ColumnDef<IProject>[] = [
         </Button>
       );
     },
+    sortingFn: (row1: any, row2: any, columnId: any) => {
+      const datestr1 = row1.getValue(columnId);
+      const datestr2 = row2.getValue(columnId);
+
+      // dates are in "Month Day, Year - Time AM/PM" format
+      // remove '-' so string can be properly converted into date object
+      const date1 = new Date(String(datestr1).replace("-", ""));
+      const date2 = new Date(String(datestr2).replace("-", ""));
+
+      return date1 < date2 ? 1 : -1;
+    },
   },
   {
     accessorKey: "reviewStatus",
@@ -68,6 +79,17 @@ export const columns: ColumnDef<IProject>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    sortingFn: (row1: any, row2: any, columnId: any) => {
+      const datestr1 = row1.getValue(columnId);
+      const datestr2 = row2.getValue(columnId);
+
+      // dates are in "Month Day, Year - Time AM/PM" format
+      // remove '-' so string can be properly converted into date object
+      const date1 = new Date(String(datestr1).replace("-", ""));
+      const date2 = new Date(String(datestr2).replace("-", ""));
+
+      return date1 < date2 ? 1 : -1;
     },
   },
   {
