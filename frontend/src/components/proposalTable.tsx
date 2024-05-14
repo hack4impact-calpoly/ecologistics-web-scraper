@@ -10,13 +10,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   ColumnDef,
   SortingState,
@@ -38,10 +49,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { columns } from "../lib/tableColumns";
 import { IProject } from "@/database/projectSchema";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { set } from "mongoose";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -58,10 +84,12 @@ function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
+  const [reviewType, setReviewType] = useState("");
   const [columnToFilter, setColumnToFilter] = useState("link");
+  const [tableData, setTableData] = useState(data);
 
   let table = useReactTable({
-    data,
+    data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -85,18 +113,12 @@ function DataTable<TData, TValue>({
     setPageIndex(0); // Reset page index when page size changes
   };
 
-  const handleReviewClick = (reviewType: string, cell: any) => {
-    // Update the reviewStatus in the data
-    // Update the reviewStatus in the data
-    const updatedData = data.map((item) =>
-      item.id === cell.row.original.id
-        ? { ...item, reviewStatus: reviewType }
-        : item,
-    );
-    // Update the table data
-    table.setData(updatedData);
+  const handleReviewClick = (reviewType: string) => {
+    setReviewType(reviewType);
   };
-
+  const handleReviewOKClick = () => {
+    console.log("Should update data here.");
+  };
   return (
     <div>
       <div className="flex items-center py-4">
@@ -193,34 +215,76 @@ function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {cell.id.includes("review") ? (
-                        <Select value={cell.getValue() || " "}>
-                          <SelectTrigger>
-                            {cell.getValue().toString() || ""}
-                          </SelectTrigger>{" "}
-                          <SelectContent>
-                            <SelectItem
-                              value="Need Review"
-                              onSelect={() => handleReviewClick("Need Review")}
-                              checked={cell.getValue() === "Need Review"}
+                        <Dialog>
+                          {" "}
+                          {/* 🔴 The dialog provider outside of the DropdownMenuContent */}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger
+                              className="bg-white text-zinc-900 
+                              hover:bg-zinc-100/90 
+                              dark:bg-zinc-500 dark:text-zinc-50 
+                              dark:hover:bg-zinc-900/90 p-2 rounded-md"
+                              style={{
+                                outline: "1px solid #d3d3d3",
+                                width: "160px",
+                              }}
                             >
-                              Need Review
-                            </SelectItem>
-                            <SelectItem
-                              value="In Review"
-                              onSelect={() => handleReviewClick("In Review")}
-                              checked={cell.getValue() === "In Review"}
-                            >
-                              In Review
-                            </SelectItem>
-                            <SelectItem
-                              value="Reviewed"
-                              checked={cell.getValue() === "Reviewed"}
-                              onSelect={() => handleReviewClick("Reviewed")}
-                            >
-                              Reviewed
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
+                              {reviewType === ""
+                                ? (cell.getValue() as React.ReactNode)
+                                : reviewType}
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem>
+                                <DialogTrigger
+                                  onClick={() =>
+                                    handleReviewClick("Need Review")
+                                  }
+                                >
+                                  Need Review
+                                </DialogTrigger>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <DialogTrigger
+                                  onClick={() => handleReviewClick("In Review")}
+                                >
+                                  In Review
+                                </DialogTrigger>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <DialogTrigger
+                                  onClick={() => handleReviewClick("Reviewed")}
+                                >
+                                  Reviewed
+                                </DialogTrigger>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                          {/* 🔴 DialogContent ouside of DropdownMenuContent */}
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Confirm Review Status Change
+                              </DialogTitle>
+                              <DialogDescription>
+                                Are you sure you want to change the review
+                                status to {reviewType}?
+                              </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter>
+                              <DialogClose asChild>
+                                <Button variant="outline">Cancel</Button>
+                              </DialogClose>
+                              <DialogClose asChild>
+                                <Button
+                                  variant="outline"
+                                  onClick={() => handleReviewOKClick()}
+                                >
+                                  OK
+                                </Button>
+                              </DialogClose>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
                       ) : (
                         flexRender(
                           cell.column.columnDef.cell,
