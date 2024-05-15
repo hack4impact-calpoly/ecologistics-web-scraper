@@ -337,12 +337,14 @@ async function getData(): Promise<IProject[]> {
 
 export function ProposalTable() {
   const [tableData, setTableData] = useState<IProject[]>([]);
+  const [numProjects, setNumProjects] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const proposals = await getData();
         setTableData(proposals);
+        setNumProjects(proposals.length);
       } catch (error) {
         console.error("Error fetching proposals", error);
       }
@@ -351,7 +353,10 @@ export function ProposalTable() {
   }, []);
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-5">
+      <div className="text-xl font-bold">
+        San Luis Obispo County ({numProjects})
+      </div>
       <DataTable columns={columns} data={tableData} />
     </div>
   );
