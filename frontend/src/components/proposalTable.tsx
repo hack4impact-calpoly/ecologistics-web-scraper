@@ -67,7 +67,6 @@ import {
 import { columns } from "../lib/tableColumns";
 import { IProject } from "@/database/projectSchema";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { set } from "mongoose";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -86,10 +85,9 @@ function DataTable<TData, TValue>({
   );
   const [reviewType, setReviewType] = useState("");
   const [columnToFilter, setColumnToFilter] = useState("countyFileNumber");
-  const [tableData, setTableData] = useState(data);
 
   let table = useReactTable({
-    data: tableData,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
