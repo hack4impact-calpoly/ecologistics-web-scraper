@@ -1,8 +1,11 @@
 import json
+import re
 from chalice import Blueprint
 
 import sys
 from pathlib import Path
+
+from chalicelib.utils.slo_county.update_metadata import update_metadata
 
 # in the api directory run
 # >> python3 routes/slo_county.py
@@ -52,29 +55,31 @@ def get_hearings():
                     )
                 )
 
+        # sch_projects = scrape_sch()
+        # To do: cross-reference projects in sch and fill in missing data
+        
+        sch_projects = scrape_sch()
+        #iterate through projects, and check if county file number is in sch_projects title. -- if it is, insert necessary data. 
+        for project in projects: 
+            for title in sch_projects.items():
+                if project.county_file_number in title:
+                    #updating title
+                    project.title = title
+
+                    #updating sch_link
+                    project.sch_page_link = sch_projects[title][0]
+
+                    #updating link
+                    project.sch_page_link = sch_projects[title][1]
+                
         add_projects_to_mongo(projects)
+        update_metadata(len(hearings), projects)
+        
         return {"status": "success", "message": "OK"}, 200
     except Exception as e:
         return {"status": "error", "message": f"Failed to process data: {str(e)}"}, 500
 
-    # sch_projects = scrape_sch()
-    # To do: cross-reference projects in sch and fill in missing data
-
-    # TEMPORARY: print out projects for debugging purposes
-    for project in projects:
-        print(project.county_file_number)
-        print(project.apn)
-        print(project.date_accepted)
-        print(project.requesting_party)
-        print(project.public_hearing_agenda_link)
-        print(project.hearing_date)
-
-    # serialize projects to json
-    projects_dict = [project.to_dict() for project in projects]
-    projects_json = json.dumps(projects_dict)
-
-    return {"scraped_projects": projects_json}
-
+      
 def add_projects_to_mongo(projects):
     client = get_mongo_client()
 
@@ -89,6 +94,24 @@ def add_projects_to_mongo(projects):
             print("Inserted projects into database")
         except Exception as e:
             print(f"Failed to add hearings to DB: {e}")
+
+
+@slo_county_blueprint.route("/slo_county/projects", cors=True)
+def get_projects():
+    client = get_mongo_client()
+
+    if client:
+        try:
+            collection = client["test"]["projects"]
+            projects = list(collection.find({}))
+            for project in projects:
+                project['_id'] = str(project['_id'])
+            return {"projects": projects}
+        except Exception as e:
+            return {"error": f"Failed to retrieve projects: {e}"}
+    else:
+        return {"error": "Failed to connect to MongoDB"}
+
 
 if __name__ == '__main__':
     get_hearings()

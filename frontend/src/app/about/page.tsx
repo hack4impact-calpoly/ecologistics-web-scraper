@@ -1,5 +1,8 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import useSWR from "swr";
+
 import {
   Card,
   CardContent,
@@ -13,10 +16,26 @@ const slo_hearings_url =
   "https://www.slocounty.ca.gov/Home/Meetings-Calendar.aspx";
 const ceqa_url = "https://ceqanet.opr.ca.gov/";
 
+const defaultData = {
+  lastRan: "N/A",
+  totalHearingsScraped: 0,
+  totalProjectsScraped: 0,
+  totalSCHProjectsScraped: 0,
+};
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 export default function About() {
+  const { data, error, isLoading } = useSWR("api/metadata", fetcher);
   const handleVisitSite = (url: string) => {
     window.open(url, "_blank");
   };
+
+  if (error) return <div>error loading</div>;
+  if (isLoading) return <div>loading...</div>;
+
+  const SCHPercentage =
+    (data.totalSCHProjectsScraped / data.totalProjectsScraped) * 100;
 
   return (
     <div className="flex flex-col w-full gap-10">
@@ -102,15 +121,15 @@ export default function About() {
               <CardTitle className="text-center">Total Projects</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">--</h1>
+              <h1 className="text-7xl">{data.totalProjectsScraped}</h1>
             </CardContent>
           </Card>
           <Card className="flex flex-col justify-between w-[350px] h-[300px]">
             <CardHeader>
-              <CardTitle className="text-center">% Connected to SCH</CardTitle>
+              <CardTitle className="text-center">Connected to SCH</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">--</h1>
+              <h1 className="text-7xl">{SCHPercentage.toFixed(1)}%</h1>
             </CardContent>
           </Card>
           <Card className="flex flex-col w-[350px] h-[300px]">
@@ -118,7 +137,7 @@ export default function About() {
               <CardTitle className="text-center">Total Hearings</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">--</h1>
+              <h1 className="text-7xl">{data.totalHearingsScraped}</h1>
             </CardContent>
           </Card>
         </div>
