@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 import {
   Select,
@@ -10,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -68,6 +68,12 @@ import { columns } from "../lib/tableColumns";
 import { IProject } from "@/database/projectSchema";
 import { DialogClose } from "@radix-ui/react-dialog";
 
+const reviewStatusColors: Record<any, string> = {
+  Unreviewed: "#EC7590",
+  "In Review": "#ffd166",
+  Reviewed: "#06d6a0",
+};
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -83,7 +89,6 @@ function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
-  const [reviewType, setReviewType] = useState("");
   const [columnToFilter, setColumnToFilter] = useState("countyFileNumber");
 
   let table = useReactTable({
@@ -106,17 +111,23 @@ function DataTable<TData, TValue>({
     },
   });
 
+  const [reviewTypes, setReviewTypes] = useState<Record<string, string>>({}); // Review status for each row
+  const [selectedReviewType, setSelectedReviewType] = useState("");
+
   const handleRowChange = (newPageSize: number) => {
     setPageSize(newPageSize);
     setPageIndex(0); // Reset page index when page size changes
   };
 
-  const handleReviewClick = (reviewType: string) => {
-    setReviewType(reviewType);
+  const handleReviewClick = (reviewType: string, rowId: string) => {
+    setSelectedReviewType(reviewType);
   };
+
   const handleReviewOKClick = () => {
-    console.log("Should update data here.");
+    // TODO: * Implement review status change by calling API
+    //       * Update the review status state in the table
   };
+
   return (
     <div>
       <div className="flex items-center py-4">
@@ -225,35 +236,73 @@ function DataTable<TData, TValue>({
                               style={{
                                 outline: "1px solid #d3d3d3",
                                 width: "160px",
+                                backgroundColor: reviewTypes[row.id]
+                                  ? reviewStatusColors[
+                                      reviewTypes[row.id].toString()
+                                    ]
+                                  : reviewStatusColors[
+                                      cell.getValue() as string
+                                    ],
                               }}
                             >
-                              {reviewType === ""
+                              {reviewTypes[row.id] === undefined
                                 ? (cell.getValue() as React.ReactNode)
-                                : reviewType}
+                                : (reviewTypes[row.id] as React.ReactNode)}
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                              <DropdownMenuItem>
-                                <DialogTrigger
-                                  onClick={() =>
-                                    handleReviewClick("Need Review")
-                                  }
-                                >
-                                  Need Review
-                                </DialogTrigger>
+                              <DropdownMenuItem
+                                style={{
+                                  backgroundColor:
+                                    reviewStatusColors["Unreviewed"],
+                                }}
+                              >
+                                {cell.getValue() !== "Unreviewed" ? (
+                                  <DialogTrigger
+                                    onClick={() =>
+                                      handleReviewClick("Unreviewed", row.id)
+                                    }
+                                  >
+                                    Unreviewed
+                                  </DialogTrigger>
+                                ) : (
+                                  "Unreviewed"
+                                )}
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <DialogTrigger
-                                  onClick={() => handleReviewClick("In Review")}
-                                >
-                                  In Review
-                                </DialogTrigger>
+                              <DropdownMenuItem
+                                style={{
+                                  backgroundColor:
+                                    reviewStatusColors["In Review"],
+                                }}
+                              >
+                                {cell.getValue() !== "In Review" ? (
+                                  <DialogTrigger
+                                    onClick={() =>
+                                      handleReviewClick("In Review", row.id)
+                                    }
+                                  >
+                                    In Review
+                                  </DialogTrigger>
+                                ) : (
+                                  "In Review"
+                                )}
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <DialogTrigger
-                                  onClick={() => handleReviewClick("Reviewed")}
-                                >
-                                  Reviewed
-                                </DialogTrigger>
+                              <DropdownMenuItem
+                                style={{
+                                  backgroundColor:
+                                    reviewStatusColors["Reviewed"],
+                                }}
+                              >
+                                {cell.getValue() !== "Reviewed" ? (
+                                  <DialogTrigger
+                                    onClick={() =>
+                                      handleReviewClick("Reviewed", row.id)
+                                    }
+                                  >
+                                    Reviewed
+                                  </DialogTrigger>
+                                ) : (
+                                  "Reviewed"
+                                )}
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -264,8 +313,51 @@ function DataTable<TData, TValue>({
                                 Confirm Review Status Change
                               </DialogTitle>
                               <DialogDescription>
-                                Are you sure you want to change the review
-                                status to {reviewType}?
+                                <div>
+                                  Are you sure you want to change the review
+                                  status to {selectedReviewType}?
+                                  <br />
+                                  <br />
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      gap: "10px", // adjust this value to create the desired space between child components
+                                    }}
+                                  >
+                                    <Button
+                                      style={{
+                                        backgroundColor: reviewTypes[row.id]
+                                          ? reviewStatusColors[
+                                              reviewTypes[row.id].toString()
+                                            ]
+                                          : reviewStatusColors[
+                                              cell.getValue() as string
+                                            ],
+                                        color: "black",
+                                      }}
+                                    >
+                                      {reviewTypes[row.id] === undefined
+                                        ? (cell.getValue() as React.ReactNode)
+                                        : (reviewTypes[
+                                            row.id
+                                          ] as React.ReactNode)}
+                                    </Button>
+                                    <ArrowRightIcon />
+                                    <Button
+                                      style={{
+                                        backgroundColor:
+                                          reviewStatusColors[
+                                            selectedReviewType
+                                          ],
+                                        color: "black",
+                                      }}
+                                    >
+                                      {selectedReviewType}
+                                    </Button>
+                                  </div>
+                                </div>
                               </DialogDescription>
                             </DialogHeader>
                             <DialogFooter>
