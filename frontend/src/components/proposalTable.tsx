@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 import {
   Select,
@@ -10,13 +11,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Button } from "@/components/ui/button";
+
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   ColumnDef,
   SortingState,
@@ -38,8 +49,30 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { columns } from "../lib/tableColumns";
 import { IProject } from "@/database/projectSchema";
+import { DialogClose } from "@radix-ui/react-dialog";
+
+const reviewStatusColors: Record<any, string> = {
+  Unreviewed: "#EC7590",
+  "In Review": "#ffd166",
+  Reviewed: "#06d6a0",
+};
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -58,7 +91,7 @@ function DataTable<TData, TValue>({
   );
   const [columnToFilter, setColumnToFilter] = useState("countyFileNumber");
 
-  const table = useReactTable({
+  let table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -78,9 +111,21 @@ function DataTable<TData, TValue>({
     },
   });
 
+  const [reviewTypes, setReviewTypes] = useState<Record<string, string>>({}); // Review status for each row
+  const [selectedReviewType, setSelectedReviewType] = useState("");
+
   const handleRowChange = (newPageSize: number) => {
     setPageSize(newPageSize);
     setPageIndex(0); // Reset page index when page size changes
+  };
+
+  const handleReviewClick = (reviewType: string, rowId: string) => {
+    setSelectedReviewType(reviewType);
+  };
+
+  const handleReviewOKClick = () => {
+    // TODO: * Implement review status change by calling API
+    //       * Update the review status state in the table
   };
 
   return (
@@ -175,15 +220,166 @@ function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected()}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
+                      {cell.id.includes("review") ? (
+                        <Dialog>
+                          {" "}
+                          {/* 🔴 The dialog provider outside of the DropdownMenuContent */}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger
+                              className="bg-white text-zinc-900 
+                              hover:bg-zinc-100/90 
+                              dark:bg-zinc-500 dark:text-zinc-50 
+                              dark:hover:bg-zinc-900/90 p-2 rounded-md"
+                              style={{
+                                outline: "1px solid #d3d3d3",
+                                width: "160px",
+                                backgroundColor: reviewTypes[row.id]
+                                  ? reviewStatusColors[
+                                      reviewTypes[row.id].toString()
+                                    ]
+                                  : reviewStatusColors[
+                                      cell.getValue() as string
+                                    ],
+                              }}
+                            >
+                              {reviewTypes[row.id] === undefined
+                                ? (cell.getValue() as React.ReactNode)
+                                : (reviewTypes[row.id] as React.ReactNode)}
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem
+                                style={{
+                                  backgroundColor:
+                                    reviewStatusColors["Unreviewed"],
+                                }}
+                              >
+                                {cell.getValue() !== "Unreviewed" ? (
+                                  <DialogTrigger
+                                    onClick={() =>
+                                      handleReviewClick("Unreviewed", row.id)
+                                    }
+                                  >
+                                    Unreviewed
+                                  </DialogTrigger>
+                                ) : (
+                                  "Unreviewed"
+                                )}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                style={{
+                                  backgroundColor:
+                                    reviewStatusColors["In Review"],
+                                }}
+                              >
+                                {cell.getValue() !== "In Review" ? (
+                                  <DialogTrigger
+                                    onClick={() =>
+                                      handleReviewClick("In Review", row.id)
+                                    }
+                                  >
+                                    In Review
+                                  </DialogTrigger>
+                                ) : (
+                                  "In Review"
+                                )}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                style={{
+                                  backgroundColor:
+                                    reviewStatusColors["Reviewed"],
+                                }}
+                              >
+                                {cell.getValue() !== "Reviewed" ? (
+                                  <DialogTrigger
+                                    onClick={() =>
+                                      handleReviewClick("Reviewed", row.id)
+                                    }
+                                  >
+                                    Reviewed
+                                  </DialogTrigger>
+                                ) : (
+                                  "Reviewed"
+                                )}
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                          {/* 🔴 DialogContent ouside of DropdownMenuContent */}
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Confirm Review Status Change
+                              </DialogTitle>
+                              <DialogDescription>
+                                <div>
+                                  Are you sure you want to change the review
+                                  status to {selectedReviewType}?
+                                  <br />
+                                  <br />
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      gap: "10px", // adjust this value to create the desired space between child components
+                                    }}
+                                  >
+                                    <Button
+                                      style={{
+                                        backgroundColor: reviewTypes[row.id]
+                                          ? reviewStatusColors[
+                                              reviewTypes[row.id].toString()
+                                            ]
+                                          : reviewStatusColors[
+                                              cell.getValue() as string
+                                            ],
+                                        color: "black",
+                                      }}
+                                    >
+                                      {reviewTypes[row.id] === undefined
+                                        ? (cell.getValue() as React.ReactNode)
+                                        : (reviewTypes[
+                                            row.id
+                                          ] as React.ReactNode)}
+                                    </Button>
+                                    <ArrowRightIcon />
+                                    <Button
+                                      style={{
+                                        backgroundColor:
+                                          reviewStatusColors[
+                                            selectedReviewType
+                                          ],
+                                        color: "black",
+                                      }}
+                                    >
+                                      {selectedReviewType}
+                                    </Button>
+                                  </div>
+                                </div>
+                              </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter>
+                              <DialogClose asChild>
+                                <Button variant="outline">Cancel</Button>
+                              </DialogClose>
+                              <DialogClose asChild>
+                                <Button
+                                  variant="outline"
+                                  onClick={() => handleReviewOKClick()}
+                                >
+                                  OK
+                                </Button>
+                              </DialogClose>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      ) : (
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )
                       )}
                     </TableCell>
                   ))}
