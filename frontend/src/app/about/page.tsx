@@ -17,7 +17,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { ComponentInstanceIcon } from "@radix-ui/react-icons";
+import WebScrapingApproachCounty from "@/components/webScrapingApproachCounty";
 
 const slo_hearings_url =
   "https://www.slocounty.ca.gov/Home/Meetings-Calendar.aspx";
@@ -99,79 +99,13 @@ export default function About() {
         <Carousel>
           <CarouselContent>
             <CarouselItem key="San Luis Obispo">
-              <Card className="flex flex-col w-full h-[200px]">
-                <CardHeader>
-                  <CardTitle className="text-center">
-                    San Luis Obispo County
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>
-                    <span className="font-bold">Abstract: </span>Get projects
-                    from SLO County Meetings Calendar, cross-reference in State
-                    Clearing House, display in table.
-                  </p>
-                  <p>
-                    <span className="font-bold">Details:</span>Scrape SLO County
-                    meetings calender once a week. For each hearing, identify
-                    each project up for review. For each project, identify the
-                    County File Number and other relevant information and
-                    cross-reference it in the State Clearing House. If a match
-                    is found, scrape the project&apos;s unique SCH# and scrape
-                    additional information from the projects page.
-                  </p>
-                </CardContent>
-              </Card>
+              <WebScrapingApproachCounty county="San Luis Obispo" />
             </CarouselItem>
             <CarouselItem key="Santa Barbara">
-              <Card className="flex flex-col w-full h-[200px]">
-                <CardHeader>
-                  <CardTitle className="text-center">
-                    Santa Barbara County
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>
-                    <span className="font-bold">Abstract: </span>Get projects
-                    from Santa Barbara County Meetings Calendar, cross-reference
-                    in State Clearing House, display in table.
-                  </p>
-                  <p>
-                    <span className="font-bold">Details:</span>Scrape Santa
-                    Barbara County meetings calender once a week. For each
-                    hearing, identify each project up for review. For each
-                    project, identify the County File Number and other relevant
-                    information and cross-reference it in the State Clearing
-                    House. If a match is found, scrape the project&apos;s unique
-                    SCH# and scrape additional information from the projects
-                    page.
-                  </p>
-                </CardContent>
-              </Card>
+              <WebScrapingApproachCounty county="Santa Barbara" />
             </CarouselItem>
             <CarouselItem key="Monterey">
-              <Card className="flex flex-col w-full h-[200px]">
-                <CardHeader>
-                  <CardTitle className="text-center">Monterey County</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>
-                    <span className="font-bold">Abstract: </span>Get projects
-                    from Monterey County Meetings Calendar, cross-reference in
-                    State Clearing House, display in table.
-                  </p>
-                  <p>
-                    <span className="font-bold">Details:</span>Scrape Monterey
-                    County meetings calender once a week. For each hearing,
-                    identify each project up for review. For each project,
-                    identify the County File Number and other relevant
-                    information and cross-reference it in the State Clearing
-                    House. If a match is found, scrape the project&apos;s unique
-                    SCH# and scrape additional information from the projects
-                    page.
-                  </p>
-                </CardContent>
-              </Card>
+              <WebScrapingApproachCounty county="Monterey" />
             </CarouselItem>
           </CarouselContent>
           <CarouselPrevious />
