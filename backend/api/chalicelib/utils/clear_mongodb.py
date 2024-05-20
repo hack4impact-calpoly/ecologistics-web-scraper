@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from chalicelib.mongodb import get_mongo_client
 
 def clear_collections_database(database_name): 
+    print("Starting connection the Database")
+
     client = get_mongo_client()
     if client is None:
         print("Failed to connect to MongoDB")
@@ -16,7 +18,7 @@ def clear_collections_database(database_name):
 
     for collection_name in collections_to_clear:
         if collection_name in db.list_collection_names():
-            db[collection_name].drop()
+            db[collection_name].delete_many({})
             print(f"Collection '{collection_name}' in database '{database_name}' has been cleared.")
         else:
             print(f"Collection '{collection_name}' does not exist in database '{database_name}'.")
