@@ -6,7 +6,7 @@ from datetime import datetime
 PROJECTS_DATABASE = "test"
 PROJECTS_COLLECTION = "projects"
 METADATA_DATABASE = "test"
-METADATA_COLLECTION = "scrapermetadatas"
+METADATA_COLLECTION = "scraperMetadata"
 
 
 def update_metadata(hearingsScraped: int, scrapedProjects: List[Project]):

@@ -34,8 +34,11 @@ export default function About() {
   if (error) return <div>error loading</div>;
   if (isLoading) return <div>loading...</div>;
 
-  const SCHPercentage =
-    (data.totalSCHProjectsScraped / data.totalProjectsScraped) * 100;
+  let SCHPercentage = 0;
+  if (data.totalSCHProjectsScraped > 0) {
+    SCHPercentage =
+      (data.totalSCHProjectsScraped / data.totalProjectsScraped) * 100;
+  }
 
   return (
     <div className="flex flex-col w-full gap-10">
@@ -121,7 +124,7 @@ export default function About() {
               <CardTitle className="text-center">Total Projects</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">{data.totalProjectsScraped}</h1>
+              <h1 className="text-7xl">{data.totalProjectsScraped ?? 0}</h1>
             </CardContent>
           </Card>
           <Card className="flex flex-col justify-between w-[350px] h-[300px]">
@@ -137,7 +140,7 @@ export default function About() {
               <CardTitle className="text-center">Total Hearings</CardTitle>
             </CardHeader>
             <CardContent className="flex h-full justify-center items-center">
-              <h1 className="text-7xl">{data.totalHearingsScraped}</h1>
+              <h1 className="text-7xl">{data.totalHearingsScraped ?? 0}</h1>
             </CardContent>
           </Card>
         </div>
