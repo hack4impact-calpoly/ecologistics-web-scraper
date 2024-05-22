@@ -5,7 +5,7 @@ import certifi
 
 
 def get_mongo_client():
-    load_dotenv("../../.env.local")  # allows access of env variables from .env
+    load_dotenv("../../../.env.local")  # allows access of env variables from .env
     URI = os.getenv("MONGO_URI")
 
     try:
