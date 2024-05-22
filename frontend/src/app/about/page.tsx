@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import Diagram from "@/components/diagram";
 import useSWR from "swr";
 
 import {
@@ -89,7 +90,7 @@ export default function About() {
       </div>
       <div className="flex flex-col bg-primary-foreground rounded-lg w-full items-center justify-center py-5 px-20 gap-5">
         <h1 className="text-3xl font-bold">Web Scraping Approach</h1>
-        <Card className="flex flex-col w-full h-[200px]">
+        <Card className="flex flex-col w-full h-full">
           <CardHeader>
             <CardTitle className="text-center">
               San Luis Obispo County
@@ -110,6 +111,7 @@ export default function About() {
               project&apos;s unique SCH# and scrape additional information from
               the projects page.
             </p>
+            <Diagram />
           </CardContent>
         </Card>
       </div>
