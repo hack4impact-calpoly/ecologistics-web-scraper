@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Diagram from "@/components/diagram";
 
 interface WebScrapingApproachCountyProps {
   county: string;
@@ -16,7 +17,7 @@ export default function WebScrapingApproachCounty({
   county,
 }: WebScrapingApproachCountyProps) {
   return (
-    <Card className="flex flex-col w-full h-[200px]">
+    <Card className="flex flex-col w-full h-full">
       <CardHeader>
         <CardTitle className="text-center">{county} County</CardTitle>
       </CardHeader>
@@ -34,6 +35,7 @@ export default function WebScrapingApproachCounty({
           Clearing House. If a match is found, scrape the project&apos;s unique
           SCH# and scrape additional information from the projects page.
         </p>
+        <Diagram />
       </CardContent>
     </Card>
   );
