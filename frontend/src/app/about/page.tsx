@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import Diagram from "@/components/diagram";
 import useSWR from "swr";
 import {
   Card,

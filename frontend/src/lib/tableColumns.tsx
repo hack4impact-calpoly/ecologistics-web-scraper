@@ -1,9 +1,9 @@
 "use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { IProject } from "@/database/projectSchema";
+import { Separator } from "@/components/ui/separator";
 
 import {
   Dialog,
@@ -16,6 +16,20 @@ import {
 } from "@/components/ui/dialog";
 
 export const columns: ColumnDef<IProject>[] = [
+  {
+    accessorKey: "reviewStatus",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Review Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
   {
     accessorKey: "countyFileNumber",
     header: ({ column }) => {
@@ -54,10 +68,6 @@ export const columns: ColumnDef<IProject>[] = [
 
       return date1 < date2 ? 1 : -1;
     },
-  },
-  {
-    accessorKey: "reviewStatus",
-    header: "Review Status",
   },
   {
     accessorKey: "location",
@@ -101,22 +111,76 @@ export const columns: ColumnDef<IProject>[] = [
     header: "SCH Number",
   },
   {
-    accessorKey: "moreInfo",
+    accessorKey: "more_info",
     header: () => "More Info",
-    cell: ({ row, table }) => (
+    cell: ({ row, column }) => (
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="ghost">
             <MoreHorizontal className="h-5 w-5" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px] sm:min-h-[400px] sm:max-h-[700px]">
+        <DialogContent className="sm:max-w-[800px] sm:max-h-[700px]">
           <DialogHeader>
-            <DialogTitle>Enter Content Here</DialogTitle>
+            <DialogTitle>
+              Project {row.original.countyFileNumber}{" "}
+              {row.original.title !== "N/A"
+                ? `(
+              ${row.original.title})`
+                : ``}
+            </DialogTitle>
             <DialogDescription>
-              Row {table.getRowModel().rows.indexOf(row) + 1}
+              Click the edit icon to update additional notes related to this
+              project.
             </DialogDescription>
           </DialogHeader>
+          <div>
+            <div className="flex items-start h-16 space-x-2">
+              <div className="w-1/2 overflow-auto whitespace-normal">
+                <h1>Public Hearing Agenda Link:</h1>
+                <DialogDescription>
+                  <a
+                    href={row.original.publicHearingAgenda}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {row.original.publicHearingAgenda}
+                  </a>
+                </DialogDescription>
+              </div>
+              <Separator orientation="vertical" />
+              {row.original.schLink && (
+                <div className="w-1/2 overflow-auto whitespace-normal">
+                  <h1>California State Clearing House Link:</h1>
+                  <DialogDescription>
+                    {row.original.schLink !== "N/A" ? (
+                      <a
+                        href={row.original.schLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {row.original.schLink}
+                      </a>
+                    ) : (
+                      row.original.schLink
+                    )}
+                  </DialogDescription>
+                </div>
+              )}
+            </div>
+            <br />
+            <Separator />
+            <br />
+            {row.original.additionalNotes && (
+              <div>
+                <h3>Additional Notes:</h3>
+                <DialogDescription>
+                  {row.original.additionalNotes}
+                </DialogDescription>
+                {/* ADD TEXT BOX AND BUTTONS FOR EDITING */}
+              </div>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     ),
