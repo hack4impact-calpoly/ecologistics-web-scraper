@@ -97,7 +97,11 @@ export default function About() {
       </div>
       <div className="flex flex-col bg-primary-foreground rounded-lg w-full items-center justify-center py-5 px-20 gap-5">
         <h1 className="text-3xl font-bold">Web Scraping Approach</h1>
-        <Carousel>
+        <Carousel
+          opts={{
+            loop: true,
+          }}
+        >
           <CarouselContent>
             <CarouselItem key="San Luis Obispo">
               <WebScrapingApproachCounty county="San Luis Obispo" />
