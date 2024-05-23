@@ -502,58 +502,18 @@ function DataTable<TData, TValue>({
   );
 }
 
-async function getData(): Promise<IProject[]> {
-  // Fetch data from your API here.
-  try {
-    const response = await fetch("/api/projects");
-    if (!response.ok) {
-      throw new Error("Failed to fetch projects");
-    }
-    const data = await response.json();
-    const reformattedProjects = data.map((project: any) => ({
-      countyFileNumber: project.county_file_number,
-      hearingDate: project.hearing_date,
-      reviewStatus: project.review_status ?? "Unreviewed",
-      location: project.location,
-      apn: project.apn,
-      dateAccepted: project.date_accepted,
-      requestingParty: project.requesting_party ?? "N/A",
-      schNumber: project.sch_number ?? "N/A",
-      title: project.title ?? "N/A",
-      publicHearingAgenda: project.public_hearing_agenda_link,
-      schLink: project.sch_page_link ?? "N/A",
-      additionalNotes: project.additonal_notes ?? "N/A",
-    }));
-    return reformattedProjects;
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-    return [];
-  }
+interface ProposalTableProps {
+  data: IProject[];
+  numProjects: number;
 }
 
-export function ProposalTable() {
-  const [tableData, setTableData] = useState<IProject[]>([]);
-  const [numProjects, setNumProjects] = useState(0);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const proposals = await getData();
-        setTableData(proposals);
-        setNumProjects(proposals.length);
-      } catch (error) {
-        console.error("Error fetching proposals", error);
-      }
-    };
-    fetchData();
-  }, []);
-
+export function ProposalTable({ data, numProjects }: ProposalTableProps) {
   return (
     <div className="container mx-auto py-5">
       <div className="text-xl font-bold">
         San Luis Obispo County ({numProjects})
       </div>
-      <DataTable columns={columns} data={tableData} />
+      <DataTable columns={columns} data={data} />
     </div>
   );
 }
