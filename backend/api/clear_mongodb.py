@@ -11,7 +11,7 @@ def clear_collections_database(database_name):
     
     db = client[database_name]
     
-    collections_to_clear = ["hearings", "projects", "scraperMetadata"]
+    collections_to_clear = ["hearings", "projects"]
 
     for collection_name in collections_to_clear:
         if collection_name in db.list_collection_names():
@@ -20,6 +20,16 @@ def clear_collections_database(database_name):
         else:
             print(f"Collection '{collection_name}' does not exist in database '{database_name}'.")
 
+    if "scraperMetadata" in db.list_collection_names():
+        db["scraperMetadata"].update_one({}, {"$set": {
+            "lastRan": None,
+            "totalHearingsScraped": 0,
+            "totalProjectsScraped": 0,
+            "totalSCHProjectsScraped": 0
+        }})
+        print("Values in the 'scraperMetadata' document have been reset.")
+    else:
+        print("Collection 'scraperMetadata' does not exist in database '{database_name}'.")
     client.close()
 
 if __name__ == "__main__":
