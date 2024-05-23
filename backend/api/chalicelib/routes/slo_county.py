@@ -71,9 +71,9 @@ def get_hearings():
 
                     #updating link
                     project.sch_page_link = sch_projects[title][1]
-                
+
+        update_metadata(len(hearings), projects)     
         add_projects_to_mongo(projects)
-        update_metadata(len(hearings), projects)
         
         return {"status": "success", "message": "OK"}, 200
     except Exception as e:
