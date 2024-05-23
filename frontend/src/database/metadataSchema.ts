@@ -8,4 +8,4 @@ const MetadataSchema = new Schema({
 });
 
 export default mongoose.models.ScraperMetadata ||
-  mongoose.model("ScraperMetadata", MetadataSchema);
+  mongoose.model("ScraperMetadata", MetadataSchema, "scraperMetadata");
