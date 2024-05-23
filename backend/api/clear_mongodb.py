@@ -1,7 +1,4 @@
 import sys
-sys.path.append('../../')
-from pymongo.mongo_client import MongoClient
-from dotenv import load_dotenv
 from chalicelib.mongodb import get_mongo_client
 
 def clear_collections_database(database_name): 
