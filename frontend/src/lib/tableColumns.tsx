@@ -123,7 +123,7 @@ export const columns: ColumnDef<IProject>[] = [
         <DialogContent className="sm:max-w-[800px] sm:max-h-[700px]">
           <DialogHeader>
             <DialogTitle>
-              Project {row.original.countyFileNumber}{" "}
+              Project {row.original.county_file_number}{" "}
               {row.original.title !== "N/A"
                 ? `(
               ${row.original.title})`
@@ -140,29 +140,29 @@ export const columns: ColumnDef<IProject>[] = [
                 <h1>Public Hearing Agenda Link:</h1>
                 <DialogDescription>
                   <a
-                    href={row.original.publicHearingAgenda}
+                    href={row.original.public_hearing_agenda_link}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {row.original.publicHearingAgenda}
+                    {row.original.public_hearing_agenda_link}
                   </a>
                 </DialogDescription>
               </div>
               <Separator orientation="vertical" />
-              {row.original.schLink && (
+              {row.original.sch_page_link && (
                 <div className="w-1/2 overflow-auto whitespace-normal">
                   <h1>California State Clearing House Link:</h1>
                   <DialogDescription>
-                    {row.original.schLink !== "N/A" ? (
+                    {row.original.sch_page_link !== "N/A" ? (
                       <a
-                        href={row.original.schLink}
+                        href={row.original.sch_page_link}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {row.original.schLink}
+                        {row.original.sch_page_link}
                       </a>
                     ) : (
-                      row.original.schLink
+                      row.original.sch_page_link
                     )}
                   </DialogDescription>
                 </div>
@@ -171,11 +171,11 @@ export const columns: ColumnDef<IProject>[] = [
             <br />
             <Separator />
             <br />
-            {row.original.additionalNotes && (
+            {row.original.additional_notes && (
               <div>
                 <h3>Additional Notes:</h3>
                 <DialogDescription>
-                  {row.original.additionalNotes}
+                  {row.original.additional_notes}
                 </DialogDescription>
                 {/* ADD TEXT BOX AND BUTTONS FOR EDITING */}
               </div>
