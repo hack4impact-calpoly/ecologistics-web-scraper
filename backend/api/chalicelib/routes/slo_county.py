@@ -89,6 +89,7 @@ def add_projects_to_mongo(projects):
             #collection.drop()
             
             for project in projects:
+                print("Adding project to database: ", project.to_dict())
                 collection.insert_one(project.to_dict())
                 
             print("Inserted projects into database")
