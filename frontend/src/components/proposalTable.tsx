@@ -254,6 +254,10 @@ function DataTable<TData, TValue>({
                                 style={{
                                   backgroundColor:
                                     reviewStatusColors["Unreviewed"],
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  paddingTop: "8px",
+                                  paddingBottom: "8px",
                                 }}
                               >
                                 {cell.getValue() !== "Unreviewed" ? (
@@ -272,6 +276,12 @@ function DataTable<TData, TValue>({
                                 style={{
                                   backgroundColor:
                                     reviewStatusColors["In Review"],
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  paddingTop: "8px",
+                                  paddingBottom: "8px",
+                                  marginTop: "5px",
+                                  marginBottom: "5px",
                                 }}
                               >
                                 {cell.getValue() !== "In Review" ? (
@@ -290,6 +300,10 @@ function DataTable<TData, TValue>({
                                 style={{
                                   backgroundColor:
                                     reviewStatusColors["Reviewed"],
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  paddingTop: "8px",
+                                  paddingBottom: "8px",
                                 }}
                               >
                                 {cell.getValue() !== "Reviewed" ? (
