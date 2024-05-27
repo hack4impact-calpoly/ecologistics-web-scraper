@@ -16,6 +16,22 @@ export type IProject = {
   additional_notes?: string;
 };
 
+// for displaying data in table
+export type ReformattedProject = {
+  countyFileNumber: string;
+  hearingDate: string;
+  reviewStatus: string;
+  location: string;
+  apn: string;
+  dateAccepted: string;
+  requestingParty: string;
+  schNumber: string;
+  title: string;
+  publicHearingAgenda: string;
+  schLink: string;
+  additionalNotes: string;
+};
+
 //mongoose schema
 export const projectSchema = new Schema<IProject>({
   county_file_number: { type: String, required: true },

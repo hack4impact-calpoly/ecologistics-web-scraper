@@ -65,7 +65,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { columns } from "../lib/tableColumns";
-import { IProject } from "@/database/projectSchema";
+import { IProject, ReformattedProject } from "@/database/projectSchema";
 import { DialogClose } from "@radix-ui/react-dialog";
 
 const reviewStatusColors: Record<any, string> = {
@@ -225,7 +225,6 @@ function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {cell.id.includes("review") ? (
                         <Dialog>
-                          {" "}
                           {/* 🔴 The dialog provider outside of the DropdownMenuContent */}
                           <DropdownMenu>
                             <DropdownMenuTrigger
@@ -520,7 +519,7 @@ export function ProjectTable({
   projectData,
   numProjects,
 }: {
-  projectData: IProject[];
+  projectData: ReformattedProject[];
   numProjects: number;
 }) {
   return (
