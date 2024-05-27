@@ -50,11 +50,6 @@ def scrape_hearings():
 
                     # Generate unique ID based on time of event
                     id = date_to_unix(date_string)
-                    print(id)
-                    # To do: check if meeting is already in database
-                    # if not, add to database an append to list
-                    # if already in database, continue to next event
-                    print("processing document...")
                     if not in_db(id, collection):
                         print(f"adding project with id {id} to [test][hearing] collection")
                         upcoming_hearings.append(

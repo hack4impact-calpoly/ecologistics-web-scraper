@@ -52,51 +52,65 @@ export default function About() {
     <div className="flex flex-col w-full gap-10">
       <div className="flex flex-col bg-primary-foreground rounded-lg w-full items-center justify-center py-5 px-20 gap-5">
         <h1 className="text-3xl font-bold">Data Sources</h1>
-
-        <div className="grid grid-cols-2 gap-10">
-          <Card className="flex flex-col justify-between w-[350px] h-[300px]">
-            <CardHeader>
-              <CardTitle className="text-center">
-                SLO County Meetings Calendar
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>
-                San Luis Obispo meeting calendar, along with links to the
-                meeting agendas which include the projects being reviewed at
-                that meeting.
-              </p>
-            </CardContent>
-            <CardFooter className="flex justify-center">
-              <Button
-                className="bg-secondary"
-                onClick={() => handleVisitSite(slo_hearings_url)}
-              >
-                Visit Site
-              </Button>
-            </CardFooter>
-          </Card>
-          <Card className="flex flex-col justify-between w-[350px] h-[300px]">
-            <CardHeader>
-              <CardTitle className="text-center">CEQAnet Web Portal</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>
-                Online searchable database for all California Environmental
-                Quality Act (CEQA) documents submitted to the State Clearing
-                House for state review.
-              </p>
-            </CardContent>
-            <CardFooter className="flex justify-center">
-              <Button
-                className="bg-secondary"
-                onClick={() => handleVisitSite(ceqa_url)}
-              >
-                Visit Site
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
+        <Carousel
+          opts={{
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="justify-center">
+            <CarouselItem key="SLO Calendar" className="basis-1/3">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-center">
+                    SLO County Meetings Calendar
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    San Luis Obispo meeting calendar, along with links to the
+                    meeting agendas which include the projects being reviewed at
+                    that meeting.
+                  </p>
+                </CardContent>
+                <CardFooter className="flex justify-center">
+                  <Button
+                    className="bg-secondary"
+                    onClick={() => handleVisitSite(slo_hearings_url)}
+                  >
+                    Visit Site
+                  </Button>
+                </CardFooter>
+              </Card>
+            </CarouselItem>
+            <CarouselItem key="CEQA" className="basis-1/3">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-center">
+                    CEQAnet Web Portal
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    Online searchable database for all California Environmental
+                    Quality Act (CEQA) documents submitted to the State Clearing
+                    House for state review.
+                  </p>
+                </CardContent>
+                <CardFooter className="flex justify-center">
+                  <Button
+                    className="bg-secondary"
+                    onClick={() => handleVisitSite(ceqa_url)}
+                  >
+                    Visit Site
+                  </Button>
+                </CardFooter>
+              </Card>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
       <div className="flex flex-col bg-primary-foreground rounded-lg w-full items-center justify-center py-5 px-20 gap-5">
         <h1 className="text-3xl font-bold">Web Scraping Approach</h1>
