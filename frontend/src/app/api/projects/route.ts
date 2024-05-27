@@ -5,13 +5,13 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   // check if query params are passed
   const url = new URL(req.url);
-  const countyFileNumber = url.searchParams.get("countyFileNumber");
+  const county_file_number = url.searchParams.get("county_file_number");
 
   try {
     await connectDB();
     // TODO: get project by countyFileNumber
-    if (countyFileNumber) {
-      console.log(countyFileNumber);
+    if (county_file_number) {
+      console.log(county_file_number);
     }
 
     // get all projects
@@ -23,25 +23,31 @@ export async function GET(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  const { countyFileNumber, reviewStatus } = await req.json();
+  const { county_file_number, review_status } = await req.json();
 
   try {
     await connectDB();
-
     const possibleStatus = ["Reviewed", "In Review", "Unreviewed"];
-    const fieldMising = !countyFileNumber || !reviewStatus;
-    const statusPossible = possibleStatus.includes(reviewStatus);
-    if (fieldMising || !statusPossible) {
-      return NextResponse.json("Missing or bad field in request");
+    const fieldMissing = !county_file_number || !review_status;
+    const statusPossible = possibleStatus.includes(review_status);
+
+    if (fieldMissing || !statusPossible) {
+      return NextResponse.json("Missing/bad field in request", { status: 400 });
     }
 
-    await Project.findOneAndUpdate(
-      { county_file_number: countyFileNumber },
-      { review_status: reviewStatus },
+    const updatedDoc = await Project.findOneAndUpdate(
+      { county_file_number: county_file_number },
+      { review_status: review_status },
+      { new: true },
     );
 
-    return NextResponse.json("Update review status success", { status: 200 });
+    if (!updatedDoc) {
+      return NextResponse.json("Document not found", { status: 404 });
+    } else {
+      return NextResponse.json("Update review status success", { status: 200 });
+    }
   } catch (error) {
-    return NextResponse.json("Error updating review status", { status: 500 });
+    console.log(error);
+    return NextResponse.json(`Error`, { status: 500 });
   }
 }
