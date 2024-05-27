@@ -7,7 +7,11 @@ import "@/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function ScrapeButton() {
+export default function ScrapeButton({
+  fetchProjectData,
+}: {
+  fetchProjectData: () => Promise<never[] | undefined>;
+}) {
   const [loading, setLoading] = useState(false);
   const [dateRun, setDateRun] = useState("Never");
   const { toast } = useToast();
@@ -56,13 +60,9 @@ export default function ScrapeButton() {
         duration: 5000,
       });
     }
-
-    setTimeout(() => {
-      setLoading(false);
-
-      // get latest button run time
-      fetchMetadata();
-    }, 3000);
+    fetchMetadata();
+    fetchProjectData();
+    setLoading(false);
   };
 
   return (
