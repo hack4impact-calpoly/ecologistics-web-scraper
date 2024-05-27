@@ -34,7 +34,7 @@ export const projectSchema = new Schema<IProject>({
 
 // defining the collection and model and creating one if doesn't exist
 
-const Proposal =
+const Project =
   mongoose.models["projects"] || mongoose.model("projects", projectSchema);
 
-export default Proposal;
+export default Project;

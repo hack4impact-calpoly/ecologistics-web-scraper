@@ -1,5 +1,5 @@
 import connectDB from "@/database/db";
-import Proposal from "@/database/projectSchema";
+import Project from "@/database/projectSchema";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     }
 
     // get all projects
-    const projects = await Proposal.find({});
+    const projects = await Project.find({});
     return NextResponse.json(projects);
   } catch (err) {
     return NextResponse.json("Error retrieving projects.", { status: 404 });
@@ -35,7 +35,7 @@ export async function PUT(req: Request) {
       return NextResponse.json("Missing/bad field in request", { status: 400 });
     }
 
-    const updatedDoc = await Proposal.findOneAndUpdate(
+    const updatedDoc = await Project.findOneAndUpdate(
       { county_file_number: county_file_number },
       { review_status: review_status },
       { new: true },
