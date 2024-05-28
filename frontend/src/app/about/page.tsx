@@ -39,8 +39,35 @@ export default function About() {
     window.open(url, "_blank");
   };
 
-  if (error) return <div>error loading</div>;
-  if (isLoading) return <div>loading...</div>;
+  if (error)
+    return (
+      <div
+        style={{
+          fontSize: "2em",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "90vh",
+        }}
+      >
+        error loading
+      </div>
+    );
+
+  if (isLoading)
+    return (
+      <div
+        style={{
+          fontSize: "2em",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "90vh",
+        }}
+      >
+        Loading...
+      </div>
+    );
 
   let SCHPercentage = 0;
   if (data.totalSCHProjectsScraped > 0) {
