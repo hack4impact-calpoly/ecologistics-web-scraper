@@ -26,6 +26,7 @@
     "axios": "^1.6.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cmdk": "^1.0.0",
     "embla-carousel-react": "^8.1.2",
     "lucide-react": "^0.314.0",
     "mongoose": "^7.6.3",
