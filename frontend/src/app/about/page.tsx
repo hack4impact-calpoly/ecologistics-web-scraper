@@ -50,7 +50,7 @@ export default function About() {
           height: "90vh",
         }}
       >
-        error loading
+        Error loading page. Please try again.
       </div>
     );
 
