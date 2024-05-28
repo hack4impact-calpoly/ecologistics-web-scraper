@@ -26,9 +26,28 @@ const MoreInfoCell = ({ row }) => {
     setIsEditing(false);
     setNotes(row.original.additionalNotes || "");
   };
-  const handleSaveClick = () => {
-    // TODO: call the endpoint to update additional notes
-    setIsEditing(false);
+  const handleSaveClick = async () => {
+    try {
+      const response = await fetch("api/projects", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          countyFileNumber: row.original.countyFileNumber,
+          additionalNotes: notes,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error updating additional notes");
+      }
+
+      setIsEditing(false);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update additional notes");
+    }
   };
 
   return (
