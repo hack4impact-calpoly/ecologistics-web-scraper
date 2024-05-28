@@ -2,7 +2,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { IProject } from "@/database/projectSchema";
+import { IProject, ReformattedProject } from "@/database/projectSchema";
 import { Separator } from "@/components/ui/separator";
 
 import {
@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export const columns: ColumnDef<IProject>[] = [
+export const columns: ColumnDef<ReformattedProject>[] = [
   {
     accessorKey: "reviewStatus",
     header: ({ column }) => {
@@ -123,7 +123,7 @@ export const columns: ColumnDef<IProject>[] = [
         <DialogContent className="sm:max-w-[800px] sm:max-h-[700px]">
           <DialogHeader>
             <DialogTitle>
-              Project {row.original.county_file_number}{" "}
+              Project {row.original.countyFileNumber}{" "}
               {row.original.title !== "N/A"
                 ? `(
               ${row.original.title})`
@@ -140,29 +140,29 @@ export const columns: ColumnDef<IProject>[] = [
                 <h1>Public Hearing Agenda Link:</h1>
                 <DialogDescription>
                   <a
-                    href={row.original.public_hearing_agenda_link}
+                    href={row.original.publicHearingAgenda}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {row.original.public_hearing_agenda_link}
+                    {row.original.publicHearingAgenda}
                   </a>
                 </DialogDescription>
               </div>
               <Separator orientation="vertical" />
-              {row.original.sch_page_link && (
+              {row.original.schLink && (
                 <div className="w-1/2 overflow-auto whitespace-normal">
                   <h1>California State Clearing House Link:</h1>
                   <DialogDescription>
-                    {row.original.sch_page_link !== "N/A" ? (
+                    {row.original.schLink !== "N/A" ? (
                       <a
-                        href={row.original.sch_page_link}
+                        href={row.original.schLink}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {row.original.sch_page_link}
+                        {row.original.schLink}
                       </a>
                     ) : (
-                      row.original.sch_page_link
+                      row.original.schLink
                     )}
                   </DialogDescription>
                 </div>
@@ -171,11 +171,11 @@ export const columns: ColumnDef<IProject>[] = [
             <br />
             <Separator />
             <br />
-            {row.original.additional_notes && (
+            {row.original.additionalNotes && (
               <div>
                 <h3>Additional Notes:</h3>
                 <DialogDescription>
-                  {row.original.additional_notes}
+                  {row.original.additionalNotes}
                 </DialogDescription>
                 {/* ADD TEXT BOX AND BUTTONS FOR EDITING */}
               </div>
