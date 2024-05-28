@@ -94,23 +94,49 @@ export default function Home() {
             <div className="grid gap-4 py-4">
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
-                  <AccordionTrigger>Is it accessible?</AccordionTrigger>
+                  <AccordionTrigger>Review Status Options</AccordionTrigger>
                   <AccordionContent>
-                    Yes. It adheres to the WAI-ARIA design pattern.
+                    <strong>Unreviewed:</strong> Default option for projects
+                    that have not been reviewed yet. <br /> <br />
+                    <strong>In Review:</strong> Projects that have been selected
+                    for further review or action. <br /> <br />
+                    <strong>Reviewed:</strong> Projects that have been reviewed
+                    and no further action is needed. <br /> <br />
+                    <em>
+                      Click on the review status of a project to change it.
+                    </em>
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
-                  <AccordionTrigger>Is it styled?</AccordionTrigger>
+                  <AccordionTrigger>More Info Column</AccordionTrigger>
                   <AccordionContent>
-                    Yes. It comes with default styles that matches the other
-                    components&apos; aesthetic.
+                    The far right column contains a button that when clicked
+                    will display additional information about the project
+                    including any links to the webpages the data was scraped
+                    from. Additionally, from this dialog you can add notes to
+                    the project for future reference.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-3">
-                  <AccordionTrigger>Is it animated?</AccordionTrigger>
+                  <AccordionTrigger>What do N/A values mean?</AccordionTrigger>
                   <AccordionContent>
-                    Yes. It&apos;s animated by default, but you can disable it
-                    if you prefer.
+                    N/A values indicate that the data was unable to be scraped
+                    from the webpage. This could be due to abnormal formatting
+                    in an agenda. If the N/A value is in the &quot;SCH
+                    Number&quot; column, it means that the project was not found
+                    in the CEQA database.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-4">
+                  <AccordionTrigger>
+                    Sorting, Searching, Filtering
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    This table supports sorting by hearing date and acceptance
+                    date. You can search for projects by any of the columns by
+                    selecting an attribute in the dropdown menu to the left of
+                    the search bar. Additionally, you can filter projects by
+                    Review Status and Location.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
