@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, Cross2Icon } from "@radix-ui/react-icons";
 
 import {
   Select,
@@ -65,6 +65,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { columns } from "../lib/tableColumns";
+import { DataTableFacetedFilter } from "@/lib/tableFacetedFilter";
 import { IProject } from "@/database/projectSchema";
 import { DialogClose } from "@radix-ui/react-dialog";
 
@@ -90,6 +91,21 @@ function DataTable<TData, TValue>({
     [],
   );
   const [columnToFilter, setColumnToFilter] = useState("countyFileNumber");
+
+  const statuses = [
+    {
+      value: "Unreviewed",
+      label: "Unreviewed",
+    },
+    {
+      value: "In Review",
+      label: "In Review",
+    },
+    {
+      value: "Reviewed",
+      label: "Reviewed",
+    },
+  ];
 
   let table = useReactTable({
     data,
@@ -196,6 +212,23 @@ function DataTable<TData, TValue>({
           }
           className="max-w-sm ml-2"
         />
+        {table.getColumn("reviewStatus") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("reviewStatus")}
+            title="Status"
+            options={statuses}
+          />
+        )}
+        {table.getState().columnFilters.length > 0 && (
+          <Button
+            variant="ghost"
+            onClick={() => table.resetColumnFilters()}
+            className="max-w-sm ml-2"
+          >
+            Reset
+            <Cross2Icon className="ml-2 h-4 w-4" />
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>
