@@ -54,9 +54,6 @@ def get_hearings():
                         additional_notes=None,
                     )
                 )
-
-        # sch_projects = scrape_sch()
-        # To do: cross-reference projects in sch and fill in missing data
         
         sch_projects = scrape_sch()
         #iterate through projects, and check if county file number is in sch_projects title. -- if it is, insert necessary data. 
@@ -89,9 +86,7 @@ def add_projects_to_mongo(projects):
             #collection.drop()
             
             for project in projects:
-                collection.insert_one(project.to_dict())
-                
-            print("Inserted projects into database")
+                collection.insert_one(project.to_dict())               
         except Exception as e:
             print(f"Failed to add hearings to DB: {e}")
 

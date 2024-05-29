@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { IProject } from "@/database/projectSchema";
+import { ReformattedProject } from "@/database/projectSchema";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
@@ -158,7 +158,7 @@ const MoreInfoCell = ({ row }) => {
   );
 };
 
-export const columns: ColumnDef<IProject>[] = [
+export const columns: ColumnDef<ReformattedProject>[] = [
   {
     accessorKey: "reviewStatus",
     header: ({ column }) => {

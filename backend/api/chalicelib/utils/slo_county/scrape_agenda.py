@@ -11,8 +11,8 @@ def scrape_agenda(url):
 
     # regex patterns to match project data
     requesting_party_pattern = r"request by\s+(.*?)\s+for a"
-    county_file_number_pattern = r"County File Number:\s*(\S+)"
-    assessor_parcel_number_pattern = r"Assessor Parcel Number:\s*([\d-]+)"
+    county_file_number_pattern = r"County File (Number|No):\s*(\S+)"
+    assessor_parcel_number_pattern = r"Assessor Parcel Numbers?:\s*([\d-]+)"
     date_accepted_pattern = r"Date Accepted:\s*([A-Za-z]+ \d{1,2}, \d{4})"
 
     agenda_items = soup.find_all("div", class_="meetingitem")
@@ -33,7 +33,7 @@ def scrape_agenda(url):
                 requesting_party_match.group(1) if requesting_party_match else None
             )
             county_file_number = (
-                county_file_number_match.group(1) if county_file_number_match else None
+                county_file_number_match.group(2) if county_file_number_match else None
             )
             assessor_parcel_number = (
                 assessor_parcel_number_match.group(1)
@@ -55,14 +55,14 @@ def scrape_agenda(url):
         else:
             continue
 
-    print (scraped_projects)
+    print("Scraped projects: ", scraped_projects)
     return scraped_projects
 
 
 def validate_project(item):
     pattern = (
-        r".*County File Number:.*"
-        r"Assessor Parcel Number:.*"
+        r".*County File (Number|No):.*"
+        r"Assessor Parcel Numbers?:.*"
         r"Supervisorial District:.*"
         r"Date Accepted:.*"
         r"Project Manager:.*"

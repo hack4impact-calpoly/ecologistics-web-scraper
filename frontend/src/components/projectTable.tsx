@@ -65,7 +65,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { columns } from "../lib/tableColumns";
-import { IProject } from "@/database/projectSchema";
+import { IProject, ReformattedProject } from "@/database/projectSchema";
 import { DialogClose } from "@radix-ui/react-dialog";
 
 const reviewStatusColors: Record<any, string> = {
@@ -225,7 +225,6 @@ function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {cell.id.includes("review") ? (
                         <Dialog>
-                          {" "}
                           {/* 🔴 The dialog provider outside of the DropdownMenuContent */}
                           <DropdownMenu>
                             <DropdownMenuTrigger
@@ -254,6 +253,10 @@ function DataTable<TData, TValue>({
                                 style={{
                                   backgroundColor:
                                     reviewStatusColors["Unreviewed"],
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  paddingTop: "8px",
+                                  paddingBottom: "8px",
                                 }}
                               >
                                 {cell.getValue() !== "Unreviewed" ? (
@@ -272,6 +275,12 @@ function DataTable<TData, TValue>({
                                 style={{
                                   backgroundColor:
                                     reviewStatusColors["In Review"],
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  paddingTop: "8px",
+                                  paddingBottom: "8px",
+                                  marginTop: "5px",
+                                  marginBottom: "5px",
                                 }}
                               >
                                 {cell.getValue() !== "In Review" ? (
@@ -290,6 +299,10 @@ function DataTable<TData, TValue>({
                                 style={{
                                   backgroundColor:
                                     reviewStatusColors["Reviewed"],
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  paddingTop: "8px",
+                                  paddingBottom: "8px",
                                 }}
                               >
                                 {cell.getValue() !== "Reviewed" ? (
@@ -502,59 +515,19 @@ function DataTable<TData, TValue>({
   );
 }
 
-async function getData(): Promise<IProject[]> {
-  // Fetch data from your API here.
-  try {
-    const response = await fetch("/api/projects");
-    if (!response.ok) {
-      throw new Error("Failed to fetch projects");
-    }
-    const data = await response.json();
-    const reformattedProjects = data.map((project: any) => ({
-      countyFileNumber: project.county_file_number,
-      hearingDate: project.hearing_date,
-      reviewStatus: project.review_status ?? "Unreviewed",
-      location: project.location,
-      apn: project.apn,
-      dateAccepted: project.date_accepted,
-      requestingParty: project.requesting_party ?? "N/A",
-      schNumber: project.sch_number ?? "N/A",
-      title: project.title ?? "N/A",
-      publicHearingAgenda: project.public_hearing_agenda_link,
-      schLink: project.sch_page_link ?? "N/A",
-      additionalNotes:
-        project.additonal_notes || project.additionalNotes || "N/A",
-    }));
-    return reformattedProjects;
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-    return [];
-  }
-}
-
-export function ProposalTable() {
-  const [tableData, setTableData] = useState<IProject[]>([]);
-  const [numProjects, setNumProjects] = useState(0);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const proposals = await getData();
-        setTableData(proposals);
-        setNumProjects(proposals.length);
-      } catch (error) {
-        console.error("Error fetching proposals", error);
-      }
-    };
-    fetchData();
-  }, []);
-
+export function ProjectTable({
+  projectData,
+  numProjects,
+}: {
+  projectData: ReformattedProject[];
+  numProjects: number;
+}) {
   return (
     <div className="container mx-auto py-5">
       <div className="text-xl font-bold">
         San Luis Obispo County ({numProjects})
       </div>
-      <DataTable columns={columns} data={tableData} />
+      <DataTable columns={columns} data={projectData} />
     </div>
   );
 }
