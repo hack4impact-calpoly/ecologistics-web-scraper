@@ -17,8 +17,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+// @ts-ignore
 const MoreInfoCell = ({ row }) => {
-  // eslint-disable-line
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [notes, setNotes] = useState(row.original.additionalNotes || "");
