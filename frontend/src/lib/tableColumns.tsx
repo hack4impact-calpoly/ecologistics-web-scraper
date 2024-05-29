@@ -6,18 +6,20 @@ import { Button } from "@/components/ui/button";
 import { IProject } from "@/database/projectSchema";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
 const MoreInfoCell = ({ row }) => {
+  // eslint-disable-line
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [notes, setNotes] = useState(row.original.additionalNotes || "");
 
@@ -40,13 +42,28 @@ const MoreInfoCell = ({ row }) => {
       });
 
       if (!response.ok) {
+        toast({
+          title: "Failed to update additional notes",
+          variant: "destructive",
+          duration: 3000,
+        });
         throw new Error("Error updating additional notes");
       }
 
       setIsEditing(false);
+
+      toast({
+        title: `Successfully updated additional notes for project ${row.original.countyFileNumber}`,
+        variant: "green",
+        duration: 3000,
+      });
     } catch (error) {
       console.error(error);
-      alert("Failed to update additional notes");
+      toast({
+        title: "Failed to update additional notes",
+        variant: "destructive",
+        duration: 3000,
+      });
     }
   };
 
@@ -117,7 +134,7 @@ const MoreInfoCell = ({ row }) => {
                   <Button variant="outline" onClick={handleCancelClick}>
                     Cancel
                   </Button>
-                  <Button variant="primary" onClick={handleSaveClick}>
+                  <Button className="bg-secondary" onClick={handleSaveClick}>
                     Submit
                   </Button>
                 </div>
