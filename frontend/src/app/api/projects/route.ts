@@ -51,3 +51,32 @@ export async function PUT(req: Request) {
     return NextResponse.json(`Error`, { status: 500 });
   }
 }
+
+export async function PATCH(req: Request) {
+  const { countyFileNumber, additionalNotes } = await req.json();
+  console.log("PATCH request received:", { countyFileNumber, additionalNotes });
+  try {
+    await connectDB();
+
+    if (!countyFileNumber || !additionalNotes) {
+      return NextResponse.json("Missing field in request", { status: 400 });
+    }
+
+    const updatedProject = await Project.findOneAndUpdate(
+      { county_file_number: countyFileNumber },
+      { additionalNotes: additionalNotes },
+      { new: true },
+    );
+
+    return NextResponse.json(
+      { message: "Update additional notes success", updatedProject },
+      {
+        status: 200,
+      },
+    );
+  } catch (error) {
+    return NextResponse.json("Error updating additional notes", {
+      status: 500,
+    });
+  }
+}

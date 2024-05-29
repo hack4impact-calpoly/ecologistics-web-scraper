@@ -1,19 +1,162 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
+import React, { useState } from "react";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { IProject, ReformattedProject } from "@/database/projectSchema";
+import { ReformattedProject } from "@/database/projectSchema";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+// @ts-ignore
+const MoreInfoCell = ({ row }) => {
+  const { toast } = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+  const [notes, setNotes] = useState(row.original.additionalNotes || "");
+
+  const handleEditClick = () => setIsEditing(true);
+  const handleCancelClick = () => {
+    setIsEditing(false);
+    setNotes(row.original.additionalNotes || "");
+  };
+  const handleSaveClick = async () => {
+    try {
+      const response = await fetch("api/projects", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          countyFileNumber: row.original.countyFileNumber,
+          additionalNotes: notes,
+        }),
+      });
+
+      if (!response.ok) {
+        toast({
+          title: "Failed to update additional notes",
+          variant: "destructive",
+          duration: 3000,
+        });
+        throw new Error("Error updating additional notes");
+      }
+
+      setIsEditing(false);
+
+      toast({
+        title: `Successfully updated additional notes for project ${row.original.countyFileNumber}`,
+        variant: "green",
+        duration: 3000,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Failed to update additional notes",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost">
+          <MoreHorizontal className="h-5 w-5" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[800px] sm:max-h-[700px]">
+        <DialogHeader>
+          <DialogTitle>
+            Project {row.original.countyFileNumber}{" "}
+            {row.original.title !== "N/A" ? `(${row.original.title})` : ``}
+          </DialogTitle>
+          <DialogDescription>
+            Click the edit icon to update additional notes related to this
+            project.
+          </DialogDescription>
+        </DialogHeader>
+        <div>
+          <div className="flex items-start h-16 space-x-2">
+            <div className="w-1/2 overflow-auto whitespace-normal">
+              <h1>Public Hearing Agenda Link:</h1>
+              <DialogDescription>
+                <a
+                  href={row.original.publicHearingAgenda}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {row.original.publicHearingAgenda}
+                </a>
+              </DialogDescription>
+            </div>
+            <Separator orientation="vertical" />
+            {row.original.schLink && (
+              <div className="w-1/2 overflow-auto whitespace-normal">
+                <h1>California State Clearing House Link:</h1>
+                <DialogDescription>
+                  {row.original.schLink !== "N/A" ? (
+                    <a
+                      href={row.original.schLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {row.original.schLink}
+                    </a>
+                  ) : (
+                    row.original.schLink
+                  )}
+                </DialogDescription>
+              </div>
+            )}
+          </div>
+          <br />
+          <Separator />
+          <br />
+          <div>
+            <h3>Additional Notes:</h3>
+            {isEditing ? (
+              <>
+                <Textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
+                <div className="flex justify-end space-x-2 mt-2">
+                  <Button variant="outline" onClick={handleCancelClick}>
+                    Cancel
+                  </Button>
+                  <Button className="bg-secondary" onClick={handleSaveClick}>
+                    Submit
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <DialogDescription>
+                {notes}
+                <Button
+                  variant="ghost"
+                  className="ml-2"
+                  onClick={handleEditClick}
+                >
+                  Edit
+                </Button>
+              </DialogDescription>
+            )}
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 export const columns: ColumnDef<ReformattedProject>[] = [
   {
@@ -113,76 +256,6 @@ export const columns: ColumnDef<ReformattedProject>[] = [
   {
     accessorKey: "more_info",
     header: () => "More Info",
-    cell: ({ row, column }) => (
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="ghost">
-            <MoreHorizontal className="h-5 w-5" />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px] sm:max-h-[700px]">
-          <DialogHeader>
-            <DialogTitle>
-              Project {row.original.countyFileNumber}{" "}
-              {row.original.title !== "N/A"
-                ? `(
-              ${row.original.title})`
-                : ``}
-            </DialogTitle>
-            <DialogDescription>
-              Click the edit icon to update additional notes related to this
-              project.
-            </DialogDescription>
-          </DialogHeader>
-          <div>
-            <div className="flex items-start h-16 space-x-2">
-              <div className="w-1/2 overflow-auto whitespace-normal">
-                <h1>Public Hearing Agenda Link:</h1>
-                <DialogDescription>
-                  <a
-                    href={row.original.publicHearingAgenda}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {row.original.publicHearingAgenda}
-                  </a>
-                </DialogDescription>
-              </div>
-              <Separator orientation="vertical" />
-              {row.original.schLink && (
-                <div className="w-1/2 overflow-auto whitespace-normal">
-                  <h1>California State Clearing House Link:</h1>
-                  <DialogDescription>
-                    {row.original.schLink !== "N/A" ? (
-                      <a
-                        href={row.original.schLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {row.original.schLink}
-                      </a>
-                    ) : (
-                      row.original.schLink
-                    )}
-                  </DialogDescription>
-                </div>
-              )}
-            </div>
-            <br />
-            <Separator />
-            <br />
-            {row.original.additionalNotes && (
-              <div>
-                <h3>Additional Notes:</h3>
-                <DialogDescription>
-                  {row.original.additionalNotes}
-                </DialogDescription>
-                {/* ADD TEXT BOX AND BUTTONS FOR EDITING */}
-              </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
-    ),
+    cell: MoreInfoCell,
   },
 ];
