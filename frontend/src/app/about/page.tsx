@@ -81,7 +81,7 @@ export default function About() {
                     SLO County Meetings Calendar
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="h-[100px]">
                   <p>
                     San Luis Obispo meeting calendar, along with links to the
                     meeting agendas which include the projects being reviewed at
@@ -105,7 +105,7 @@ export default function About() {
                     CEQAnet Web Portal
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="h-[100px]">
                   <p>
                     Online searchable database for all California Environmental
                     Quality Act (CEQA) documents submitted to the State Clearing

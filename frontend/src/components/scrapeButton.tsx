@@ -30,7 +30,9 @@ export default function ScrapeButton({
   const handleScrape = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/slo_county/hearings");
+      const response = await fetch(
+        "https://m56k24punh.execute-api.us-west-2.amazonaws.com/api/slo_county/hearings",
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch data");
