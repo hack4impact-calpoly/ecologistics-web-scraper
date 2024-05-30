@@ -56,7 +56,7 @@ export default function Home() {
         title: project.title ?? "N/A",
         publicHearingAgenda: project.public_hearing_agenda_link,
         schLink: project.sch_page_link ?? "N/A",
-        additionalNotes: project.additonal_notes ?? "N/A",
+        additionalNotes: project.additional_notes ?? "N/A",
       }));
       setProjectData(projects);
       setNumProjects(projects.length);

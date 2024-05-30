@@ -36,8 +36,8 @@ const MoreInfoCell = ({ row }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          countyFileNumber: row.original.countyFileNumber,
-          additionalNotes: notes,
+          county_file_number: row.original.countyFileNumber,
+          additional_notes: notes,
         }),
       });
 

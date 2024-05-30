@@ -53,18 +53,21 @@ export async function PUT(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-  const { countyFileNumber, additionalNotes } = await req.json();
-  console.log("PATCH request received:", { countyFileNumber, additionalNotes });
+  const { county_file_number, additional_notes } = await req.json();
+  console.log("PATCH request received:", {
+    county_file_number,
+    additional_notes,
+  });
   try {
     await connectDB();
 
-    if (!countyFileNumber || !additionalNotes) {
+    if (!county_file_number || !additional_notes) {
       return NextResponse.json("Missing field in request", { status: 400 });
     }
 
     const updatedProject = await Project.findOneAndUpdate(
-      { county_file_number: countyFileNumber },
-      { additionalNotes: additionalNotes },
+      { county_file_number: county_file_number },
+      { additional_notes: additional_notes },
       { new: true },
     );
 
