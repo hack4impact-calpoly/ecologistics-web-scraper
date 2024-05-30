@@ -19,7 +19,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import WebScrapingApproachCounty from "@/components/webScrapingApproachCounty";
-import FullscreenSpinner from "@/components/fullScreenSpinner";
+import FullscreenSpinner from "@/components/fullscreenSpinner";
 
 const slo_hearings_url =
   "https://www.slocounty.ca.gov/Home/Meetings-Calendar.aspx";
