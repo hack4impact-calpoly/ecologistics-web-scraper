@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { FiCommand } from "react-icons/fi";
 
 import {
   Select,
@@ -67,6 +68,7 @@ import {
 import { columns } from "../lib/tableColumns";
 import { IProject, ReformattedProject } from "@/database/projectSchema";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { useToast } from "@/components/ui/use-toast";
 
 const reviewStatusColors: Record<any, string> = {
   Unreviewed: "#EC7590",
@@ -77,12 +79,16 @@ const reviewStatusColors: Record<any, string> = {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  fetchProjectData: () => Promise<never[] | undefined>;
 }
 
 function DataTable<TData, TValue>({
   columns,
   data,
+  fetchProjectData,
 }: DataTableProps<TData, TValue>) {
+  const { toast } = useToast();
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -123,9 +129,52 @@ function DataTable<TData, TValue>({
     setSelectedReviewType(reviewType);
   };
 
-  const handleReviewOKClick = () => {
-    // TODO: * Implement review status change by calling API
-    //       * Update the review status state in the table
+  const handleReviewOKClick = async (
+    countyFileNumber: string,
+    reviewStatus: string,
+    rowId: string,
+  ) => {
+    try {
+      const response = await fetch("api/projects", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          county_file_number: countyFileNumber,
+          review_status: reviewStatus,
+        }),
+      });
+
+      if (!response.ok) {
+        toast({
+          title: "Failed to update review status",
+          variant: "destructive",
+          duration: 3000,
+        });
+        throw new Error("Error updating additional notes");
+      }
+
+      setReviewTypes((prev) => ({
+        ...prev,
+        [rowId]: reviewStatus,
+      }));
+
+      toast({
+        title: `Successfuly updated review status for project ${countyFileNumber}`,
+        variant: "green",
+        duration: 3000,
+      });
+      // refresh table data after updating review status
+      fetchProjectData();
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Failed to update review status",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -380,7 +429,23 @@ function DataTable<TData, TValue>({
                               <DialogClose asChild>
                                 <Button
                                   variant="outline"
-                                  onClick={() => handleReviewOKClick()}
+                                  className="bg-secondary"
+                                  onClick={() => {
+                                    const countyFileNumberCell = row
+                                      .getVisibleCells()
+                                      .find((cell) =>
+                                        cell.id.includes("countyFileNumber"),
+                                      );
+                                    const countyFileNumber =
+                                      countyFileNumberCell
+                                        ? countyFileNumberCell.getValue()
+                                        : null;
+                                    handleReviewOKClick(
+                                      countyFileNumber as string,
+                                      selectedReviewType,
+                                      row.id,
+                                    );
+                                  }}
                                 >
                                   OK
                                 </Button>
@@ -518,16 +583,22 @@ function DataTable<TData, TValue>({
 export function ProjectTable({
   projectData,
   numProjects,
+  fetchProjectData,
 }: {
   projectData: ReformattedProject[];
   numProjects: number;
+  fetchProjectData: () => Promise<never[] | undefined>;
 }) {
   return (
     <div className="container mx-auto py-5">
       <div className="text-xl font-bold">
         San Luis Obispo County ({numProjects})
       </div>
-      <DataTable columns={columns} data={projectData} />
+      <DataTable
+        columns={columns}
+        data={projectData}
+        fetchProjectData={fetchProjectData}
+      />
     </div>
   );
 }

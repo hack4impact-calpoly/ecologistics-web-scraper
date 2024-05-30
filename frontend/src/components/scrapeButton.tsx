@@ -43,8 +43,6 @@ export default function ScrapeButton({
         variant: "green",
         duration: 3000,
       });
-      // refresh on success
-      // window.location.reload(); TODO: uncomment this line to update table
     } catch (error) {
       const county = "San Luis Obispo";
       toast({

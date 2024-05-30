@@ -2,9 +2,8 @@
 
 import { ProjectTable } from "../components/projectTable";
 import ScrapeButton from "../components/scrapeButton";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { IProject, ReformattedProject } from "../database/projectSchema";
+import { ReformattedProject } from "../database/projectSchema";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import {
   Accordion,
@@ -13,21 +12,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -148,7 +135,11 @@ export default function Home() {
         <div className="flex justify-center">
           <ScrapeButton fetchProjectData={fetchProjectData} />
         </div>
-        <ProjectTable projectData={projectData} numProjects={numProjects} />
+        <ProjectTable
+          projectData={projectData}
+          numProjects={numProjects}
+          fetchProjectData={fetchProjectData}
+        />
       </div>
     </div>
   );
