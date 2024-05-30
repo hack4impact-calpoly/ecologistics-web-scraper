@@ -14,17 +14,26 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useSession } from "next-auth/react";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
   const [passwordShown, setPasswordShown] = useState(false);
+  const [confirmpasswordShown, setConfirmpasswordShown] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
   const router = useRouter();
+  const { data: session } = useSession();
+
+  // If signed in, reroute to home page
+  if (session?.user?.email) {
+    router.push("/");
+  }
 
   const togglePasswordShown = () => {
     setPasswordShown(!passwordShown);
+    setConfirmpasswordShown(!confirmpasswordShown);
   };
 
   const handleInputChange = () => {
@@ -42,19 +51,32 @@ export default function SignUpPage() {
       /^([\wÀ-︰\/\+!#$%&'*±=?^_`{|}~-]+(\.[\wÀ-︰\/\+!#$%&'*±=?^_`{|}~-]+)*)@([A-Za-z-]+)\.([a-z]+)([\.a-z]+)?$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
+    if (email == "") {
+      setErrorMessage("Email must be filled out");
+      return;
+    }
+
     if (!emailRegex.test(email)) {
-      console.log("Enter a valid email address");
       setErrorMessage("Enter a valid email address");
       return;
     }
 
     if (!passwordRegex.test(password)) {
-      console.log(
-        "Password must be at least 8 characters long and contain a number",
-      );
       setErrorMessage(
         "Password must be at least 8 characters long and contain a number",
       );
+      return;
+    }
+
+    if (password == "" || confirmpassword == "") {
+      setErrorMessage(
+        "Password and confirmed password must both be filled out",
+      );
+      return;
+    }
+
+    if (password != confirmpassword) {
+      setErrorMessage("Password and confirmed password do not match");
       return;
     }
 
@@ -133,9 +155,12 @@ export default function SignUpPage() {
               <Label htmlFor="confirm-password">Confirm Password</Label>
               <Input
                 id="confirm-password"
-                type={passwordShown ? "text" : "password"}
+                type={confirmpasswordShown ? "text" : "password"}
                 placeholder="Confirm Password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  handleInputChange();
+                }}
               />
             </div>
           </div>

@@ -22,15 +22,16 @@ run-dev:
 	cd api && poetry run chalice local
 
 # Deploy the backend to AWS using chalice
+# Export poetry dependencies to requirements.txt
 deploy-to-aws:
-	cd api && poetry run chalice deploy
+	cd api && poetry export -f requirements.txt --output requirements.txt --without-hashes && poetry run chalice deploy
 
 # Undeploy the backend from AWS using chalice
 undeploy-from-aws:
 	cd api && poetry run chalice delete
 
 test-all:
-	python -m unittest discover -s api/tests/example
+	python3 -m unittest discover -s api/tests/example api/tests/slo_county
 
 # Display help with a list of available targets and their descriptions
 help:

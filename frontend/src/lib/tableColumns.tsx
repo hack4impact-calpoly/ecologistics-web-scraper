@@ -1,156 +1,261 @@
 "use client";
-
 import { ColumnDef } from "@tanstack/react-table";
+import React, { useState } from "react";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { IProposal } from "@/database/proposalSchema";
+import { ReformattedProject } from "@/database/projectSchema";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export const columns: ColumnDef<IProposal>[] = [
+// @ts-ignore
+const MoreInfoCell = ({ row }) => {
+  const { toast } = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+  const [notes, setNotes] = useState(row.original.additionalNotes || "");
+
+  const handleEditClick = () => setIsEditing(true);
+  const handleCancelClick = () => {
+    setIsEditing(false);
+    setNotes(row.original.additionalNotes || "");
+  };
+  const handleSaveClick = async () => {
+    try {
+      const response = await fetch("api/projects", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          county_file_number: row.original.countyFileNumber,
+          additional_notes: notes,
+        }),
+      });
+
+      if (!response.ok) {
+        toast({
+          title: "Failed to update additional notes",
+          variant: "destructive",
+          duration: 3000,
+        });
+        throw new Error("Error updating additional notes");
+      }
+
+      setIsEditing(false);
+
+      toast({
+        title: `Successfully updated additional notes for project ${row.original.countyFileNumber}`,
+        variant: "green",
+        duration: 3000,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Failed to update additional notes",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost">
+          <MoreHorizontal className="h-5 w-5" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[800px] sm:max-h-[700px]">
+        <DialogHeader>
+          <DialogTitle>
+            Project {row.original.countyFileNumber}{" "}
+            {row.original.title !== "N/A" ? `(${row.original.title})` : ``}
+          </DialogTitle>
+          <DialogDescription>
+            Click the edit icon to update additional notes related to this
+            project.
+          </DialogDescription>
+        </DialogHeader>
+        <div>
+          <div className="flex items-start h-16 space-x-2">
+            <div className="w-1/2 overflow-auto whitespace-normal">
+              <h1>Public Hearing Agenda Link:</h1>
+              <DialogDescription>
+                <a
+                  href={row.original.publicHearingAgenda}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {row.original.publicHearingAgenda}
+                </a>
+              </DialogDescription>
+            </div>
+            <Separator orientation="vertical" />
+            {row.original.schLink && (
+              <div className="w-1/2 overflow-auto whitespace-normal">
+                <h1>California State Clearing House Link:</h1>
+                <DialogDescription>
+                  {row.original.schLink !== "N/A" ? (
+                    <a
+                      href={row.original.schLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {row.original.schLink}
+                    </a>
+                  ) : (
+                    row.original.schLink
+                  )}
+                </DialogDescription>
+              </div>
+            )}
+          </div>
+          <br />
+          <Separator />
+          <br />
+          <div>
+            <h3>Additional Notes:</h3>
+            {isEditing ? (
+              <>
+                <Textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
+                <div className="flex justify-end space-x-2 mt-2">
+                  <Button variant="outline" onClick={handleCancelClick}>
+                    Cancel
+                  </Button>
+                  <Button className="bg-secondary" onClick={handleSaveClick}>
+                    Submit
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <DialogDescription>
+                {notes}
+                <Button
+                  variant="ghost"
+                  className="ml-2"
+                  onClick={handleEditClick}
+                >
+                  Edit
+                </Button>
+              </DialogDescription>
+            )}
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export const columns: ColumnDef<ReformattedProject>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "reviewStatus",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          Review Status
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "link",
-    header: "Link",
-  },
-  {
-    accessorKey: "date_approved",
+    accessorKey: "countyFileNumber",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Approved
+          County File Number
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "date_closed",
+    accessorKey: "hearingDate",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Closed
+          Hearing Date
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-  },
-  {
-    accessorKey: "review_status",
-    header: "Review Status",
-  },
-  {
-    accessorKey: "flag_status",
-    header: "Flag Status",
+    sortingFn: (row1: any, row2: any, columnId: any) => {
+      const datestr1 = row1.getValue(columnId);
+      const datestr2 = row2.getValue(columnId);
+
+      // dates are in "Month Day, Year - Time AM/PM" format
+      // remove '-' so string can be properly converted into date object
+      const date1 = new Date(String(datestr1).replace("-", ""));
+      const date2 = new Date(String(datestr2).replace("-", ""));
+
+      return date1 < date2 ? 1 : -1;
+    },
   },
   {
     accessorKey: "location",
     header: "Location",
   },
   {
-    accessorKey: "meeting_date",
+    accessorKey: "apn",
+    header: "APN",
+  },
+  {
+    accessorKey: "dateAccepted",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Public Meeting Held
+          Date Accepted
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-  },
-  {
-    accessorKey: "public_comment_end_date",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Date Public Comment Ends
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  /*
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+    sortingFn: (row1: any, row2: any, columnId: any) => {
+      const datestr1 = row1.getValue(columnId);
+      const datestr2 = row2.getValue(columnId);
+
+      // dates are in "Month Day, Year - Time AM/PM" format
+      // remove '-' so string can be properly converted into date object
+      const date1 = new Date(String(datestr1).replace("-", ""));
+      const date2 = new Date(String(datestr2).replace("-", ""));
+
+      return date1 < date2 ? 1 : -1;
     },
   },
   {
-    accessorKey: "amount",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Amount
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    accessorKey: "requestingParty",
+    header: "Requesting Party",
   },
-  */
   {
-    accessorKey: "moreInfo",
+    accessorKey: "schNumber",
+    header: "SCH Number",
+  },
+  {
+    accessorKey: "more_info",
     header: () => "More Info",
-    cell: ({ row, table }) => (
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="ghost">
-            <MoreHorizontal className="h-5 w-5" />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px] sm:min-h-[400px] sm:max-h-[700px]">
-          <DialogHeader>
-            <DialogTitle>Enter Content Here</DialogTitle>
-            <DialogDescription>
-              Row {table.getRowModel().rows.indexOf(row) + 1}
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    ),
+    cell: MoreInfoCell,
   },
 ];

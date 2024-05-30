@@ -1,5 +1,23 @@
 {
-  "resources": [],
+  "resources": [
+    {
+      "name": "default-role",
+      "resource_type": "iam_role",
+      "role_arn": "arn:aws:iam::633874248049:role/api-dev",
+      "role_name": "api-dev"
+    },
+    {
+      "name": "api_handler",
+      "resource_type": "lambda_function",
+      "lambda_arn": "arn:aws:lambda:us-west-2:633874248049:function:api-dev"
+    },
+    {
+      "name": "rest_api",
+      "resource_type": "rest_api",
+      "rest_api_id": "m56k24punh",
+      "rest_api_url": "https://m56k24punh.execute-api.us-west-2.amazonaws.com/api/"
+    }
+  ],
   "schema_version": "2.0",
   "backend": "api"
 }

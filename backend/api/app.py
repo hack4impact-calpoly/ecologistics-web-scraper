@@ -1,10 +1,10 @@
 from chalice import Chalice
-import mongodb
+from chalicelib.mongodb import get_mongo_client
 from dotenv import load_dotenv
-from routes.slo_county import slo_county_blueprint
-from routes.sb_county import sb_county_blueprint
-from routes.monterey_county import monterey_county_blueprint
-from routes.example import example_blueprint
+from chalicelib.routes.slo_county import slo_county_blueprint
+from chalicelib.routes.sb_county import sb_county_blueprint
+from chalicelib.routes.monterey_county import monterey_county_blueprint
+from chalicelib.routes.example import example_blueprint
 
 
 # Load .env file
@@ -16,7 +16,7 @@ app.register_blueprint(sb_county_blueprint)
 app.register_blueprint(monterey_county_blueprint)
 app.register_blueprint(example_blueprint)
 
-client = mongodb.get_mongo_client()
+client = get_mongo_client()
 
 
 @app.route("/")
@@ -42,6 +42,22 @@ def test_endpoint():
             "password": doc["password"],
         }
 
+@app.route("/scraping")
+def test_endpoint():
+    try:
+        db = client["test"]
+        collection = db["users"]
+        doc = collection.find_one()
+
+        if doc is not None:
+            return {
+                "id": str(doc["_id"]),
+                "email": doc["email"],
+                "password": doc["password"],
+            }
+        return {"status": "success", "message": "Data scraped successfully"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 # dummy post method
 @app.route("/users", methods=["POST"])
