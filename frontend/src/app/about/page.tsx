@@ -19,6 +19,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import WebScrapingApproachCounty from "@/components/webScrapingApproachCounty";
+import FullscreenSpinner from "@/components/fullscreenSpinner";
 
 const slo_hearings_url =
   "https://www.slocounty.ca.gov/Home/Meetings-Calendar.aspx";
@@ -54,20 +55,7 @@ export default function About() {
       </div>
     );
 
-  if (isLoading)
-    return (
-      <div
-        style={{
-          fontSize: "2em",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "90vh",
-        }}
-      >
-        Loading...
-      </div>
-    );
+  if (isLoading) return <FullscreenSpinner />;
 
   let SCHPercentage = 0;
   if (data.totalSCHProjectsScraped > 0) {
@@ -93,7 +81,7 @@ export default function About() {
                     SLO County Meetings Calendar
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="h-[100px]">
                   <p>
                     San Luis Obispo meeting calendar, along with links to the
                     meeting agendas which include the projects being reviewed at
@@ -117,7 +105,7 @@ export default function About() {
                     CEQAnet Web Portal
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="h-[100px]">
                   <p>
                     Online searchable database for all California Environmental
                     Quality Act (CEQA) documents submitted to the State Clearing

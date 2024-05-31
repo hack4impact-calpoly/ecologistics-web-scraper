@@ -1,3 +1,4 @@
+import pytz
 from typing import List
 from chalicelib.models.project import Project
 from chalicelib.mongodb import get_mongo_client
@@ -40,8 +41,11 @@ def update_metadata(hearingsScraped: int, scrapedProjects: List[Project]):
         # update the metadata document in collection
         # date uses iso format for conversion between
         # python datetime to TS Date objects
+        pacific = pytz.timezone('US/Pacific')
+        pacific_time = datetime.now(pacific).isoformat()
+        
         metadataCollection.update_one({}, {
-            '$set': {'lastRan': datetime.now().isoformat()},
+            '$set': {'lastRan': pacific_time},
             '$inc': {
                 'totalHearingsScraped': hearingsScraped,
                 'totalProjectsScraped': newProjects,
