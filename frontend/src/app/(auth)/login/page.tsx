@@ -23,13 +23,14 @@ export default function LoginPage() {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const { data: session } = useSession();
+  const [loadChange, setLoadChange] = useState(false);
 
   // If signed in, reroute to home page
   useEffect(() => {
     if (session?.user?.email) {
       router.push("/");
     }
-  }, [session, router]);
+  }, [session, router, loadChange]);
 
   const togglePasswordShown = () => {
     setPasswordShown(!passwordShown);
@@ -63,9 +64,10 @@ export default function LoginPage() {
             setErrorMessage("Invalid Credentials");
             return;
           }
-          setTimeout(() => {
-            router.push("/");
-          }, 100);
+          // setTimeout(() => {
+          //   router.push("/");
+          // }, 100);
+          setLoadChange(!loadChange);
         } catch (error) {
           console.log(error);
         }
