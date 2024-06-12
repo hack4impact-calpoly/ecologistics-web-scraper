@@ -37,19 +37,19 @@ Welcome to the getting started page! Here is all you need to know to get this re
 
 - [**.github**](/.github) Github Actions CI/CD and Issue/PR templates
 - [**docs**](/docs) Documentation - Documentation for getting started and developing
-- [**public**](/public) Assets for frontend [Read More](https://nextjs.org/docs/pages/building-your-application/optimizing/static-assets)
 - [**frontend**](/frontend) All frontend code and configuration
    - [**src**](/src) All application code for frontend
    - [**app**](/src/app/) Frontend and API code
-      - [**api**](/src/app/api) All API routes (**NOTE**: we won't be using!)
+      - [**api**](/src/app/api) All API routes
       - [**components**](/src/app/components) All React components
+         - [**ui**](/src/app/components/ui) Shadcn ui components
       - [**/\***](/src/app/) App router routes for pages
       - [**styles**](/src/app/styles) All CSS files
-   - [**database**](/src/database) MongoDB schemas and related files (**NOTE**: we won't be using!)
-- [**backend**](/backend) All backend code for Django and configuration
+   - [**database**](/src/database) MongoDB schemas for data fething and authentication
+- [**backend**](/backend) All backend code for AWS Chalice project
 
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It's built alongside a Django application that is used to handle backend functionalities.
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It's built alongside an AWS Chalice backend to handle web scraping.
 
 ## Learn More about Next.js
 
@@ -60,3 +60,9 @@ To learn more about Next.js, take a look at the following resources:
 - [NextAuth Documentation](https://next-auth.js.org/) - learn about authentication and authorization with NextAuth
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Learn More about AWS Chalice
+
+To learn more about AWS Chalice, take a look at the following resources:
+
+- [AWS Chalice Documentation](https://aws.github.io/chalice/main.html) - learn about Chalice features and API.

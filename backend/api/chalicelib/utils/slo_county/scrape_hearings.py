@@ -46,6 +46,8 @@ def scrape_hearings():
                 if a_tag:
                     meeting_link = a_tag["href"]
                     date = event.find("td", class_="listItem", headers="Date")
+                    if date.get_text(strip=True) == "Watch Live Video|Listen to Live Audio":
+                        continue
                     date_string = date.get_text(strip=True).replace("\xa0", " ")
 
                     # Generate unique ID based on time of event
