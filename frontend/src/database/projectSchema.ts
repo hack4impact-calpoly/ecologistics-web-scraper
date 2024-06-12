@@ -48,6 +48,12 @@ export const projectSchema = new Schema<IProject>({
   additional_notes: { type: String, required: false, default: "N/A" },
 });
 
+// retrieve correct collection based on county database
+export const getProjectModel = (county: string) => {
+  const db = mongoose.connection.useDb(county); // switch to the correct database
+  return db.model("projects", projectSchema);
+};
+
 // defining the collection and model and creating one if doesn't exist
 
 const Project =
