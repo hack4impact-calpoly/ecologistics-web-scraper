@@ -8,6 +8,7 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectGroup,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -69,6 +70,7 @@ import { columns } from "../lib/tableColumns";
 import { IProject, ReformattedProject } from "@/database/projectSchema";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useToast } from "@/components/ui/use-toast";
+import { SelectLabel } from "@radix-ui/react-select";
 
 const reviewStatusColors: Record<any, string> = {
   Unreviewed: "#EC7590",
@@ -79,12 +81,14 @@ const reviewStatusColors: Record<any, string> = {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  numProjects: number;
   fetchProjectData: () => Promise<never[] | undefined>;
 }
 
 function DataTable<TData, TValue>({
   columns,
   data,
+  numProjects,
   fetchProjectData,
 }: DataTableProps<TData, TValue>) {
   const { toast } = useToast();
@@ -96,6 +100,7 @@ function DataTable<TData, TValue>({
     [],
   );
   const [columnToFilter, setColumnToFilter] = useState("countyFileNumber");
+  const [county, setCounty] = useState("San Luis Obispo County");
 
   let table = useReactTable({
     data,
@@ -177,19 +182,79 @@ function DataTable<TData, TValue>({
     }
   };
 
+  useEffect(() => {
+    console.log(county); // log the county state
+  }, [county]);
+
+  useEffect(() => {
+    console.log(columnToFilter); // log the columnToFilter state
+  }, [columnToFilter]);
+
+  const handleCountyChange = (selectedCounty: string) => {
+    console.log("changing county");
+    setCounty(selectedCounty);
+    // refresh table data after changing county
+    // TODO:
+    // * call fetchProjectData with the selected county
+    // * update the table data with the new data
+    // * update the numProjects with the new number of projects
+    // * refactor database schemas for each county
+    // * rewrite fetchProjectData to fetch data for the selected county
+    // * reset filter columns for the new county
+  };
+
   return (
     <div>
+      <div className="text-xl font-bold">
+        {county} ({numProjects})
+      </div>
       <div className="flex items-center py-4">
+        <Select
+          value={county}
+          onValueChange={(value) => {
+            handleCountyChange(value);
+          }}
+        >
+          <SelectTrigger className="w-60 mr-2">
+            <SelectValue placeholder={county} />
+            <SelectContent side="right">
+              <SelectGroup>
+                <SelectLabel className="text-center">Counties</SelectLabel>
+                <SelectItem
+                  key="sloCounty"
+                  value={"San Luis Obispo County"}
+                  onClick={() => handleCountyChange("San Luis Obispo County")}
+                >
+                  San Luis Obispo County
+                </SelectItem>
+                <SelectItem
+                  key="montereyCounty"
+                  value={"Monterey County"}
+                  onClick={() => handleCountyChange("Monterey County")}
+                >
+                  Monterey County
+                </SelectItem>
+                <SelectItem
+                  key="santaBarbaraCounty"
+                  value={"Santa Barbara County"}
+                  onClick={() => handleCountyChange("Santa Barbara County")}
+                >
+                  Santa Barbara County
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectTrigger>
+        </Select>
         <Select
           value={columnToFilter}
           onValueChange={(value) => {
             setColumnToFilter(value);
           }}
         >
-          <SelectTrigger className="h-10 w-32 flex justify-start items-center">
+          <SelectTrigger className="w-60">
             <SelectValue placeholder={columnToFilter} />
           </SelectTrigger>
-          <SelectContent side="top">
+          <SelectContent side="right">
             {table.getHeaderGroups().map((headerGroup) => (
               <React.Fragment key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -591,12 +656,10 @@ export function ProjectTable({
 }) {
   return (
     <div className="container mx-auto py-5">
-      <div className="text-xl font-bold">
-        San Luis Obispo County ({numProjects})
-      </div>
       <DataTable
         columns={columns}
         data={projectData}
+        numProjects={numProjects}
         fetchProjectData={fetchProjectData}
       />
     </div>
