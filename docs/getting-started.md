@@ -45,7 +45,7 @@ Welcome to the getting started page! Here is all you need to know to get this re
          - [**ui**](/src/app/components/ui) Shadcn ui components
       - [**/\***](/src/app/) App router routes for pages
       - [**styles**](/src/app/styles) All CSS files
-   - [**database**](/src/database) MongoDB schemas for data fething and authentication
+   - [**database**](/src/database) MongoDB schemas for data fetching and authentication
 - [**backend**](/backend) All backend code for AWS Chalice project
 
 
