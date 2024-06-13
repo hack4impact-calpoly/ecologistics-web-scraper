@@ -230,6 +230,7 @@ function DataTable<TData, TValue>({
                 <SelectItem
                   key="montereyCounty"
                   value={"Monterey County"}
+                  disabled
                   onClick={() => handleCountyChange("Monterey County")}
                 >
                   Monterey County
@@ -237,6 +238,7 @@ function DataTable<TData, TValue>({
                 <SelectItem
                   key="santaBarbaraCounty"
                   value={"Santa Barbara County"}
+                  disabled
                   onClick={() => handleCountyChange("Santa Barbara County")}
                 >
                   Santa Barbara County
