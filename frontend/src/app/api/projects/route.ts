@@ -1,6 +1,7 @@
 import connectDB from "@/database/db";
 import Project from "@/database/projectSchema";
 import { NextResponse } from "next/server";
+import { getProjectModel } from "@/database/projectSchema";
 
 export async function GET(req: Request) {
   // check if query params are passed
@@ -9,7 +10,8 @@ export async function GET(req: Request) {
 
   try {
     await connectDB();
-    // TODO: get project by countyFileNumber
+    // TODO: get county from query params and use getProjectModel to get the correct model
+    // const Project = getProjectModel(county);
     if (county_file_number) {
       console.log(county_file_number);
     }

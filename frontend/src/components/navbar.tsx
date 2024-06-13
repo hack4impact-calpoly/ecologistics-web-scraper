@@ -4,6 +4,8 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import Image from "next/image";
+import Ecologistics from "../../public/ecologistics-logo.svg";
 import "@/styles/globals.css";
 
 export default function Navbar() {
@@ -19,8 +21,7 @@ export default function Navbar() {
     <div className="flex bg-secondary px-16 h-16 items-center justify-between">
       <div>
         <Link href="/" className="flex items-left">
-          <div className="font-bold text-3xl">ECOLO</div>
-          <div className="text-primary text-3xl">GISTICS Web Scraper</div>
+          <Image src={Ecologistics} alt="Ecologistics Logo" />
         </Link>
       </div>
       <div className="flex flex-row gap-10">
